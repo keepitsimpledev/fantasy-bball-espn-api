@@ -20,4 +20,4 @@ jobs:
       - name: run basic script
         run: |
           python script.py
-          echo hey
+          echo hey $PYTHON_VERSION
