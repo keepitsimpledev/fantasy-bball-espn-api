@@ -3,7 +3,7 @@ name: Python package
 on: [push]
 
 env:
-  PYTHON_VERSION: 3.9
+  PYTHON_VERSION: "3.10"
 
 jobs:
   build:
