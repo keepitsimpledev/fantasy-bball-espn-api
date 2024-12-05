@@ -1,14 +1,10 @@
 # fantasy-bball-espn-api
 
 ## setup
-* [pip](https://linuxize.com/post/how-to-install-pip-on-ubuntu-20.04/):
+* [basic setup steps](https://github.com/keepitsimpledev/dev-env/blob/main/python/README.md)
+* [pipenv](https://pipenv.pypa.io/) usage reminder:
   ```
-  $ sudo apt update
-  $ sudo apt install python3-pip
-  ```
-  * Ubuntu-22.04 (current* [WSL Ubuntu](https://apps.microsoft.com/detail/9PN20MSR04DW) default) doesn't have it OOB
-    * 2024 Dec 4
-* [pipenv](https://pipenv.pypa.io/)
-  ```
-  $ pip install pipenv
+  $ pipenv shell
+  $ black .
+  $ pipenv exit
   ```
