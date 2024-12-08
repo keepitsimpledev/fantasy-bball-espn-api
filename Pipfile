@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 black = {git = "https://github.com/psf/black"}
+espn-api = "*"
 
 [dev-packages]
 
