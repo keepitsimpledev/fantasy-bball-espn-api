@@ -18,4 +18,4 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: run basic script
         run: |
-          python -m unittest
+          python -m unittest -v
