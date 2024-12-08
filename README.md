@@ -1,6 +1,6 @@
 # fantasy-bball-espn-api
 
-# usage
+## usage
 * set `constants.ESPN_LEAGUE_ID` to your ESPN League ID
   * this must be a public league
 * set `constants.YEAR` to the value representing the current season
@@ -19,7 +19,7 @@
 * in VS code, select path to virtual environment as python interpreter (in the bottom right)
   * example: /home/`<CURRENT_USER>`/.local/share/virtualenvs/fantasy-bball-espn-api-h4zGGGrD/bin/python
 
-# notes
+## notes
 linters used:
 * [flake8](https://pypi.org/project/flake8/)
 * [ruff](https://pypi.org/project/ruff/)
