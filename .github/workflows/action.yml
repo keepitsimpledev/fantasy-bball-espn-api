@@ -19,3 +19,5 @@ jobs:
       - name: run basic script
         run: |
           python -m unittest -v
+      - name: lint
+        run: flake8 -v .
