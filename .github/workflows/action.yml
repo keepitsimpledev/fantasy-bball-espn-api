@@ -16,7 +16,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: run basic script
+      - name: install dependencies
+        run: |
+          python -m ensurepip --upgrade
+      - name: test
         run: |
           python -m unittest -v
       - name: lint
