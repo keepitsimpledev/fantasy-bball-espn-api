@@ -16,12 +16,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: install dependencies
-        run: |
-          pip install pipenv
-          pipenv shell
       - name: test
         run: |
           python -m unittest -v
       - name: lint
-        run: flake8 -v .
+        run: pipenv run flake8 -v .
