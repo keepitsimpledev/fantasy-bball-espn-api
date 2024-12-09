@@ -21,6 +21,10 @@
 
 ## library usage notes
 
+* [black](https://pypi.org/project/black/) for formatting
+  ```
+  $ black .
+  ```
 * [flake8](https://pypi.org/project/flake8/) for linting
   ```
   $ flake8 -v .
