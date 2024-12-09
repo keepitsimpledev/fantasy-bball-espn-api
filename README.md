@@ -22,9 +22,9 @@
 ## library usage notes
 
 * [flake8](https://pypi.org/project/flake8/) for linting
-  `$ flake8 -v .`
+  ```$ flake8 -v .```
 * [ruff](https://pypi.org/project/ruff/) for linting
-  `$ ruff check`
+  ```$ ruff check```
 * [coverage](https://pypi.org/project/coverage/) for code coverage
   ```
   $ coverage run -m unittest
