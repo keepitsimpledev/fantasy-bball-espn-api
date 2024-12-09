@@ -23,7 +23,7 @@ jobs:
       - name: test with coverage
         run: |
           pipenv run coverage run -m unittest
-          pipenv run coverage report
+          pipenv run coverage report -m
       - name: lint and code coverage
         run: |
           pipenv run flake8 -v .
