@@ -18,10 +18,15 @@ def extract_rosters_from_espn_league(league: League):
         teams[name] = players
     return teams
 
-
-def get_formatted_name_from_espn_team_object(espn_team: Team):
+# todo: add a comment for this function indicating what this function solves
+def get_formatted_name_from_espn_team_object(team: Team):
+    formatted_name = ""
+    if not hasattr(team, "team_abbrev") or len(team.team_abbrev) < 1:
+        formatted_name = team.team_name
+    else:
+        formatted_name = "{} ({})".format(team.team_name, team.team_abbrev)
     return (
-        "{} ({})".format(espn_team.team_name, espn_team.team_abbrev)
+        formatted_name
         .replace("?", "")
         .replace("⭐", "")
     )
