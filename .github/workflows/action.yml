@@ -20,10 +20,11 @@ jobs:
         run: |
           pip install pipenv
           pipenv install
-      - name: test
+      - name: test with coverage
         run: |
-          python -m unittest -v
-      - name: lint
+          pipenv run coverage run -m unittest
+          pipenv run coverage report -m
+      - name: lint and code coverage
         run: |
           pipenv run flake8 -v .
           pipenv run ruff check
