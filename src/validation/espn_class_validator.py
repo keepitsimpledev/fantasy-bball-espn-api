@@ -2,9 +2,15 @@ from espn_api.basketball import League
 
 
 def validate_league(league: League):
-    if not hasattr(league, "team"):
+    if league is None:
+        raise EspnClassStructureError("ESPN League object unexpectedly empty")
+    raise_if_attribute_is_missing("ESPN League", league, "teams")
+
+
+def raise_if_attribute_is_missing(object_name: str, object, attribute):
+    if object is None or not hasattr(object, "teams"):
         raise EspnClassStructureError(
-            "ESPN League object missing required attribute: team"
+            object_name + " object missing required attribute: " + attribute
         )
 
 

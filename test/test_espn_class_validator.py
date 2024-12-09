@@ -11,5 +11,18 @@ class TestEspnClassValidators(unittest.TestCase):
             validate_league(None)
         self.assertEqual(
             contextManager.exception.message,
-            "ESPN League object missing required attribute: team",
+            "ESPN League object unexpectedly empty",
         )
+
+        with self.assertRaises(EspnClassStructureError) as contextManager:
+            validate_league({})
+        self.assertEqual(
+            contextManager.exception.message,
+            "ESPN League object missing required attribute: teams",
+        )
+
+        validate_league(LeagueWithTeams())
+
+
+class LeagueWithTeams:
+    teams = {}
