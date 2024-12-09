@@ -22,7 +22,7 @@ jobs:
           pipenv install
       - name: test
         run: |
-          python -m unittest -v
+          pipenv run python -m unittest -v
       - name: lint
         run: |
           pipenv run flake8 -v .
