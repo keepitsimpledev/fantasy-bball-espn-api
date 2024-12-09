@@ -2,7 +2,8 @@ from espn_api.basketball import League
 
 
 # in this validator, we confirm the structure of retrieved ESPN data,
-# on which successful execution is dependent
+# on which successful execution is dependent.
+# these tests should identify if a future ESPN API update ruins existing logic.
 
 def validate_league(league: League):
     if league is None:
@@ -11,6 +12,8 @@ def validate_league(league: League):
 
     if not isinstance(league.teams, list):
         raise EspnClassStructureError("ESPN League's `teams` attribute is, unexpectedly, not an array")
+    if len(league.teams) < 1:
+        raise EspnClassStructureError("ESPN League's `teams` attribute exists but is, unexpectedly, empty")
 
 
 def raise_if_attribute_is_missing(object_name: str, object, attribute):

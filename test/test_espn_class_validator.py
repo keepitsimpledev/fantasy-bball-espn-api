@@ -28,6 +28,13 @@ class TestEspnClassValidators(unittest.TestCase):
             "ESPN League's `teams` attribute is, unexpectedly, not an array",
         )
 
+        with self.assertRaises(EspnClassStructureError) as contextManager:
+            validate_league(LeagueWithNoTeams())
+        self.assertEqual(
+            contextManager.exception.message,
+            "ESPN League's `teams` attribute exists but is, unexpectedly, empty",
+        )
+
         validate_league(LeagueWithTeamsArray())
 
 
@@ -35,5 +42,8 @@ class LeaguewithTeamsObject:
     teams = {}
 
 
-class LeagueWithTeamsArray:
+class LeagueWithNoTeams:
     teams = []
+
+class LeagueWithTeamsArray:
+    teams = [{}, {}, {}, {}]
