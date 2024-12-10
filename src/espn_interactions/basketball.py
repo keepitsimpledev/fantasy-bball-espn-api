@@ -1,5 +1,5 @@
 from espn_api.basketball import League, Team
-from validation.espn_class_validator import validate_league
+from src.validation.espn_class_validator import validate_league
 
 
 def get_league(league_id, year):
@@ -11,7 +11,7 @@ def get_league(league_id, year):
 def extract_rosters_from_espn_league(league: League):
     teams = {}
     for team in league.teams:
-        name = get_formatted_name_from_espn_team_object(team)
+        name = format_team_name(team)
         players = []
         for player in team.roster:
             players += [player.name]
@@ -20,7 +20,7 @@ def extract_rosters_from_espn_league(league: League):
 
 
 # todo: add a comment for this function indicating what this function solves
-def get_formatted_name_from_espn_team_object(team: Team):
+def format_team_name(team: Team):
     formatted_name = ""
     if not hasattr(team, "team_abbrev") or len(team.team_abbrev) < 1:
         formatted_name = team.team_name
