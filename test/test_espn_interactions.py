@@ -2,7 +2,7 @@ from src.espn_interactions.basketball import (
     build_teamname_to_roster_map,
     format_team_name,
 )
-from classes_for_tests import LeagueWithTeamNamesAndRosters, Team
+from test.classes_for_tests import LeagueWithTeamNamesAndRosters, Team
 import unittest
 
 
