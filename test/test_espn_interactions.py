@@ -22,6 +22,14 @@ class TestBasketball(unittest.TestCase):
         )
 
     def test_build_teamname_to_roster_map(self):
-        build_teamname_to_roster_map(LeagueWithTeamNamesAndRosters())
-        this_has_been_sufficiently_verified = False
-        self.assertTrue(this_has_been_sufficiently_verified)
+        player_count = 0
+        league = LeagueWithTeamNamesAndRosters()
+        for team in league.teams:
+            for player in team.roster:
+                player_count += 1
+                player.name = "player" + str(player_count)
+        name_to_roster_map = build_teamname_to_roster_map(league)
+        self.assertEqual(name_to_roster_map["teamA"], ["player1", "player2", "player3"])
+        self.assertEqual(name_to_roster_map["teamB"], ["player4", "player5", "player6"])
+        self.assertEqual(name_to_roster_map["teamC"], ["player7", "player8", "player9"])
+        self.assertEqual(name_to_roster_map["teamD"], ["player10", "player11", "player12"])
