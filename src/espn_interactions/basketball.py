@@ -18,6 +18,7 @@ def extract_rosters_from_espn_league(league: League):
         teams[name] = players
     return teams
 
+
 # todo: add a comment for this function indicating what this function solves
 def get_formatted_name_from_espn_team_object(team: Team):
     formatted_name = ""
@@ -25,8 +26,4 @@ def get_formatted_name_from_espn_team_object(team: Team):
         formatted_name = team.team_name
     else:
         formatted_name = "{} ({})".format(team.team_name, team.team_abbrev)
-    return (
-        formatted_name
-        .replace("?", "")
-        .replace("⭐", "")
-    )
+    return formatted_name.replace("?", "").replace("⭐", "")
