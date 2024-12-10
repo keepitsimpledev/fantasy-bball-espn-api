@@ -1,4 +1,5 @@
-from src.espn_interactions.basketball import format_team_name
+from src.espn_interactions.basketball import build_teamname_to_roster_map, format_team_name
+from classes_for_tests import LeagueWithTeamNamesAndRosters, Team
 import unittest
 
 
@@ -17,8 +18,7 @@ class TestBasketball(unittest.TestCase):
             "Who's a good boy (WHO)", format_team_name(Team("Who's a good boy?", "WHO"))
         )
 
-
-class Team:
-    def __init__(self, name: str, abbrev: str):
-        self.team_name = name
-        self.team_abbrev = abbrev
+    def test_build_teamname_to_roster_map(self):
+        build_teamname_to_roster_map(LeagueWithTeamNamesAndRosters())
+        this_has_been_sufficiently_verified = False
+        self.assertTrue(this_has_been_sufficiently_verified)

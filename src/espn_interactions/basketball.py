@@ -8,15 +8,15 @@ def get_league(league_id, year):
     return league
 
 
-def extract_rosters_from_espn_league(league: League):
-    teams = {}
+def build_teamname_to_roster_map(league: League):
+    name_to_roster_map = {}
     for team in league.teams:
         name = format_team_name(team)
         players = []
         for player in team.roster:
             players += [player.name]
-        teams[name] = players
-    return teams
+        name_to_roster_map[name] = players
+    return name_to_roster_map
 
 
 # todo: add a comment for this function indicating what this function solves
