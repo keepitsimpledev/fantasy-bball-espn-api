@@ -1,5 +1,5 @@
 from src.validation.espn_class_validator import EspnClassStructureError, validate_league
-import classes_for_tests
+import test.classes_for_tests as classes_for_tests
 import unittest
 
 
