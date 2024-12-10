@@ -24,7 +24,7 @@ jobs:
         run: |
           pipenv run coverage run -m unittest
           pipenv run coverage report -m
-      - name: lint and code coverage
+      - name: lint
         run: |
           pipenv run flake8 --ignore=E501 -v .
           pipenv run ruff check
