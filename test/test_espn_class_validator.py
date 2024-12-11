@@ -7,57 +7,105 @@ class TestEspnClassValidators(unittest.TestCase):
 
     def test_validate_league(self):
         with self.assertRaises(EspnClassStructureError) as contextManager:
-            validate_league(None)
-        self.assertEqual(
-            contextManager.exception.message,
-            "ESPN League object unexpectedly empty",
-        )
+            # arrange
+            league = None
+
+            # act
+            validate_league(league)
+
+            # assert
+            self.assertEqual(
+                contextManager.exception.message,
+                "ESPN League object unexpectedly empty",
+            )
 
         with self.assertRaises(EspnClassStructureError) as contextManager:
-            validate_league({})
-        self.assertEqual(
-            contextManager.exception.message,
-            "ESPN League object missing required attribute: teams",
-        )
+            # arrange
+            league = {}
+
+            # act
+            validate_league(league)
+
+            # assert
+            self.assertEqual(
+                contextManager.exception.message,
+                "ESPN League object missing required attribute: teams",
+            )
 
         with self.assertRaises(EspnClassStructureError) as contextManager:
-            validate_league(classes_for_tests.LeaguewithTeamsObject())
-        self.assertEqual(
-            contextManager.exception.message,
-            "ESPN League's `teams` attribute is, unexpectedly, not an array",
-        )
+            # arrange
+            league = classes_for_tests.LeaguewithTeamsObject()
+
+            # act
+            validate_league(league)
+
+            # assert
+            self.assertEqual(
+                contextManager.exception.message,
+                "ESPN League's `teams` attribute is, unexpectedly, not an array",
+            )
 
         with self.assertRaises(EspnClassStructureError) as contextManager:
-            validate_league(classes_for_tests.LeagueWithNoTeams())
-        self.assertEqual(
-            contextManager.exception.message,
-            "ESPN League's `teams` attribute is, unexpectedly, empty",
-        )
+            # arrange
+            league = classes_for_tests.LeagueWithNoTeams()
+
+            # act
+            validate_league(league)
+
+            # assert
+            self.assertEqual(
+                contextManager.exception.message,
+                "ESPN League's `teams` attribute is, unexpectedly, empty",
+            )
 
     def test_validate_teams(self):
         with self.assertRaises(EspnClassStructureError) as contextManager:
-            validate_league(classes_for_tests.LeagueWithTeamsArray())
-        self.assertEqual(
-            contextManager.exception.message,
-            "ESPN Team object missing required attribute: team_name",
-        )
+            # arrange
+            league = classes_for_tests.LeagueWithTeamsArray()
+
+            # act
+            validate_league(league)
+
+            # assert
+            self.assertEqual(
+                contextManager.exception.message,
+                "ESPN Team object missing required attribute: team_name",
+            )
 
         with self.assertRaises(EspnClassStructureError) as contextManager:
-            validate_league(classes_for_tests.LeagueWithTeamNames())
-        self.assertEqual(
-            contextManager.exception.message,
-            "ESPN Team object missing required attribute: roster",
-        )
+            # arrange
+            league = classes_for_tests.LeagueWithTeamNames()
+
+            # act
+            validate_league(league)
+
+            # assert
+            self.assertEqual(
+                contextManager.exception.message,
+                "ESPN Team object missing required attribute: roster",
+            )
 
         with self.assertRaises(EspnClassStructureError) as contextManager:
-            validate_league(classes_for_tests.LeagueWithTeamNamesAndEmptyRosters())
-        self.assertEqual(
-            contextManager.exception.message,
-            "ESPN Team Basketballers's roster object is unexpectedly empty",
-        )
+            # arrange
+            league = classes_for_tests.LeagueWithTeamNamesAndEmptyRosters()
+
+            # act
+            validate_league(league)
+
+            # assert
+            self.assertEqual(
+                contextManager.exception.message,
+                "ESPN Team Basketballers's roster object is unexpectedly empty",
+            )
 
         with self.assertLogs("src.validation.espn_class_validator", level="INFO") as cm:
-            validate_league(classes_for_tests.LeagueWithTeamNamesAndRosters())
+            # arrange
+            league = classes_for_tests.LeagueWithTeamNamesAndRosters()
+
+            # act
+            validate_league(league)
+
+            # assert
             message = "INFO:src.validation.espn_class_validator:ESPN Team {} is missing optional `team_abbrev` attribute"
             self.assertEqual(
                 cm.output,
