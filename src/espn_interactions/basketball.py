@@ -19,6 +19,15 @@ def build_teamname_to_roster_map(league: League):
     return name_to_roster_map
 
 
+def extract_all_players_from_league(league: League):
+    all_players = []
+    for team in league.teams:
+        all_players += team.roster
+    free_agents = league.free_agents(size=1000)
+    all_players += free_agents
+    return all_players
+
+
 # todo: add a comment for this function indicating what this function solves
 def format_team_name(team: Team):
     formatted_name = ""

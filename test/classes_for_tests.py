@@ -1,61 +1,43 @@
-class LeaguewithTeamsObject:
-    teams = {}
+class TestLeague:
+    def __init__(self):
+        self.teams = []
+
+    def free_agents(self, size: int):
+        free_agents = []
+        free_agents.append(TestPlayer("freeAgent1"))
+        free_agents.append(TestPlayer("freeAgent2"))
+        return free_agents
 
 
-class LeagueWithNoTeams:
-    teams = []
+class TestTeam:
+    def __init__(self):
+        self.team_name = None
+        self.team_abbrev = None
+        self.roster = []
 
 
-class LeagueWithTeamsArray:
-    teams = [{}, {}, {}, {}]
+class TestPlayer:
+    def __init__(self, player_name: str):
+        self.name = player_name
+
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 
-class TeamWithAName:
-    team_name = "a name"
+def GetTestLeague():
+    league = TestLeague()
 
+    for team_number in range(3):
+        team = TestTeam()
+        team.team_name = "team" + str(team_number)
+        team.team_abbrev = "T" + str(team_number)
+        league.teams.append(team)
 
-class TeamWithANameAndEmptyRoster:
-    team_name = "Basketballers"
-    roster = {}
+        for player_number in range(3):
+            player = TestPlayer("player" + str(team_number) + str(player_number))
+            team.roster.append(player)
 
-
-class Player:
-    name = "player name"
-
-
-class TeamWithARoster:
-    def __init__(self, name):
-        self.team_name = name
-        self.roster = {
-            Player(),
-            Player(),
-            Player(),
-        }
-
-
-class LeagueWithTeamNames:
-    teams = [TeamWithAName, TeamWithAName, TeamWithAName, TeamWithAName]
-
-
-class LeagueWithTeamNamesAndEmptyRosters:
-    teams = [
-        TeamWithANameAndEmptyRoster,
-        TeamWithANameAndEmptyRoster,
-        TeamWithANameAndEmptyRoster,
-        TeamWithANameAndEmptyRoster,
-    ]
-
-
-class LeagueWithTeamNamesAndRosters:
-    teams = [
-        TeamWithARoster("teamA"),
-        TeamWithARoster("teamB"),
-        TeamWithARoster("teamC"),
-        TeamWithARoster("teamD"),
-    ]
-
-
-class Team:
-    def __init__(self, name: str, abbrev: str):
-        self.team_name = name
-        self.team_abbrev = abbrev
+    return league
