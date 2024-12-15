@@ -1,2 +1,10 @@
 ESPN_LEAGUE_ID = 1192749948
 YEAR = 2025
+ALL_STATS = ["FGM", "FGA", "FTM", "FTA", "3PM", "REB", "AST", "STL", "BLK", "TO", "PTS"]
+
+ESPN_PROJECTIONS_KEY = str(YEAR) + "_projected"
+ESPN_TOTAL_KEY = str(YEAR) + "_total"
+ESPN_LAST_7_KEY = str(YEAR) + "_last_7"
+ESPN_STATS_KEY = ESPN_PROJECTIONS_KEY
+
+KEY_IR = "On IR"

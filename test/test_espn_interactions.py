@@ -1,5 +1,6 @@
 from src.espn_interactions.basketball import (
     build_teamname_to_roster_map,
+    construct_players_stats_map,
     extract_all_players_from_league,
     format_team_name,
 )
@@ -83,3 +84,13 @@ class TestBasketball(unittest.TestCase):
         self.assertIn(TestPlayer("player22"), players)
         self.assertIn(TestPlayer("freeAgent1"), players)
         self.assertIn(TestPlayer("freeAgent2"), players)
+
+    def test_construct_players_stat_map(self):
+        # arrange
+        league = GetTestLeague()
+
+        # act
+        players_stats_map = construct_players_stats_map(league)
+
+        # assert
+        self.assertIsNone(players_stats_map)
