@@ -2,6 +2,12 @@ class TestLeague:
     def __init__(self):
         self.teams = []
 
+    def free_agents(self, size: int):
+        free_agents = []
+        free_agents.append(TestPlayer("freeAgent1"))
+        free_agents.append(TestPlayer("freeAgent2"))
+        return free_agents
+
 
 class TestTeam:
     def __init__(self):
@@ -13,6 +19,12 @@ class TestTeam:
 class TestPlayer:
     def __init__(self, player_name: str):
         self.name = player_name
+
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 
 def GetTestLeague():

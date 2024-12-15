@@ -1,8 +1,9 @@
 from src.espn_interactions.basketball import (
     build_teamname_to_roster_map,
+    extract_all_players_from_league,
     format_team_name,
 )
-from test.classes_for_tests import GetTestLeague, TestTeam
+from test.classes_for_tests import GetTestLeague, TestPlayer, TestTeam
 import unittest
 
 
@@ -61,3 +62,24 @@ class TestBasketball(unittest.TestCase):
         self.assertEqual(
             name_to_roster_map["team2 (T2)"], ["player20", "player21", "player22"]
         )
+
+    def test_extract_players_from_league(self):
+        # arrange
+        league = GetTestLeague()
+
+        # act
+        players = extract_all_players_from_league(league)
+
+        # assert
+        self.assertEqual(11, len(players))
+        self.assertIn(TestPlayer("player00"), players)
+        self.assertIn(TestPlayer("player01"), players)
+        self.assertIn(TestPlayer("player02"), players)
+        self.assertIn(TestPlayer("player10"), players)
+        self.assertIn(TestPlayer("player11"), players)
+        self.assertIn(TestPlayer("player12"), players)
+        self.assertIn(TestPlayer("player20"), players)
+        self.assertIn(TestPlayer("player21"), players)
+        self.assertIn(TestPlayer("player22"), players)
+        self.assertIn(TestPlayer("freeAgent1"), players)
+        self.assertIn(TestPlayer("freeAgent2"), players)
