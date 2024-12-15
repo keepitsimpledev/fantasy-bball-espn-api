@@ -10,7 +10,7 @@ class TestTeam:
         self.roster = []
 
 
-class Player:
+class TestPlayer:
     def __init__(self, player_name: str):
         self.name = player_name
 
@@ -25,7 +25,7 @@ def GetTestLeague():
         league.teams.append(team)
 
         for player_number in range(3):
-            player = Player("player" + str(team_number) + str(player_number))
+            player = TestPlayer("player" + str(team_number) + str(player_number))
             team.roster.append(player)
 
     return league
