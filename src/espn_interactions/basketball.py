@@ -51,8 +51,8 @@ def construct_players_stats_map(league: League):
         for stat in ALL_STATS:
             if (
                 ESPN_STATS_KEY in player.stats
-                and ESPN_STATS_TOTAL_KEY in player.stats[ESPN_STATS_KEY] # noqa: W504
-                and stat in player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY] # noqa: W504
+                and ESPN_STATS_TOTAL_KEY in player.stats[ESPN_STATS_KEY]  # noqa: W503
+                and stat in player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY]  # noqa: W503
             ):
                 value = player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY][stat]
                 all_players_stat_map[player.name][stat] = int(value)
