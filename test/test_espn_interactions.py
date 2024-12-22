@@ -122,7 +122,7 @@ class TestBasketball(unittest.TestCase):
                 players.append(player)
         for player in league.free_agents(size=1000):
             players.append(player)
-        
+
         expected_stat_value = 1
         for player in players:
             player.stats[ESPN_STATS_KEY] = {}
@@ -143,5 +143,3 @@ class TestBasketball(unittest.TestCase):
                 # but we'll accept it for ease of assertion
                 self.assertEqual(expected_stat_value, stats_map[player_stats][stat])
                 expected_stat_value += 1
-
-            
