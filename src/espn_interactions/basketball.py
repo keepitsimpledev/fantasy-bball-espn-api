@@ -50,9 +50,9 @@ def construct_players_stats_map(league: League):
         projections_not_found = []
         for stat in ALL_STATS:
             if (
-                ESPN_STATS_KEY in player.stats and
-                ESPN_STATS_TOTAL_KEY in player.stats[ESPN_STATS_KEY] and
-                stat in player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY]
+                ESPN_STATS_KEY in player.stats
+                and ESPN_STATS_TOTAL_KEY in player.stats[ESPN_STATS_KEY] # noqa: W504
+                and stat in player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY] # noqa: W504
             ):
                 value = player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY][stat]
                 all_players_stat_map[player.name][stat] = int(value)
