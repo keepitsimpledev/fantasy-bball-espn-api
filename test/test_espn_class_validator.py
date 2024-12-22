@@ -131,3 +131,41 @@ class TestEspnClassValidators(unittest.TestCase):
                     message.format("team2"),
                 ],
             )
+
+    def test_validate_playername(self):
+        with self.assertRaises(EspnClassStructureError) as contextManager:
+            # arrange
+            league = GetTestLeague()
+
+            for team in league.teams:
+                for player in team.roster:
+                    del player.name
+            for player in league.free_agents(size=1000):
+                del player.name
+
+            # act
+            validate_league(league)
+            self.fail("expected EspnClassStructureError was not raised")
+
+        # assert
+        self.assertEqual(
+            contextManager.exception.message,
+            "player objects missing required `name` attribute",
+        )
+
+        with self.assertLogs(
+            "src.validation.espn_class_validator", level="WARNING"
+        ) as cm:
+            # arrange
+            league = GetTestLeague()
+            del league.teams[0].roster[0].name
+            del league.free_agents(size=1000)[0].name
+
+            # act
+            validate_league(league)
+
+            # assert
+            self.assertEqual(
+                cm.output[0],
+                "WARNING:src.validation.espn_class_validator:2 of 11 player objects missing required `name` attribute",
+            )

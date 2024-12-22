@@ -1,5 +1,7 @@
+from src.constants import ALL_STATS, ESPN_STATS_KEY, ESPN_STATS_TOTAL_KEY
 from src.espn_interactions.basketball import (
     build_teamname_to_roster_map,
+    construct_players_stats_map,
     extract_all_players_from_league,
     format_team_name,
 )
@@ -83,3 +85,61 @@ class TestBasketball(unittest.TestCase):
         self.assertIn(TestPlayer("player22"), players)
         self.assertIn(TestPlayer("freeAgent1"), players)
         self.assertIn(TestPlayer("freeAgent2"), players)
+
+    def test_construct_players_stat_map(self):
+
+        with self.assertLogs("src.espn_interactions.basketball", level="INFO") as cm:
+            # arrange
+            league = GetTestLeague()
+
+            # act
+            construct_players_stats_map(league)
+
+            # assert
+            self.assertEqual(
+                cm.output,
+                [
+                    "INFO:src.espn_interactions.basketball:player00 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player01 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player02 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player10 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player11 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player12 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player20 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player21 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player22 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:freeAgent1 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:freeAgent2 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                ],
+            )
+
+        # arrange
+        league = GetTestLeague()
+
+        players = []
+        for team in league.teams:
+            for player in team.roster:
+                players.append(player)
+        for player in league.free_agents(size=1000):
+            players.append(player)
+
+        expected_stat_value = 1
+        for player in players:
+            player.stats[ESPN_STATS_KEY] = {}
+            player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY] = {}
+
+            for stat in ALL_STATS:
+                player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY][stat] = expected_stat_value
+                expected_stat_value += 1
+
+        # act
+        stats_map = construct_players_stats_map(league)
+
+        # assert
+        expected_stat_value = 1
+        for player_stats in stats_map.keys():
+            for stat in ALL_STATS:
+                # assertion failure messages here are not very helpful,
+                # but we'll accept it for ease of assertion
+                self.assertEqual(expected_stat_value, stats_map[player_stats][stat])
+                expected_stat_value += 1
