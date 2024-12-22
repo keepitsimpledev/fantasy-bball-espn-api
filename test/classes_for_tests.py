@@ -1,7 +1,7 @@
 class TestLeague:
     def __init__(self):
         self.teams = []
-        
+
         self.free_agent_players = []
         self.free_agent_players.append(TestPlayer("freeAgent1"))
         self.free_agent_players.append(TestPlayer("freeAgent2"))

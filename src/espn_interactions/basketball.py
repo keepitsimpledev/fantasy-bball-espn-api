@@ -1,6 +1,9 @@
 from src.constants import ALL_STATS, ESPN_STATS_KEY, ESPN_STATS_TOTAL_KEY, KEY_IR
 from espn_api.basketball import League, Team
 from src.validation.espn_class_validator import validate_league
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_league(league_id, year):
@@ -59,7 +62,7 @@ def construct_players_stats_map(league: League):
                 all_players_stat_map[player.name][stat] = 0
         all_players_stat_map[player.name][KEY_IR] = player.lineupSlot == "IR"
         if len(projections_not_found) > 0:
-            print(
+            logger.info(
                 "{} projections not found: {}".format(
                     player.name, ", ".join(projections_not_found)
                 )

@@ -86,11 +86,28 @@ class TestBasketball(unittest.TestCase):
         self.assertIn(TestPlayer("freeAgent2"), players)
 
     def test_construct_players_stat_map(self):
-        # arrange
-        league = GetTestLeague()
 
-        # act
-        players_stats_map = construct_players_stats_map(league)
+        with self.assertLogs("src.espn_interactions.basketball", level="INFO") as cm:
+            # arrange
+            league = GetTestLeague()
 
-        # assert
-        self.assertIsNone(players_stats_map)
+            # act
+            construct_players_stats_map(league)
+
+            # assert
+            self.assertEqual(
+                cm.output,
+                [
+                    "INFO:src.espn_interactions.basketball:player00 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player01 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player02 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player10 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player11 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player12 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player20 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player21 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:player22 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:freeAgent1 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                    "INFO:src.espn_interactions.basketball:freeAgent2 projections not found: FGM, FGA, FTM, FTA, 3PM, REB, AST, STL, BLK, TO, PTS",
+                ],
+            )

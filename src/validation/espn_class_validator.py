@@ -54,17 +54,22 @@ def validate_player_structure(league: League):
             if not hasattr(player, "name") or len(player.name) == 0:
                 missing_name_count += 1
             total_player_count += 1
-    
+
     for player in league.free_agents(size=1000):
         if not hasattr(player, "name") or len(player.name) == 0:
             missing_name_count += 1
         total_player_count += 1
-    
-    if missing_name_count == total_player_count:
-        raise EspnClassStructureError("player objects missing required `name` attribute")
-    elif missing_name_count > 0:
-        logger.warning("{} of {} player objects missing required `name` attribute".format(missing_name_count, total_player_count))
 
+    if missing_name_count == total_player_count:
+        raise EspnClassStructureError(
+            "player objects missing required `name` attribute"
+        )
+    elif missing_name_count > 0:
+        logger.warning(
+            "{} of {} player objects missing required `name` attribute".format(
+                missing_name_count, total_player_count
+            )
+        )
 
 
 def raise_if_attribute_is_missing(object_name: str, object, attribute: str):
