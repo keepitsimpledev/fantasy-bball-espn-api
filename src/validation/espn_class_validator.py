@@ -14,6 +14,7 @@ def validate_league(league: League):
         raise EspnClassStructureError("ESPN League object unexpectedly empty")
     validate_league_structure(league)
     validate_teams_structure(league.teams)
+    validate_player_structure(league)
 
 
 def validate_league_structure(league: League):
@@ -42,6 +43,28 @@ def validate_teams_structure(teams: list[Team]):
                     team.team_name
                 )
             )
+
+
+def validate_player_structure(league: League):
+    missing_name_count = 0
+    total_player_count = 0
+
+    for team in league.teams:
+        for player in team.roster:
+            if not hasattr(player, "name") or len(player.name) == 0:
+                missing_name_count += 1
+            total_player_count += 1
+    
+    for player in league.free_agents(size=1000):
+        if not hasattr(player, "name") or len(player.name) == 0:
+            missing_name_count += 1
+        total_player_count += 1
+    
+    if missing_name_count == total_player_count:
+        raise EspnClassStructureError("player objects missing required `name` attribute")
+    elif missing_name_count > 0:
+        logger.warning("{} of {} player objects missing required `name` attribute".format(missing_name_count, total_player_count))
+
 
 
 def raise_if_attribute_is_missing(object_name: str, object, attribute: str):

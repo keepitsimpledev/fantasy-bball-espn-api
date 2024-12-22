@@ -1,4 +1,4 @@
-from src.constants import ALL_STATS, ESPN_STATS_KEY, KEY_IR
+from src.constants import ALL_STATS, ESPN_STATS_KEY, ESPN_STATS_TOTAL_KEY, KEY_IR
 from espn_api.basketball import League, Team
 from src.validation.espn_class_validator import validate_league
 
@@ -48,10 +48,10 @@ def construct_players_stats_map(league: League):
         for stat in ALL_STATS:
             if (
                 ESPN_STATS_KEY in player.stats
-                and "total" in player.stats[ESPN_STATS_KEY]
-                and stat in player.stats[ESPN_STATS_KEY]["total"]
+                and ESPN_STATS_TOTAL_KEY in player.stats[ESPN_STATS_KEY]
+                and stat in player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY]
             ):
-                value = player.stats[ESPN_STATS_KEY]["total"][stat]
+                value = player.stats[ESPN_STATS_KEY][ESPN_STATS_TOTAL_KEY][stat]
                 all_players_stat_map[player.name][stat] = int(value)
             else:
                 # previously we used previous year's average, but that seems to now be unavailable in the ESPN API

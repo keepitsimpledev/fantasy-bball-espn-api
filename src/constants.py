@@ -6,5 +6,6 @@ ESPN_PROJECTIONS_KEY = str(YEAR) + "_projected"
 ESPN_TOTAL_KEY = str(YEAR) + "_total"
 ESPN_LAST_7_KEY = str(YEAR) + "_last_7"
 ESPN_STATS_KEY = ESPN_PROJECTIONS_KEY
+ESPN_STATS_TOTAL_KEY = "total"
 
 KEY_IR = "On IR"

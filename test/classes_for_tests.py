@@ -1,12 +1,13 @@
 class TestLeague:
     def __init__(self):
         self.teams = []
+        
+        self.free_agent_players = []
+        self.free_agent_players.append(TestPlayer("freeAgent1"))
+        self.free_agent_players.append(TestPlayer("freeAgent2"))
 
     def free_agents(self, size: int):
-        free_agents = []
-        free_agents.append(TestPlayer("freeAgent1"))
-        free_agents.append(TestPlayer("freeAgent2"))
-        return free_agents
+        return self.free_agent_players
 
 
 class TestTeam:
@@ -19,6 +20,8 @@ class TestTeam:
 class TestPlayer:
     def __init__(self, player_name: str):
         self.name = player_name
+        self.stats = {}
+        self.lineupSlot = None
 
     def __eq__(self, other):
         return self.name == other.name
