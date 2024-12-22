@@ -140,8 +140,7 @@ class TestEspnClassValidators(unittest.TestCase):
             for team in league.teams:
                 for player in team.roster:
                     del player.name
-            fas = league.free_agents(size=1000)
-            for player in fas:
+            for player in league.free_agents(size=1000):
                 del player.name
 
             # act
