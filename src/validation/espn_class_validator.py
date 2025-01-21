@@ -1,4 +1,4 @@
-from espn_api.basketball import League, Team
+from espn_api.basketball import League
 import logging
 
 logger = logging.getLogger(__name__)
@@ -13,8 +13,9 @@ def validate_league(league: League):
     if league is None:
         raise EspnClassStructureError("ESPN League object unexpectedly empty")
     validate_league_structure(league)
-    validate_teams_structure(league.teams)
+    validate_teams_structure(league)
     validate_player_structure(league)
+    validate_schedules(league)
 
 
 def validate_league_structure(league: League):
@@ -29,8 +30,8 @@ def validate_league_structure(league: League):
         )
 
 
-def validate_teams_structure(teams: list[Team]):
-    for team in teams:
+def validate_teams_structure(league: League):
+    for team in league.teams:
         raise_if_attribute_is_missing("ESPN Team", team, "team_name")
         raise_if_attribute_is_empty("ESPN team_name", team.team_name)
         raise_if_attribute_is_missing("ESPN Team", team, "roster")
@@ -70,6 +71,26 @@ def validate_player_structure(league: League):
                 missing_name_count, total_player_count
             )
         )
+
+
+def validate_schedules(league: League):
+    for team in league.teams:
+        raise_if_attribute_is_missing("ESPN team", team, "schedule")
+        if not isinstance(team.schedule, list):
+            raise EspnClassStructureError(
+                "ESPN team's `schedule` attribute is, unexpectedly, not an array"
+            )
+        if len(team.schedule) < 1:
+            raise EspnClassStructureError(
+                "ESPN team's `schedule` attribute is, unexpectedly, empty"
+            )
+        for matchup in team.schedule:
+            raise_if_attribute_is_missing("ESPN Matchup", matchup, "home_team")
+            raise_if_attribute_is_missing("ESPN Matchup", matchup, "away_team")
+            raise_if_attribute_is_missing("ESPN Matchup.home_team", matchup.home_team, "team_name")
+            raise_if_attribute_is_missing("ESPN Matchup.away_team", matchup.away_team, "team_name")
+            raise_if_attribute_is_missing("ESPN Matchup.home_team", matchup.home_team, "team_abbrev")
+            raise_if_attribute_is_missing("ESPN Matchup.away_team", matchup.away_team, "team_abbrev")
 
 
 def raise_if_attribute_is_missing(object_name: str, object, attribute: str):
