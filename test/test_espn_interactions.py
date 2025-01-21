@@ -3,6 +3,7 @@ from src.espn_interactions.basketball import (
     build_teamname_to_roster_map,
     construct_players_stats_map,
     extract_all_players_from_league,
+    extract_schedules_from_espn_league,
     format_team_name,
 )
 from test.classes_for_tests import GetTestLeague, TestPlayer, TestTeam
@@ -143,3 +144,19 @@ class TestBasketball(unittest.TestCase):
                 # but we'll accept it for ease of assertion
                 self.assertEqual(expected_stat_value, stats_map[player_stats][stat])
                 expected_stat_value += 1
+
+
+    def test_extract_schedules_from_espn_league(self):
+        # arrange
+        league = GetTestLeague()
+
+        # act
+        schedules = extract_schedules_from_espn_league(league)
+
+        # assert
+        self.assertEqual(schedules["team0 (T0)"][0], "team1 (T1)")
+        self.assertEqual(schedules["team0 (T0)"][1], "team2 (T2)")
+        self.assertEqual(schedules["team1 (T1)"][0], "team0 (T0)")
+        self.assertEqual(schedules["team1 (T1)"][1], "team2 (T2)")
+        self.assertEqual(schedules["team2 (T2)"][0], "team0 (T0)")
+        self.assertEqual(schedules["team2 (T2)"][1], "team1 (T1)")

@@ -15,6 +15,7 @@ class TestTeam:
         self.team_name = None
         self.team_abbrev = None
         self.roster = []
+        self.schedule = []
 
 
 class TestPlayer:
@@ -30,6 +31,17 @@ class TestPlayer:
         return not self.__eq__(other)
 
 
+class TestMatchup:
+    def __init__(self, team_a: TestTeam, team_b: TestTeam):
+        self.home_team = TestTeam()
+        self.home_team.team_name = team_a.team_name
+        self.home_team.team_abbrev = team_a.team_abbrev
+
+        self.away_team = TestTeam()
+        self.away_team.team_name = team_b.team_name
+        self.away_team.team_abbrev = team_b.team_abbrev
+
+
 def GetTestLeague():
     league = TestLeague()
 
@@ -42,5 +54,11 @@ def GetTestLeague():
         for player_number in range(3):
             player = TestPlayer("player" + str(team_number) + str(player_number))
             team.roster.append(player)
+    
+    for left_team in league.teams:
+        for right_team in league.teams:
+            if left_team != right_team:
+                left_team.schedule.append(TestMatchup(left_team, right_team))
+
 
     return league
