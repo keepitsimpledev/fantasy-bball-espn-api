@@ -87,7 +87,7 @@ class TestEspnClassValidators(unittest.TestCase):
                 del team.team_name
 
             # act
-            validate_teams_structure(league.teams)
+            validate_teams_structure(league)
             self.fail("expected EspnClassStructureError was not raised")
 
         # assert
@@ -105,7 +105,7 @@ class TestEspnClassValidators(unittest.TestCase):
                 del team.roster
 
             # act
-            validate_teams_structure(league.teams)
+            validate_teams_structure(league)
 
             # assert
             self.assertEqual(
@@ -122,7 +122,7 @@ class TestEspnClassValidators(unittest.TestCase):
                 team.roster = []
 
             # act
-            validate_teams_structure(league.teams)
+            validate_teams_structure(league)
             self.fail("expected EspnClassStructureError was not raised")
 
         # assert
@@ -140,7 +140,7 @@ class TestEspnClassValidators(unittest.TestCase):
                 del team.team_abbrev
 
             # act
-            validate_teams_structure(league.teams)
+            validate_teams_structure(league)
 
             # assert
             message = "INFO:src.validation.espn_class_validator:ESPN Team {} is missing optional `team_abbrev` attribute"

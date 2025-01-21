@@ -13,7 +13,7 @@ def validate_league(league: League):
     if league is None:
         raise EspnClassStructureError("ESPN League object unexpectedly empty")
     validate_league_structure(league)
-    validate_teams_structure(league.teams)
+    validate_teams_structure(league)
     validate_player_structure(league)
     validate_schedules(league)
 
@@ -30,8 +30,8 @@ def validate_league_structure(league: League):
         )
 
 
-def validate_teams_structure(teams: list[Team]):
-    for team in teams:
+def validate_teams_structure(league: League):
+    for team in league.teams:
         raise_if_attribute_is_missing("ESPN Team", team, "team_name")
         raise_if_attribute_is_empty("ESPN team_name", team.team_name)
         raise_if_attribute_is_missing("ESPN Team", team, "roster")
