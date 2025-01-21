@@ -1,4 +1,4 @@
-from espn_api.basketball import League, Team
+from espn_api.basketball import League
 import logging
 
 logger = logging.getLogger(__name__)

@@ -145,7 +145,6 @@ class TestBasketball(unittest.TestCase):
                 self.assertEqual(expected_stat_value, stats_map[player_stats][stat])
                 expected_stat_value += 1
 
-
     def test_extract_schedules_from_espn_league(self):
         # arrange
         league = GetTestLeague()

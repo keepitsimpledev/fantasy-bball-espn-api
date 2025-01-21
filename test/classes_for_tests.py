@@ -54,11 +54,10 @@ def GetTestLeague():
         for player_number in range(3):
             player = TestPlayer("player" + str(team_number) + str(player_number))
             team.roster.append(player)
-    
+
     for left_team in league.teams:
         for right_team in league.teams:
             if left_team != right_team:
                 left_team.schedule.append(TestMatchup(left_team, right_team))
-
 
     return league
