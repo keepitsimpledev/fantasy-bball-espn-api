@@ -1,5 +1,6 @@
 from src.constants import KEY_ROSTER, KEY_SCHEDULE
 
+
 def combine_rosters_and_schedules(rosters, schedules):
     teams = {}
     for team_name in rosters:

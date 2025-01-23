@@ -22,7 +22,7 @@ class TestProcessing(unittest.TestCase):
 
         # act
         teams = combine_rosters_and_schedules(rosters, schedules)
-        
+
         # assert
         self.assertEqual(teams[team0][KEY_ROSTER], ["player00", "player01", "player02"])
         self.assertEqual(teams[team1][KEY_ROSTER], ["player10", "player11", "player12"])
