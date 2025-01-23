@@ -1,11 +1,8 @@
-from src.constants import ESPN_LEAGUE_ID, YEAR
-from src.espn_interactions.basketball import get_league, construct_players_stats_map
+from src.processing import construct_teams_and_stats_map
 
 
 if __name__ == "__main__":
-    league = get_league(ESPN_LEAGUE_ID, YEAR)
+    [teams, players_stats_map] = construct_teams_and_stats_map()
 
-    stat_map = construct_players_stats_map(league)
-
-    name = league.settings.name
-    print("league name: " + name)
+    for team in teams:
+        print("team name: " + team)
