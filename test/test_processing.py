@@ -4,7 +4,7 @@ import unittest
 
 
 class TestProcessing(unittest.TestCase):
-    def test_combine_rosters_and_schedules_into_teams_object(self):
+    def test_combine_rosters_and_schedules(self):
         # arrange
         team0 = "team0 (T0)"
         team1 = "team1 (T1)"

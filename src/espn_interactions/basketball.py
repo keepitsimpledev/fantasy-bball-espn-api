@@ -47,9 +47,9 @@ def remove_unallowed_characters(name: str):
 
 
 def construct_players_stats_map(league: League):
-    all_espn_player_objects = extract_all_players_from_league(league)
+    all_player_objects = extract_all_players_from_league(league)
     all_players_stat_map = {}
-    for player in all_espn_player_objects:
+    for player in all_player_objects:
         all_players_stat_map[player.name] = {}
         projections_not_found = []
         for stat in ALL_STATS:
@@ -74,7 +74,7 @@ def construct_players_stats_map(league: League):
     return all_players_stat_map
 
 
-def extract_schedules_from_espn_league(league: League):
+def extract_schedules_from_league(league: League):
     schedules = {}
     for team in league.teams:
         team_name = format_team_name(team)

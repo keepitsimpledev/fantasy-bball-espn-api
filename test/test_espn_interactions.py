@@ -3,7 +3,7 @@ from src.espn_interactions.basketball import (
     build_teamname_to_roster_map,
     construct_players_stats_map,
     extract_all_players_from_league,
-    extract_schedules_from_espn_league,
+    extract_schedules_from_league,
     format_team_name,
 )
 from test.classes_for_tests import GetTestLeague, TestPlayer, TestTeam
@@ -150,7 +150,7 @@ class TestBasketball(unittest.TestCase):
         league = GetTestLeague()
 
         # act
-        schedules = extract_schedules_from_espn_league(league)
+        schedules = extract_schedules_from_league(league)
 
         # assert
         self.assertEqual(schedules["team0 (T0)"][0], "team1 (T1)")
