@@ -1,10 +1,13 @@
-import unittest, os, shutil
+import os
+import shutil
 import src.caching as caching
 from src.caching import init_cache_folders
 
+import unittest
+
 
 class TestCaching(unittest.TestCase):
-        
+
     # perform filesystem tests within test directory:
     caching.CACHE_DIRECTORY = "test/" + caching.CACHE_DIRECTORY
     # don't use actual ESPN league ID during tests:
@@ -35,8 +38,8 @@ class TestCaching(unittest.TestCase):
         os.mkdir("test/cached/12345/")
         os.mkdir("test/cached/12345/teams/")
         os.mkdir("test/cached/12345/schedules/")
-        open("test/cached/12345/teams/teams.txt", 'w').close()
-        open("test/cached/12345/schedules/schedules.txt", 'w').close()
+        open("test/cached/12345/teams/teams.txt", "w").close()
+        open("test/cached/12345/schedules/schedules.txt", "w").close()
 
         # act
         init_cache_folders()
