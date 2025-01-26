@@ -5,6 +5,7 @@ import src.caching as caching
 from src.caching import (
     cache_players_stats_map,
     cache_rosters,
+    cache_schedules,
     init_cache_folders,
     load_players_stats_map,
     load_rosters,
@@ -220,3 +221,33 @@ class TestCaching(unittest.TestCase):
             contextManager.exception.message,
             "expected no less than 350 players but found 2",
         )
+
+    def test_cache_schedules(self):
+        # arrange
+        schedules = {}
+        schedules["teamA"] = ["teamB", "teamC"]
+        schedules["teamB"] = ["teamA", "teamC"]
+        schedules["teamC"] = ["teamA", "teamB"]
+        os.mkdir("test/cached/")
+        os.mkdir("test/cached/12345/")
+        os.mkdir("test/cached/12345/schedules/")
+
+        # act
+        cache_schedules(schedules)
+
+        # assert
+        with open(
+            "test/cached/12345/schedules/teamA.csv", "r", newline="\r\n"
+        ) as team_file:
+            self.assertEqual(team_file.readline(), "teamB\r\n")
+            self.assertEqual(team_file.readline(), "teamC\r\n")
+        with open(
+            "test/cached/12345/schedules/teamB.csv", "r", newline="\r\n"
+        ) as team_file:
+            self.assertEqual(team_file.readline(), "teamA\r\n")
+            self.assertEqual(team_file.readline(), "teamC\r\n")
+        with open(
+            "test/cached/12345/schedules/teamC.csv", "r", newline="\r\n"
+        ) as team_file:
+            self.assertEqual(team_file.readline(), "teamA\r\n")
+            self.assertEqual(team_file.readline(), "teamB\r\n")

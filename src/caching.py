@@ -36,8 +36,8 @@ def cache_rosters(rosters):
             "w",
             newline="\n",
         ) as team_file:
+            writer = csv.writer(team_file)
             for player in rosters[team_name]:
-                writer = csv.writer(team_file)
                 writer.writerow([player])
 
 
@@ -53,6 +53,17 @@ def cache_players_stats_map(players_stats_map):
         for player_name in players_stats_map:
             players_stats_map[player_name][CACHE_HEADER_PLAYER] = player_name
             writer.writerow(players_stats_map[player_name])
+
+
+def cache_schedules(schedules):
+    for team_name in schedules:
+        team_name_encoded = remove_unallowed_characters(team_name)
+        with open(
+            "{}/{}/{}.csv".format(get_path_cache(), CACHE_SCHEDULES_DIRECTORY, team_name_encoded), "w", newline="\n"
+        ) as schedule_file:
+            writer = csv.writer(schedule_file)
+            for opponent in schedules[team_name]:
+                writer.writerow([opponent])
 
 
 def load_rosters():
@@ -91,6 +102,10 @@ def load_players_stats_map():
     if len(all_players) < 200:
         raise CachingError("expected no less than 350 players but found {}".format(len(all_players)))
     return all_players
+
+
+def load_schedules():
+    return {}
 
 
 class CachingError(Exception):
