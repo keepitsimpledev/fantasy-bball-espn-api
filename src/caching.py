@@ -105,7 +105,17 @@ def load_players_stats_map():
 
 
 def load_schedules():
-    return {}
+    schedules = {}
+    for __, __, filenames in os.walk("./{}/{}/".format(get_path_cache(), CACHE_SCHEDULES_DIRECTORY)):
+        for file in filenames:
+            team_name = file[0:-4]
+            schedules[team_name] = []
+            with open(
+                "{}/{}/".format(get_path_cache(), CACHE_SCHEDULES_DIRECTORY) + file, "r", newline="\r\n"
+            ) as team_schedule:
+                for line in team_schedule:
+                    schedules[team_name] += [line.rstrip("\r\n")]
+    return schedules
 
 
 class CachingError(Exception):

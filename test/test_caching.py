@@ -9,6 +9,7 @@ from src.caching import (
     init_cache_folders,
     load_players_stats_map,
     load_rosters,
+    load_schedules,
     CachingError,
 )
 
@@ -251,3 +252,33 @@ class TestCaching(unittest.TestCase):
         ) as team_file:
             self.assertEqual(team_file.readline(), "teamA\r\n")
             self.assertEqual(team_file.readline(), "teamB\r\n")
+
+    def test_load_schedules(self):
+        # arrange
+        os.mkdir("test/cached/")
+        os.mkdir("test/cached/12345/")
+        os.mkdir("test/cached/12345/schedules/")
+        with open("test/cached/12345/schedules/teamA.csv", "w", newline="\n") as players_file:
+            writer = csv.writer(players_file)
+            writer.writerow(["teamB"])
+            writer.writerow(["teamC"])
+        with open("test/cached/12345/schedules/teamB.csv", "w", newline="\n") as players_file:
+            writer = csv.writer(players_file)
+            writer.writerow(["teamA"])
+            writer.writerow(["teamC"])
+        with open("test/cached/12345/schedules/teamC.csv", "w", newline="\n") as players_file:
+            writer = csv.writer(players_file)
+            writer.writerow(["teamA"])
+            writer.writerow(["teamB"])
+
+        # act
+        schedules = load_schedules()
+
+        # assert
+        self.assertEqual(len(schedules), 3)
+        self.assertEqual(schedules["teamA"][0], "teamB")
+        self.assertEqual(schedules["teamA"][1], "teamC")
+        self.assertEqual(schedules["teamB"][0], "teamA")
+        self.assertEqual(schedules["teamB"][1], "teamC")
+        self.assertEqual(schedules["teamC"][0], "teamA")
+        self.assertEqual(schedules["teamC"][1], "teamB")
