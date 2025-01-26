@@ -2,7 +2,7 @@ import csv
 import os  # TODO: consider mocking rather than using os
 import shutil
 import src.caching as caching
-from src.caching import cache_teams, init_cache_folders, load_teams
+from src.caching import cache_teams, init_cache_folders, load_teams, CachingError
 
 import unittest
 
@@ -103,3 +103,56 @@ class TestCaching(unittest.TestCase):
         self.assertEqual(teams["teamA"][1], "p2")
         self.assertEqual(teams["teamB"][0], "p3")
         self.assertEqual(teams["teamB"][1], "p4")
+
+
+    def test_load_teams_not_enough_teams(self):
+        # arrange
+        os.mkdir("test/cached/")
+        os.mkdir("test/cached/12345/")
+        os.mkdir("test/cached/12345/teams/")
+        with open(
+            "test/cached/12345/teams/teamA.csv", "w", newline="\n"
+        ) as team_file:
+            writer = csv.writer(team_file)
+            writer.writerow(["p1"])
+            writer.writerow(["p2"])
+
+        # act
+        with self.assertRaises(CachingError) as contextManager:
+            load_teams()
+            self.fail("expected CachingError was not raised")
+
+        # assert
+        self.assertEqual(
+            contextManager.exception.message,
+            "expected multiple team files but found 1",
+        )
+
+
+    def test_load_teams_not_enough_players(self):
+        # arrange
+        os.mkdir("test/cached/")
+        os.mkdir("test/cached/12345/")
+        os.mkdir("test/cached/12345/teams/")
+        with open(
+            "test/cached/12345/teams/teamA.csv", "w", newline="\n"
+        ) as team_file:
+            writer = csv.writer(team_file)
+            writer.writerow(["p1"])
+            writer.writerow(["p2"])
+        with open(
+            "test/cached/12345/teams/teamB.csv", "w", newline="\n"
+        ) as team_file:
+            writer = csv.writer(team_file)
+            writer.writerow(["p3"])
+
+        # act
+        with self.assertRaises(CachingError) as contextManager:
+            load_teams()
+            self.fail("expected CachingError was not raised")
+
+        # assert
+        self.assertEqual(
+            contextManager.exception.message,
+            "expected multiple players for team teamB but found 1",
+        )

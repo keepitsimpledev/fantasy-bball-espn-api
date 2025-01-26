@@ -41,7 +41,10 @@ def cache_teams(teams):
 
 def load_teams():
     teams = {}
+    # TODO: check for existence of at least 2 files and at least 2 players per file
     for __, __, filenames in os.walk("./{}/{}/".format(get_path_cache(), CACHE_TEAMS_DIRECTORY)):
+        if len(filenames) < 2:
+            raise CachingError("expected multiple team files but found {}".format(len(filenames)))
         for file in filenames:
             team_name = file[0:-4] # ignore .txt file extension
             teams[team_name] = []
@@ -50,4 +53,12 @@ def load_teams():
             ) as team_file:
                 for line in team_file:
                     teams[team_name] += [line.rstrip("\r\n")]
+            if len(teams[team_name]) < 2:
+                raise CachingError("expected multiple players for team {} but found {}".format(team_name, len(teams[team_name])))
     return teams
+
+
+class CachingError(Exception):
+    def __init__(self, message):
+        super(CachingError, self).__init__(message)
+        self.message = message
