@@ -50,7 +50,7 @@ def load_teams():
         if len(filenames) < 2:
             raise CachingError("expected multiple team files but found {}".format(len(filenames)))
         for file in filenames:
-            team_name = file[0:-4]  # ignore .txt file extension
+            team_name = file[0:-4]  # ignore .csv file extension
             teams[team_name] = []
             with open(
                 "{}/{}/{}".format(get_path_cache(), CACHE_TEAMS_DIRECTORY, file),
