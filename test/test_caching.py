@@ -258,15 +258,21 @@ class TestCaching(unittest.TestCase):
         os.mkdir("test/cached/")
         os.mkdir("test/cached/12345/")
         os.mkdir("test/cached/12345/schedules/")
-        with open("test/cached/12345/schedules/teamA.csv", "w", newline="\n") as players_file:
+        with open(
+            "test/cached/12345/schedules/teamA.csv", "w", newline="\n"
+        ) as players_file:
             writer = csv.writer(players_file)
             writer.writerow(["teamB"])
             writer.writerow(["teamC"])
-        with open("test/cached/12345/schedules/teamB.csv", "w", newline="\n") as players_file:
+        with open(
+            "test/cached/12345/schedules/teamB.csv", "w", newline="\n"
+        ) as players_file:
             writer = csv.writer(players_file)
             writer.writerow(["teamA"])
             writer.writerow(["teamC"])
-        with open("test/cached/12345/schedules/teamC.csv", "w", newline="\n") as players_file:
+        with open(
+            "test/cached/12345/schedules/teamC.csv", "w", newline="\n"
+        ) as players_file:
             writer = csv.writer(players_file)
             writer.writerow(["teamA"])
             writer.writerow(["teamB"])

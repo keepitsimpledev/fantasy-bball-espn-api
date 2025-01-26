@@ -1,11 +1,11 @@
 from src.caching import (
     cache_players_stats_map,
-    cache_schedules,
+    cache_rosters,
     cache_schedules,
     init_cache_folders,
     load_players_stats_map,
     load_rosters,
-    load_schedules
+    load_schedules,
 )
 from src.constants import (
     ESPN_LEAGUE_ID,
@@ -40,7 +40,7 @@ def construct_teams_and_stats_map():
         init_cache_folders()
 
         rosters = build_teamname_to_roster_map(league)
-        cache_schedules(rosters)
+        cache_rosters(rosters)
 
         schedules = extract_schedules_from_league(league)
         cache_schedules(schedules)

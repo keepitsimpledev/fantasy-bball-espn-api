@@ -87,10 +87,18 @@ def validate_schedules(league: League):
         for matchup in team.schedule:
             raise_if_attribute_is_missing("ESPN Matchup", matchup, "home_team")
             raise_if_attribute_is_missing("ESPN Matchup", matchup, "away_team")
-            raise_if_attribute_is_missing("ESPN Matchup.home_team", matchup.home_team, "team_name")
-            raise_if_attribute_is_missing("ESPN Matchup.away_team", matchup.away_team, "team_name")
-            raise_if_attribute_is_missing("ESPN Matchup.home_team", matchup.home_team, "team_abbrev")
-            raise_if_attribute_is_missing("ESPN Matchup.away_team", matchup.away_team, "team_abbrev")
+            raise_if_attribute_is_missing(
+                "ESPN Matchup.home_team", matchup.home_team, "team_name"
+            )
+            raise_if_attribute_is_missing(
+                "ESPN Matchup.away_team", matchup.away_team, "team_name"
+            )
+            raise_if_attribute_is_missing(
+                "ESPN Matchup.home_team", matchup.home_team, "team_abbrev"
+            )
+            raise_if_attribute_is_missing(
+                "ESPN Matchup.away_team", matchup.away_team, "team_abbrev"
+            )
 
 
 def raise_if_attribute_is_missing(object_name: str, object, attribute: str):
