@@ -42,5 +42,5 @@ def construct_teams_and_stats_map():
         cache_league_objects(rosters, schedules, players_stats_map)
 
     teams = combine_rosters_and_schedules(rosters, schedules)
-    
+
     return [teams, players_stats_map]
