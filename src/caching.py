@@ -32,7 +32,9 @@ def cache_teams(teams):
     for name in teams:
         safe_name = remove_unallowed_characters(name)
         with open(
-            "{}/{}/{}.csv".format(get_path_cache(), CACHE_TEAMS_DIRECTORY, safe_name), "w", newline="\n"
+            "{}/{}/{}.csv".format(get_path_cache(), CACHE_TEAMS_DIRECTORY, safe_name),
+            "w",
+            newline="\n",
         ) as team_file:
             for player in teams[name]:
                 writer = csv.writer(team_file)
@@ -42,14 +44,18 @@ def cache_teams(teams):
 def load_teams():
     teams = {}
     # TODO: check for existence of at least 2 files and at least 2 players per file
-    for __, __, filenames in os.walk("./{}/{}/".format(get_path_cache(), CACHE_TEAMS_DIRECTORY)):
+    for __, __, filenames in os.walk(
+        "./{}/{}/".format(get_path_cache(), CACHE_TEAMS_DIRECTORY)
+    ):
         if len(filenames) < 2:
             raise CachingError("expected multiple team files but found {}".format(len(filenames)))
         for file in filenames:
-            team_name = file[0:-4] # ignore .txt file extension
+            team_name = file[0:-4]  # ignore .txt file extension
             teams[team_name] = []
             with open(
-                "{}/{}/{}".format(get_path_cache(), CACHE_TEAMS_DIRECTORY, file), "r", newline="\r\n"
+                "{}/{}/{}".format(get_path_cache(), CACHE_TEAMS_DIRECTORY, file),
+                "r",
+                newline="\r\n",
             ) as team_file:
                 for line in team_file:
                     teams[team_name] += [line.rstrip("\r\n")]
