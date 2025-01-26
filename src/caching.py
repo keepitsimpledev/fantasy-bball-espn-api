@@ -78,7 +78,17 @@ def load_teams():
 
 
 def load_players_stats_map():
-    return {}
+    all_players = {}
+    with open(
+        "{}/players.csv".format(get_path_cache()), "r", newline="\n"
+    ) as players_file:
+        reader = csv.DictReader(players_file)
+        for row in reader:
+            all_players[row[CACHE_HEADER_PLAYER]] = {}
+            for stat in ALL_STATS:
+                all_players[row[CACHE_HEADER_PLAYER]][stat] = int(float(row[stat]))
+            all_players[row[CACHE_HEADER_PLAYER]][KEY_IR] = row[KEY_IR]
+    return all_players
 
 
 class CachingError(Exception):
