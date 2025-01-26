@@ -1,7 +1,8 @@
-import os
+import csv
+import os  # TODO: consider mocking rather than using os
 import shutil
 import src.caching as caching
-from src.caching import init_cache_folders
+from src.caching import cache_teams, init_cache_folders, load_teams
 
 import unittest
 
@@ -48,3 +49,57 @@ class TestCaching(unittest.TestCase):
         self.assertTrue(os.path.exists("test/cached/12345/"))
         self.assertTrue(os.path.exists("test/cached/12345/teams/"))
         self.assertTrue(os.path.exists("test/cached/12345/schedules/"))
+
+
+    def test_cache_teams(self):
+        # arrange
+        teams = {}
+        teams["teamA"] = ["p1", "p2"]
+        teams["teamB"] = ["p3", "p4"]
+        os.mkdir("test/cached/")
+        os.mkdir("test/cached/12345/")
+        os.mkdir("test/cached/12345/teams/")
+
+        # act
+        cache_teams(teams)
+
+        # assert
+        with open(
+            "test/cached/12345/teams/teamA.csv", "r", newline="\r\n"
+        ) as team_file:
+            self.assertEqual(team_file.readline(), "p1\r\n")
+            self.assertEqual(team_file.readline(), "p2\r\n")
+        with open(
+            "test/cached/12345/teams/teamB.csv", "r", newline="\r\n"
+        ) as team_file:
+            self.assertEqual(team_file.readline(), "p3\r\n")
+            self.assertEqual(team_file.readline(), "p4\r\n")
+
+
+    def test_load_teams(self):
+        # arrange
+        os.mkdir("test/cached/")
+        os.mkdir("test/cached/12345/")
+        os.mkdir("test/cached/12345/teams/")
+        with open(
+            "test/cached/12345/teams/teamA.csv", "w", newline="\n"
+        ) as team_file:
+            writer = csv.writer(team_file)
+            writer.writerow(["p1"])
+            writer.writerow(["p2"])
+        with open(
+            "test/cached/12345/teams/teamB.csv", "w", newline="\n"
+        ) as team_file:
+            writer = csv.writer(team_file)
+            writer.writerow(["p3"])
+            writer.writerow(["p4"])
+
+        # act
+        teams = load_teams()
+
+        # assert
+        self.assertEqual(len(teams), 2)
+        self.assertEqual(teams["teamA"][0], "p1")
+        self.assertEqual(teams["teamA"][1], "p2")
+        self.assertEqual(teams["teamB"][0], "p3")
+        self.assertEqual(teams["teamB"][1], "p4")
