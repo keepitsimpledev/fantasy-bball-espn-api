@@ -2,7 +2,14 @@ import csv
 import os  # TODO: consider mocking rather than using os
 import shutil
 import src.caching as caching
-from src.caching import cache_players_stats_map, cache_teams, init_cache_folders, load_players_stats_map, load_teams, CachingError
+from src.caching import (
+    cache_players_stats_map,
+    cache_teams,
+    init_cache_folders,
+    load_players_stats_map,
+    load_teams,
+    CachingError,
+)
 
 import unittest
 
@@ -162,9 +169,7 @@ class TestCaching(unittest.TestCase):
         cache_players_stats_map(players_stats_map)
 
         # assert
-        with open(
-            "test/cached/12345/players.csv", "r", newline="\r\n"
-        ) as team_file:
+        with open("test/cached/12345/players.csv", "r", newline="\r\n") as team_file:
             self.assertEqual(team_file.readline(), "Player,STL,BLK,On IR\r\n")
             self.assertEqual(team_file.readline(), "TJ McConnell,95,14,False\r\n")
             self.assertEqual(team_file.readline(), "Walker Kessler,28,192,True\r\n")
@@ -179,7 +184,7 @@ class TestCaching(unittest.TestCase):
             writer.writerow(["Player", "STL", "BLK", "On IR"])
             writer.writerow(["TJ McConnell", 95, 14, False])
             writer.writerow(["Walker Kessler", 28, 192, True])
-            for player_num in range (200): # enough players to not trigger the validation count
+            for player_num in range(200):  # enough players to not trigger the validation count
                 writer.writerow(["player{}".format(player_num), 0, 0, False])
 
         # act

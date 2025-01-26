@@ -1,4 +1,9 @@
-from src.caching import cache_teams, init_cache_folders, load_players_stats_map, load_teams
+from src.caching import (
+    cache_teams,
+    init_cache_folders,
+    load_players_stats_map,
+    load_teams,
+)
 from src.constants import (
     ESPN_LEAGUE_ID,
     YEAR,
@@ -29,7 +34,7 @@ def construct_teams_and_stats_map():
     schedule = extract_schedules_from_league(league)
     if LOAD_FROM_CACHE:
         teams = load_teams()
-        
+
         players_stats_map = load_players_stats_map()
     else:
         init_cache_folders()
