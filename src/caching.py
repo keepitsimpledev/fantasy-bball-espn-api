@@ -14,6 +14,13 @@ def get_path_cache():
     return "{}/{}/".format(CACHE_DIRECTORY, ESPN_LEAGUE_ID)
 
 
+def cache_league_objects(rosters, schedules, players_stats_map):
+    init_cache_folders()
+    cache_rosters(rosters)
+    cache_schedules(schedules)
+    cache_players_stats_map(players_stats_map)
+
+
 def init_cache_folders():
     if not os.path.exists(CACHE_DIRECTORY):
         os.makedirs(CACHE_DIRECTORY)  # TODO: upgrade python version so i can use ", exist_ok=True" https://stackoverflow.com/questions/6004073/how-can-i-create-directories-recursively
