@@ -20,6 +20,7 @@ jobs:
         run: |
           pip install pipenv
           pipenv install
+          pipenv check
       - name: test with coverage
         run: |
           pipenv run coverage run -m unittest

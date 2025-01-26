@@ -44,10 +44,8 @@ class TestCaching(unittest.TestCase):
 
     def test_init_cache_folders_from_existing(self):
         # arrange
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
-        os.mkdir("test/cached/12345/teams/")
-        os.mkdir("test/cached/12345/schedules/")
+        os.makedirs("test/cached/12345/teams/", exist_ok=True)
+        os.makedirs("test/cached/12345/schedules/", exist_ok=True)
         open("test/cached/12345/teams/teams.txt", "w").close()
         open("test/cached/12345/schedules/schedules.txt", "w").close()
 
@@ -63,9 +61,7 @@ class TestCaching(unittest.TestCase):
 
     def test_init_cache_folders_dont_clear_other_league(self):
         # arrange
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/67890/")
-        os.mkdir("test/cached/67890/teams/")
+        os.makedirs("test/cached/67890/teams/", exist_ok=True)
         open("test/cached/67890/teams/teams.txt", "w").close()
 
         # act
@@ -79,9 +75,7 @@ class TestCaching(unittest.TestCase):
         rosters = {}
         rosters["teamA"] = ["p1", "p2"]
         rosters["teamB"] = ["p3", "p4"]
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
-        os.mkdir("test/cached/12345/teams/")
+        os.makedirs("test/cached/12345/teams/", exist_ok=True)
 
         # act
         cache_rosters(rosters)
@@ -100,9 +94,7 @@ class TestCaching(unittest.TestCase):
 
     def test_load_rosters(self):
         # arrange
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
-        os.mkdir("test/cached/12345/teams/")
+        os.makedirs("test/cached/12345/teams/", exist_ok=True)
         with open("test/cached/12345/teams/teamA.csv", "w", newline="\n") as team_file:
             writer = csv.writer(team_file)
             writer.writerow(["p1"])
@@ -124,9 +116,7 @@ class TestCaching(unittest.TestCase):
 
     def test_load_rosters_not_enough_teams(self):
         # arrange
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
-        os.mkdir("test/cached/12345/teams/")
+        os.makedirs("test/cached/12345/teams/", exist_ok=True)
         with open("test/cached/12345/teams/teamA.csv", "w", newline="\n") as team_file:
             writer = csv.writer(team_file)
             writer.writerow(["p1"])
@@ -145,9 +135,7 @@ class TestCaching(unittest.TestCase):
 
     def test_load_rosters_not_enough_players(self):
         # arrange
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
-        os.mkdir("test/cached/12345/teams/")
+        os.makedirs("test/cached/12345/teams/", exist_ok=True)
         with open("test/cached/12345/teams/teamA.csv", "w", newline="\n") as team_file:
             writer = csv.writer(team_file)
             writer.writerow(["p1"])
@@ -179,8 +167,7 @@ class TestCaching(unittest.TestCase):
         players_stats_map["Walker Kessler"]["STL"] = 28
         players_stats_map["Walker Kessler"]["BLK"] = 192
         players_stats_map["Walker Kessler"]["On IR"] = True
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
+        os.makedirs("test/cached/12345/", exist_ok=True)
 
         # act
         cache_players_stats_map(players_stats_map)
@@ -194,8 +181,7 @@ class TestCaching(unittest.TestCase):
     def test_load_players_stats_map(self):
         # arrange
         caching.ALL_STATS = ["STL", "BLK"]  # to simplify test a bit
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
+        os.makedirs("test/cached/12345/", exist_ok=True)
         with open("test/cached/12345/players.csv", "w", newline="\n") as players_file:
             writer = csv.writer(players_file)
             writer.writerow(["Player", "STL", "BLK", "On IR"])
@@ -219,8 +205,7 @@ class TestCaching(unittest.TestCase):
     def test_load_players_stats_map_not_enough_players(self):
         # arrange
         caching.ALL_STATS = ["STL", "BLK"]  # to simplify test a bit
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
+        os.makedirs("test/cached/12345/", exist_ok=True)
         with open("test/cached/12345/players.csv", "w", newline="\n") as players_file:
             writer = csv.writer(players_file)
             writer.writerow(["Player", "STL", "BLK", "On IR"])
@@ -244,9 +229,7 @@ class TestCaching(unittest.TestCase):
         schedules["teamA"] = ["teamB", "teamC"]
         schedules["teamB"] = ["teamA", "teamC"]
         schedules["teamC"] = ["teamA", "teamB"]
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
-        os.mkdir("test/cached/12345/schedules/")
+        os.makedirs("test/cached/12345/schedules/", exist_ok=True)
 
         # act
         cache_schedules(schedules)
@@ -270,9 +253,7 @@ class TestCaching(unittest.TestCase):
 
     def test_load_schedules(self):
         # arrange
-        os.mkdir("test/cached/")
-        os.mkdir("test/cached/12345/")
-        os.mkdir("test/cached/12345/schedules/")
+        os.makedirs("test/cached/12345/schedules/", exist_ok=True)
         with open(
             "test/cached/12345/schedules/teamA.csv", "w", newline="\n"
         ) as players_file:

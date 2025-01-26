@@ -22,17 +22,10 @@ def cache_league_objects(rosters, schedules, players_stats_map):
 
 
 def init_cache_folders():
-    if not os.path.exists(CACHE_DIRECTORY):
-        os.makedirs(CACHE_DIRECTORY)  # TODO: upgrade python version so i can use ", exist_ok=True" https://stackoverflow.com/questions/6004073/how-can-i-create-directories-recursively
-    if not os.path.exists(get_path_cache()):
-        os.makedirs(get_path_cache())
-    else:
-        if os.path.exists(get_path_cache()):
-            shutil.rmtree(get_path_cache())
-    if not os.path.exists(get_path_cache() + CACHE_TEAMS_DIRECTORY):
-        os.makedirs(get_path_cache() + CACHE_TEAMS_DIRECTORY)
-    if not os.path.exists(get_path_cache() + CACHE_SCHEDULES_DIRECTORY):
-        os.makedirs(get_path_cache() + CACHE_SCHEDULES_DIRECTORY)
+    if os.path.exists(get_path_cache()):
+        shutil.rmtree(get_path_cache())
+    os.makedirs(get_path_cache() + CACHE_TEAMS_DIRECTORY, exist_ok=True)
+    os.makedirs(get_path_cache() + CACHE_SCHEDULES_DIRECTORY, exist_ok=True)
 
 
 def cache_rosters(rosters):
