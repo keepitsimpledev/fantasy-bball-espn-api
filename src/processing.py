@@ -1,4 +1,5 @@
 from src.caching import (
+    cache_players_stats_map,
     cache_rosters,
     init_cache_folders,
     load_players_stats_map,
@@ -42,6 +43,7 @@ def construct_teams_and_stats_map():
         cache_rosters(rosters)
 
         players_stats_map = construct_players_stats_map(league)
+        cache_players_stats_map(players_stats_map)
 
     teams = combine_rosters_and_schedules(rosters, schedule)
 
