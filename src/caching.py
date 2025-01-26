@@ -88,6 +88,8 @@ def load_players_stats_map():
             for stat in ALL_STATS:
                 all_players[row[CACHE_HEADER_PLAYER]][stat] = int(float(row[stat]))
             all_players[row[CACHE_HEADER_PLAYER]][KEY_IR] = row[KEY_IR]
+    if len(all_players) < 200:
+        raise CachingError("expected no less than 350 players but found {}".format(len(all_players)))
     return all_players
 
 

@@ -179,15 +179,39 @@ class TestCaching(unittest.TestCase):
             writer.writerow(["Player", "STL", "BLK", "On IR"])
             writer.writerow(["TJ McConnell", 95, 14, False])
             writer.writerow(["Walker Kessler", 28, 192, True])
+            for player_num in range (200): # enough players to not trigger the validation count
+                writer.writerow(["player{}".format(player_num), 0, 0, False])
 
         # act
         teams = load_players_stats_map()
 
         # assert
-        self.assertEqual(len(teams), 2)
+        self.assertEqual(len(teams), 202)
         self.assertEqual(teams["TJ McConnell"]["STL"], 95)
         self.assertEqual(teams["TJ McConnell"]["BLK"], 14)
         self.assertEqual(teams["TJ McConnell"]["On IR"], "False")
         self.assertEqual(teams["Walker Kessler"]["STL"], 28)
         self.assertEqual(teams["Walker Kessler"]["BLK"], 192)
         self.assertEqual(teams["Walker Kessler"]["On IR"], "True")
+
+    def test_load_players_stats_map_not_enough_players(self):
+        # arrange
+        caching.ALL_STATS = ["STL", "BLK"]  # to simplify test a bit
+        os.mkdir("test/cached/")
+        os.mkdir("test/cached/12345/")
+        with open("test/cached/12345/players.csv", "w", newline="\n") as players_file:
+            writer = csv.writer(players_file)
+            writer.writerow(["Player", "STL", "BLK", "On IR"])
+            writer.writerow(["TJ McConnell", 95, 14, False])
+            writer.writerow(["Walker Kessler", 28, 192, True])
+
+        # act
+        with self.assertRaises(CachingError) as contextManager:
+            load_players_stats_map()()
+            self.fail("expected CachingError was not raised")
+
+        # assert
+        self.assertEqual(
+            contextManager.exception.message,
+            "expected no less than 350 players but found 2",
+        )
