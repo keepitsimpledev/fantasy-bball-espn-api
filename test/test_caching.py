@@ -2,7 +2,7 @@ import csv
 import os  # TODO: consider mocking rather than using os
 import shutil
 import src.caching as caching
-from src.caching import cache_teams, init_cache_folders, load_teams, CachingError
+from src.caching import cache_players_stats_map, cache_teams, init_cache_folders, load_teams, CachingError
 
 import unittest
 
@@ -142,3 +142,29 @@ class TestCaching(unittest.TestCase):
             contextManager.exception.message,
             "expected multiple players for team teamB but found 1",
         )
+
+    def test_cache_players_stats_map(self):
+        # arrange
+        caching.ALL_STATS = ["STL", "BLK"]  # to simplify test a bit
+        players_stats_map = {}
+        players_stats_map["TJ McConnell"] = {}
+        players_stats_map["TJ McConnell"]["STL"] = 95
+        players_stats_map["TJ McConnell"]["BLK"] = 14
+        players_stats_map["TJ McConnell"]["On IR"] = False
+        players_stats_map["Walker Kessler"] = {}
+        players_stats_map["Walker Kessler"]["STL"] = 28
+        players_stats_map["Walker Kessler"]["BLK"] = 192
+        players_stats_map["Walker Kessler"]["On IR"] = True
+        os.mkdir("test/cached/")
+        os.mkdir("test/cached/12345/")
+
+        # act
+        cache_players_stats_map(players_stats_map)
+
+        # assert
+        with open(
+            "test/cached/12345/players.csv", "r", newline="\r\n"
+        ) as team_file:
+            self.assertEqual(team_file.readline(), "Player,STL,BLK,On IR\r\n")
+            self.assertEqual(team_file.readline(), "TJ McConnell,95,14,False\r\n")
+            self.assertEqual(team_file.readline(), "Walker Kessler,28,192,True\r\n")

@@ -1,7 +1,7 @@
 import csv
 import os
 import shutil
-from src.constants import ESPN_LEAGUE_ID
+from src.constants import ALL_STATS, CACHE_HEADER_PLAYER, ESPN_LEAGUE_ID, KEY_IR
 from src.espn_interactions.basketball import remove_unallowed_characters
 
 
@@ -41,6 +41,20 @@ def cache_teams(teams):
                 writer.writerow([player])
 
 
+def cache_players_stats_map(players_stats_map):
+    with open(
+        "{}/players.csv".format(get_path_cache()), "w", newline="\n"
+    ) as players_file:
+        writer = csv.DictWriter(
+            players_file,
+            fieldnames=[CACHE_HEADER_PLAYER] + ALL_STATS + [KEY_IR],
+        )
+        writer.writeheader()
+        for player_name in players_stats_map:
+            players_stats_map[player_name][CACHE_HEADER_PLAYER] = player_name
+            writer.writerow(players_stats_map[player_name])
+
+
 def load_teams():
     teams = {}
     for __, __, filenames in os.walk(
@@ -61,6 +75,10 @@ def load_teams():
             if len(teams[team_name]) < 2:
                 raise CachingError("expected multiple players for team {} but found {}".format(team_name, len(teams[team_name])))
     return teams
+
+
+def load_players_stats_map():
+    return {}
 
 
 class CachingError(Exception):
