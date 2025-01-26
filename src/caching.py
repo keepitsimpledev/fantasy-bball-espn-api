@@ -43,7 +43,6 @@ def cache_teams(teams):
 
 def load_teams():
     teams = {}
-    # TODO: check for existence of at least 2 files and at least 2 players per file
     for __, __, filenames in os.walk(
         "./{}/{}/".format(get_path_cache(), CACHE_TEAMS_DIRECTORY)
     ):
