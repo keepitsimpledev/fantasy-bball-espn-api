@@ -58,6 +58,21 @@ class TestCaching(unittest.TestCase):
         self.assertTrue(os.path.exists("test/cached/12345/"))
         self.assertTrue(os.path.exists("test/cached/12345/teams/"))
         self.assertTrue(os.path.exists("test/cached/12345/schedules/"))
+        self.assertFalse(os.path.exists("test/cached/12345/teams/teams.txt"))
+        self.assertFalse(os.path.exists("test/cached/12345/schedules/schedules.txt"))
+
+    def test_init_cache_folders_dont_clear_other_league(self):
+        # arrange
+        os.mkdir("test/cached/")
+        os.mkdir("test/cached/67890/")
+        os.mkdir("test/cached/67890/teams/")
+        open("test/cached/67890/teams/teams.txt", "w").close()
+
+        # act
+        init_cache_folders()
+
+        # assert
+        self.assertTrue(os.path.exists("test/cached/67890/teams/teams.txt"))
 
     def test_cache_rosters(self):
         # arrange
