@@ -28,15 +28,15 @@ def init_cache_folders():
         os.makedirs(get_path_cache() + CACHE_SCHEDULES_DIRECTORY)
 
 
-def cache_teams(teams):
-    for name in teams:
-        safe_name = remove_unallowed_characters(name)
+def cache_rosters(rosters):
+    for team_name in rosters:
+        team_name_encoded = remove_unallowed_characters(team_name)
         with open(
-            "{}/{}/{}.csv".format(get_path_cache(), CACHE_TEAMS_DIRECTORY, safe_name),
+            "{}/{}/{}.csv".format(get_path_cache(), CACHE_TEAMS_DIRECTORY, team_name_encoded),
             "w",
             newline="\n",
         ) as team_file:
-            for player in teams[name]:
+            for player in rosters[team_name]:
                 writer = csv.writer(team_file)
                 writer.writerow([player])
 
@@ -55,8 +55,8 @@ def cache_players_stats_map(players_stats_map):
             writer.writerow(players_stats_map[player_name])
 
 
-def load_teams():
-    teams = {}
+def load_rosters():
+    rosters = {}
     for __, __, filenames in os.walk(
         "./{}/{}/".format(get_path_cache(), CACHE_TEAMS_DIRECTORY)
     ):
@@ -64,17 +64,17 @@ def load_teams():
             raise CachingError("expected multiple team files but found {}".format(len(filenames)))
         for file in filenames:
             team_name = file[0:-4]  # ignore .csv file extension
-            teams[team_name] = []
+            rosters[team_name] = []
             with open(
                 "{}/{}/{}".format(get_path_cache(), CACHE_TEAMS_DIRECTORY, file),
                 "r",
                 newline="\r\n",
             ) as team_file:
                 for line in team_file:
-                    teams[team_name] += [line.rstrip("\r\n")]
-            if len(teams[team_name]) < 2:
-                raise CachingError("expected multiple players for team {} but found {}".format(team_name, len(teams[team_name])))
-    return teams
+                    rosters[team_name] += [line.rstrip("\r\n")]
+            if len(rosters[team_name]) < 2:
+                raise CachingError("expected multiple players for team {} but found {}".format(team_name, len(rosters[team_name])))
+    return rosters
 
 
 def load_players_stats_map():

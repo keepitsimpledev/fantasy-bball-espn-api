@@ -1,8 +1,8 @@
 from src.caching import (
-    cache_teams,
+    cache_rosters,
     init_cache_folders,
     load_players_stats_map,
-    load_teams,
+    load_rosters,
 )
 from src.constants import (
     ESPN_LEAGUE_ID,
@@ -30,18 +30,19 @@ def combine_rosters_and_schedules(rosters, schedules):
 def construct_teams_and_stats_map():
     league = get_league(ESPN_LEAGUE_ID, YEAR)
 
-    rosters = build_teamname_to_roster_map(league)
     schedule = extract_schedules_from_league(league)
     if LOAD_FROM_CACHE:
-        teams = load_teams()
+        rosters = load_rosters()
 
         players_stats_map = load_players_stats_map()
     else:
         init_cache_folders()
 
-        teams = combine_rosters_and_schedules(rosters, schedule)
-        cache_teams(teams)
+        rosters = build_teamname_to_roster_map(league)
+        cache_rosters(rosters)
 
         players_stats_map = construct_players_stats_map(league)
+
+    teams = combine_rosters_and_schedules(rosters, schedule)
 
     return [teams, players_stats_map]

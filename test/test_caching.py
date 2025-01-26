@@ -4,10 +4,10 @@ import shutil
 import src.caching as caching
 from src.caching import (
     cache_players_stats_map,
-    cache_teams,
+    cache_rosters,
     init_cache_folders,
     load_players_stats_map,
-    load_teams,
+    load_rosters,
     CachingError,
 )
 
@@ -57,17 +57,17 @@ class TestCaching(unittest.TestCase):
         self.assertTrue(os.path.exists("test/cached/12345/teams/"))
         self.assertTrue(os.path.exists("test/cached/12345/schedules/"))
 
-    def test_cache_teams(self):
+    def test_cache_rosters(self):
         # arrange
-        teams = {}
-        teams["teamA"] = ["p1", "p2"]
-        teams["teamB"] = ["p3", "p4"]
+        rosters = {}
+        rosters["teamA"] = ["p1", "p2"]
+        rosters["teamB"] = ["p3", "p4"]
         os.mkdir("test/cached/")
         os.mkdir("test/cached/12345/")
         os.mkdir("test/cached/12345/teams/")
 
         # act
-        cache_teams(teams)
+        cache_rosters(rosters)
 
         # assert
         with open(
@@ -81,7 +81,7 @@ class TestCaching(unittest.TestCase):
             self.assertEqual(team_file.readline(), "p3\r\n")
             self.assertEqual(team_file.readline(), "p4\r\n")
 
-    def test_load_teams(self):
+    def test_load_rosters(self):
         # arrange
         os.mkdir("test/cached/")
         os.mkdir("test/cached/12345/")
@@ -96,16 +96,16 @@ class TestCaching(unittest.TestCase):
             writer.writerow(["p4"])
 
         # act
-        teams = load_teams()
+        rosters = load_rosters()
 
         # assert
-        self.assertEqual(len(teams), 2)
-        self.assertEqual(teams["teamA"][0], "p1")
-        self.assertEqual(teams["teamA"][1], "p2")
-        self.assertEqual(teams["teamB"][0], "p3")
-        self.assertEqual(teams["teamB"][1], "p4")
+        self.assertEqual(len(rosters), 2)
+        self.assertEqual(rosters["teamA"][0], "p1")
+        self.assertEqual(rosters["teamA"][1], "p2")
+        self.assertEqual(rosters["teamB"][0], "p3")
+        self.assertEqual(rosters["teamB"][1], "p4")
 
-    def test_load_teams_not_enough_teams(self):
+    def test_load_rosters_not_enough_teams(self):
         # arrange
         os.mkdir("test/cached/")
         os.mkdir("test/cached/12345/")
@@ -117,7 +117,7 @@ class TestCaching(unittest.TestCase):
 
         # act
         with self.assertRaises(CachingError) as contextManager:
-            load_teams()
+            load_rosters()
             self.fail("expected CachingError was not raised")
 
         # assert
@@ -126,7 +126,7 @@ class TestCaching(unittest.TestCase):
             "expected multiple team files but found 1",
         )
 
-    def test_load_teams_not_enough_players(self):
+    def test_load_rosters_not_enough_players(self):
         # arrange
         os.mkdir("test/cached/")
         os.mkdir("test/cached/12345/")
@@ -141,7 +141,7 @@ class TestCaching(unittest.TestCase):
 
         # act
         with self.assertRaises(CachingError) as contextManager:
-            load_teams()
+            load_rosters()
             self.fail("expected CachingError was not raised")
 
         # assert
