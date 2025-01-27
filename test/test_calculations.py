@@ -6,7 +6,6 @@ import unittest
 
 class TestCalcuations(unittest.TestCase):
 
-
     def test_calculate_team_stats(self):
         # arrange
         teamA = ["playerA", "playerB"]
@@ -28,7 +27,7 @@ class TestCalcuations(unittest.TestCase):
             "REB": 6,
             "TO": 2,
             "PTS": 27,
-            "On IR": "False"
+            "On IR": "False",
         }
         players_stats_map["playerB"] = {
             "FGM": 4,
@@ -38,7 +37,7 @@ class TestCalcuations(unittest.TestCase):
             "REB": 2,
             "TO": 4,
             "PTS": 17,
-            "On IR": "False"
+            "On IR": "False",
         }
         players_stats_map["playerC"] = {
             "FGM": 3,
@@ -48,7 +47,7 @@ class TestCalcuations(unittest.TestCase):
             "REB": 10,
             "TO": 3,
             "PTS": 12,
-            "On IR": "False"
+            "On IR": "False",
         }
         players_stats_map["playerD"] = {
             "FGM": 12,
@@ -58,7 +57,7 @@ class TestCalcuations(unittest.TestCase):
             "REB": 3,
             "TO": 5,
             "PTS": 42,
-            "On IR": "True"
+            "On IR": "True",
         }
 
         # act
@@ -66,14 +65,14 @@ class TestCalcuations(unittest.TestCase):
             calculate_team_stats(teams, players_stats_map)
 
         # assert
-        self.assertEqual(teams["teamA"]["stats"]["FG%"], .4706)
-        self.assertEqual(teams["teamA"]["stats"]["FT%"], .6667)
+        self.assertEqual(teams["teamA"]["stats"]["FG%"], 0.4706)
+        self.assertEqual(teams["teamA"]["stats"]["FT%"], 0.6667)
         self.assertEqual(teams["teamA"]["stats"]["REB"], 8)
         self.assertEqual(teams["teamA"]["stats"]["TO"], -6)
         self.assertEqual(teams["teamA"]["stats"]["PTS"], 44)
 
-        self.assertEqual(teams["teamB"]["stats"]["FG%"], .7500)
-        self.assertEqual(teams["teamB"]["stats"]["FT%"], .5000)
+        self.assertEqual(teams["teamB"]["stats"]["FG%"], 0.7500)
+        self.assertEqual(teams["teamB"]["stats"]["FT%"], 0.5000)
         self.assertEqual(teams["teamB"]["stats"]["REB"], 10)
         self.assertEqual(teams["teamB"]["stats"]["TO"], -3)
         self.assertEqual(teams["teamB"]["stats"]["PTS"], 12)
@@ -119,11 +118,11 @@ class TestCalcuations(unittest.TestCase):
         teams["teamA"]["wins"] = 5
         teams["teamA"]["losses"] = 1
         teams["teamA"]["ties"] = 0
-        
+
         teams["teamB"]["wins"] = 3
         teams["teamB"]["losses"] = 2
         teams["teamB"]["ties"] = 1
-        
+
         teams["teamC"]["wins"] = 0
         teams["teamC"]["losses"] = 5
         teams["teamC"]["ties"] = 1
