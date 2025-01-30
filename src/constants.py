@@ -1,5 +1,6 @@
 ESPN_LEAGUE_ID = 290350916
 YEAR = 2025
+MY_TEAM = "Big Baller Brand (BBb)"
 
 LOAD_FROM_CACHE = False
 CACHE_HEADER_PLAYER = "Player"
