@@ -12,7 +12,7 @@ from src.constants import (
     KEY_SCHEDULE,
     LOAD_FROM_CACHE,
     MY_TEAM,
-    NINE_CATEGORIES
+    NINE_CATEGORIES,
 )
 from src.espn_interactions.basketball import (
     build_teamname_to_roster_map,
@@ -68,7 +68,7 @@ def construct_sorted_teams_stats_map(teams):
                         break
                     elif index + 1 == category_count:
                         sorted_teams_stats[category].append(stat_and_team)
-    
+
     return sorted_teams_stats
 
 
