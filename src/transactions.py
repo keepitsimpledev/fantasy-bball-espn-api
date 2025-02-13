@@ -14,3 +14,13 @@ def drop(player, teams):
             return team_name
     logger.warning("unable to drop {} - not found".format(player))
     return None
+
+
+# example usage: add('Luke Kennard', 'Big Baller Brand (BBb)', all_players, teams)
+def add(player, team, all_players, teams):
+    if player not in all_players:
+        logger.warning("unable to add {} - player not found".format(player))
+    elif team not in teams:
+        logger.warning("unable to add to {} - team not found".format(team))
+    else:
+        teams[team][KEY_ROSTER] += [player]
