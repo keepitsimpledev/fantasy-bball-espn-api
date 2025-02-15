@@ -24,3 +24,55 @@ def add(player, team, all_players, teams):
         logger.warning("unable to add to {} - team not found".format(team))
     else:
         teams[team][KEY_ROSTER] += [player]
+
+
+def find_team_of_player(player, teams):
+    for team in teams:
+        for team_member in teams[team][KEY_ROSTER]:
+            if player == team_member:
+                return team
+    return None
+
+
+def get_team_of_players(players, teams):
+    team_name = find_team_of_player(players[0], teams)
+    if team_name is None:
+        return None
+
+    for i in range(1, len(players)):
+        if team_name != find_team_of_player(players[i], teams):
+            return None
+    return team_name
+
+
+# example usage, 1-for-1 trade: trade(['Mason Plumlee'], ['Robert Covington'], teams)
+# example usage, 3-for-3 trade: trade(['Mason Plumlee', 'Davis Bertans', 'Kyrie Irving'],
+#                                   ['Dejounte Murray', 'Markelle Fultz', 'Robert Covington'], teams)
+def trade(team_1_players, team_2_players, teams):
+    team1 = get_team_of_players(team_1_players, teams)
+    if team1 is None:
+        logger.warning(
+            "trade failed. these players are not on the same team: " + str(team_1_players)
+        )
+        return
+
+    team2 = get_team_of_players(team_2_players, teams)
+    if team2 is None:
+        logger.warning(
+            "trade failed. these players are not on the same team: " + str(team_2_players)
+        )
+        return
+
+    if team1 == team2:
+        logger.warning(
+            "trade not processed. players are on the same team: " + str(team_1_players + team_2_players)
+        )
+        return
+
+    for player in team_1_players + team_2_players:
+        drop(player, teams)
+
+    for player in team_1_players:
+        teams[team2][KEY_ROSTER] += [player]
+    for player in team_2_players:
+        teams[team1][KEY_ROSTER] += [player]
