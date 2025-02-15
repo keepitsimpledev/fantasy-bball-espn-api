@@ -139,9 +139,17 @@ class TestTransactions(unittest.TestCase):
         self.assertIsNone(team)
 
     def test_players_are_on_same_team(self):
-        self.assertEquals(self.team0, get_team_of_players(["player00", "player01", "player02"], self.teams))
-        self.assertEquals(self.team1, get_team_of_players(["player11", "player12"], self.teams))
-        self.assertEquals(self.team2, get_team_of_players(["player20", "player21", "player22"], self.teams))
+        self.assertEquals(
+            self.team0,
+            get_team_of_players(["player00", "player01", "player02"], self.teams),
+        )
+        self.assertEquals(
+            self.team1, get_team_of_players(["player11", "player12"], self.teams)
+        )
+        self.assertEquals(
+            self.team2,
+            get_team_of_players(["player20", "player21", "player22"], self.teams),
+        )
 
         self.assertIsNone(get_team_of_players(["player00", "player33"], self.teams))
         self.assertIsNone(get_team_of_players(["player00", "player22"], self.teams))
@@ -185,13 +193,25 @@ class TestTransactions(unittest.TestCase):
         trade(["player00"], ["player12"], self.teams)
 
         # assert
-        self.assertEqual(self.teams[self.team0][KEY_ROSTER], ["player01", "player02", "player12"])
-        self.assertEqual(self.teams[self.team1][KEY_ROSTER], ["player10", "player11", "player00"])
+        self.assertEqual(
+            self.teams[self.team0][KEY_ROSTER], ["player01", "player02", "player12"]
+        )
+        self.assertEqual(
+            self.teams[self.team1][KEY_ROSTER], ["player10", "player11", "player00"]
+        )
 
     def test_trade_3for3(self):
         # act
-        trade(["player10", "player11", "player12"], ["player20", "player21", "player22"], self.teams)
+        trade(
+            ["player10", "player11", "player12"],
+            ["player20", "player21", "player22"],
+            self.teams,
+        )
 
         # assert
-        self.assertEqual(self.teams[self.team1][KEY_ROSTER], ["player20", "player21", "player22"])
-        self.assertEqual(self.teams[self.team2][KEY_ROSTER], ["player10", "player11", "player12"])
+        self.assertEqual(
+            self.teams[self.team1][KEY_ROSTER], ["player20", "player21", "player22"]
+        )
+        self.assertEqual(
+            self.teams[self.team2][KEY_ROSTER], ["player10", "player11", "player12"]
+        )

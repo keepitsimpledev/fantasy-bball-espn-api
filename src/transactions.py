@@ -38,7 +38,7 @@ def get_team_of_players(players, teams):
     team_name = find_team_of_player(players[0], teams)
     if team_name == None:
         return None
-    
+
     for i in range(1, len(players)):
         if team_name != find_team_of_player(players[i], teams):
             return None
@@ -51,16 +51,25 @@ def get_team_of_players(players, teams):
 def trade(team_1_players, team_2_players, teams):
     team1 = get_team_of_players(team_1_players, teams)
     if team1 == None:
-        logger.warning("trade failed. these players are not on the same team: " + str(team_1_players))
+        logger.warning(
+            "trade failed. these players are not on the same team: "
+            + str(team_1_players)
+        )
         return
-    
+
     team2 = get_team_of_players(team_2_players, teams)
     if team2 == None:
-        logger.warning("trade failed. these players are not on the same team: " + str(team_2_players))
+        logger.warning(
+            "trade failed. these players are not on the same team: "
+            + str(team_2_players)
+        )
         return
-    
+
     if team1 == team2:
-        logger.warning("trade not processed. players are on the same team: " + str(team_1_players + team_2_players))
+        logger.warning(
+            "trade not processed. players are on the same team: "
+            + str(team_1_players + team_2_players)
+        )
         return
 
     for player in team_1_players + team_2_players:
