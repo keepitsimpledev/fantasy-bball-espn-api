@@ -36,7 +36,7 @@ def find_team_of_player(player, teams):
 
 def get_team_of_players(players, teams):
     team_name = find_team_of_player(players[0], teams)
-    if team_name == None:
+    if team_name is None:
         return None
 
     for i in range(1, len(players)):
@@ -50,25 +50,22 @@ def get_team_of_players(players, teams):
 #                                   ['Dejounte Murray', 'Markelle Fultz', 'Robert Covington'], teams)
 def trade(team_1_players, team_2_players, teams):
     team1 = get_team_of_players(team_1_players, teams)
-    if team1 == None:
+    if team1 is None:
         logger.warning(
-            "trade failed. these players are not on the same team: "
-            + str(team_1_players)
+            "trade failed. these players are not on the same team: " + str(team_1_players)
         )
         return
 
     team2 = get_team_of_players(team_2_players, teams)
-    if team2 == None:
+    if team2 is None:
         logger.warning(
-            "trade failed. these players are not on the same team: "
-            + str(team_2_players)
+            "trade failed. these players are not on the same team: " + str(team_2_players)
         )
         return
 
     if team1 == team2:
         logger.warning(
-            "trade not processed. players are on the same team: "
-            + str(team_1_players + team_2_players)
+            "trade not processed. players are on the same team: " + str(team_1_players + team_2_players)
         )
         return
 
