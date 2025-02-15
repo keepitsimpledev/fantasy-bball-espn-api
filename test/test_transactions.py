@@ -1,5 +1,5 @@
 from src.constants import KEY_ROSTER
-from src.transactions import add, drop
+from src.transactions import add, drop, find_team_of_player, get_team_of_players, trade
 
 import unittest
 
@@ -123,3 +123,75 @@ class TestTransactions(unittest.TestCase):
             cm.output[0],
             "WARNING:src.transactions:unable to add to team3 (T3) - team not found",
         )
+
+    def test_find_team_of_player(self):
+        # act
+        team = find_team_of_player("player12", self.teams)
+
+        # assert
+        self.assertEqual(team, "team1 (T1)")
+
+    def test_find_team_of_player_fail(self):
+        # act
+        team = find_team_of_player("player33", self.teams)
+
+        # assert
+        self.assertIsNone(team)
+
+    def test_players_are_on_same_team(self):
+        self.assertEquals(self.team0, get_team_of_players(["player00", "player01", "player02"], self.teams))
+        self.assertEquals(self.team1, get_team_of_players(["player11", "player12"], self.teams))
+        self.assertEquals(self.team2, get_team_of_players(["player20", "player21", "player22"], self.teams))
+
+        self.assertIsNone(get_team_of_players(["player00", "player33"], self.teams))
+        self.assertIsNone(get_team_of_players(["player00", "player22"], self.teams))
+        self.assertIsNone(get_team_of_players(["player11", "player21"], self.teams))
+
+    def test_trade_fail_team1(self):
+        # act
+        with self.assertLogs("src.transactions", level="WARNING") as cm:
+            trade(["player00", "player10"], ["player20", "player21"], self.teams)
+
+        # assert
+        self.assertEqual(
+            cm.output[0],
+            "WARNING:src.transactions:trade failed. these players are not on the same team: ['player00', 'player10']",
+        )
+
+    def test_trade_fail_team2(self):
+        # act
+        with self.assertLogs("src.transactions", level="WARNING") as cm:
+            trade(["player00", "player01"], ["player11", "player22"], self.teams)
+
+        # assert
+        self.assertEqual(
+            cm.output[0],
+            "WARNING:src.transactions:trade failed. these players are not on the same team: ['player11', 'player22']",
+        )
+
+    def test_trade_fail_same_team(self):
+        # act
+        with self.assertLogs("src.transactions", level="WARNING") as cm:
+            trade(["player00"], ["player01"], self.teams)
+
+        # assert
+        self.assertEqual(
+            cm.output[0],
+            "WARNING:src.transactions:trade not processed. players are on the same team: ['player00', 'player01']",
+        )
+
+    def test_trade_1for1(self):
+        # act
+        trade(["player00"], ["player12"], self.teams)
+
+        # assert
+        self.assertEqual(self.teams[self.team0][KEY_ROSTER], ["player01", "player02", "player12"])
+        self.assertEqual(self.teams[self.team1][KEY_ROSTER], ["player10", "player11", "player00"])
+
+    def test_trade_3for3(self):
+        # act
+        trade(["player10", "player11", "player12"], ["player20", "player21", "player22"], self.teams)
+
+        # assert
+        self.assertEqual(self.teams[self.team1][KEY_ROSTER], ["player20", "player21", "player22"])
+        self.assertEqual(self.teams[self.team2][KEY_ROSTER], ["player10", "player11", "player12"])
