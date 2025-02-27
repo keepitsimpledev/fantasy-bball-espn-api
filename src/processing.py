@@ -7,6 +7,7 @@ from src.caching import (
 from src.constants import (
     ESPN_LEAGUE_ID,
     YEAR,
+    KEY_IR,
     KEY_STATS,
     KEY_ROSTER,
     KEY_SCHEDULE,
