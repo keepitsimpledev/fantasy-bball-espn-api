@@ -144,7 +144,9 @@ class TestProcessing(unittest.TestCase):
 
         # assert
         with open(
-            "test/results/2026 - {} projection.csv".format(ESPN_LEAGUE_ID), "r", newline="\r\n"
+            "test/results/2026 - {} projection.csv".format(ESPN_LEAGUE_ID),
+            "r",
+            newline="\r\n",
         ) as results_file:
             self.assertEqual(
                 results_file.readline(),
@@ -169,7 +171,9 @@ class TestProcessing(unittest.TestCase):
 
         # assert
         with open(
-            "test/results/2026 - {} projection.csv".format(ESPN_LEAGUE_ID), "r", newline="\r\n"
+            "test/results/2026 - {} projection.csv".format(ESPN_LEAGUE_ID),
+            "r",
+            newline="\r\n",
         ) as results_file:
             self.assertEqual(
                 results_file.readline(),
