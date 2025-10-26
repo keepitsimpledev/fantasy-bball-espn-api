@@ -7,7 +7,6 @@ from src.caching import (
     load_schedules,
 )
 from src.constants import (
-    YEAR,
     KEY_LOSSES,
     KEY_ROSTER,
     KEY_SCHEDULE,
@@ -28,7 +27,7 @@ from src.espn_interactions.basketball import (
 )
 
 
-RESULTS_DIRECTORY = "results";
+RESULTS_DIRECTORY = "results"
 
 
 def combine_rosters_and_schedules(rosters, schedules):
@@ -96,7 +95,9 @@ def print_my_team_stats(teams):
 def save_projection_to_file(teams):
     os.makedirs(RESULTS_DIRECTORY, exist_ok=True)
     with open(
-        "{}/{} - {} projection.csv".format(RESULTS_DIRECTORY, YEAR, ESPN_LEAGUE_ID), "w", newline="\n"
+        "{}/{} - {} projection.csv".format(RESULTS_DIRECTORY, YEAR, ESPN_LEAGUE_ID),
+        "w",
+        newline="\n",
     ) as results_file:
         writer = csv.writer(results_file)
         headerRow = ["Team"] + NINE_CATEGORIES
@@ -110,7 +111,17 @@ def save_projection_to_file(teams):
             for stat in NINE_CATEGORIES:
                 row += [teams[team][KEY_STATS][stat]]
             if WRITE_RECORD:
-                row += ["{}-{}-{}".format(teams[team][KEY_WINS], teams[team][KEY_LOSSES], teams[team][KEY_TIES])]
+                row += [
+                    "{}-{}-{}".format(
+                        teams[team][KEY_WINS],
+                        teams[team][KEY_LOSSES],
+                        teams[team][KEY_TIES],
+                    )
+                ]
             else:
-                row += [teams[team][KEY_WINS], teams[team][KEY_LOSSES], teams[team][KEY_TIES]]
+                row += [
+                    teams[team][KEY_WINS],
+                    teams[team][KEY_LOSSES],
+                    teams[team][KEY_TIES],
+                ]
             writer.writerow(row)

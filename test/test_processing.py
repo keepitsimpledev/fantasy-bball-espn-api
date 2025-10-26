@@ -1,6 +1,5 @@
 import os
 import shutil
-import src.constants as constants
 import src.processing as processing
 from io import StringIO
 from unittest.mock import patch
@@ -14,10 +13,11 @@ from src.processing import (
 
 import unittest
 
+
 def sample_teams():
     teamAStats = {
-        "FG%": .5,
-        "FT%": .8,
+        "FG%": 0.5,
+        "FT%": 0.8,
         "3PM": 100,
         "REB": 100,
         "AST": 100,
@@ -27,8 +27,8 @@ def sample_teams():
         "PTS": 200,
     }
     teamBStats = {
-        "FG%": .6,
-        "FT%": .7,
+        "FG%": 0.6,
+        "FT%": 0.7,
         "3PM": 80,
         "REB": 120,
         "AST": 75,
@@ -38,23 +38,13 @@ def sample_teams():
         "PTS": 180,
     }
     return {
-        "teamA (tA)": {
-            "stats": teamAStats,
-            "wins": 30,
-            "losses": 50,
-            "ties": 2
-        },
-        "teamB (tB)": {
-            "stats": teamBStats,
-        "wins": 50,
-        "losses": 30,
-        "ties": 2
-        },
+        "teamA (tA)": {"stats": teamAStats, "wins": 30, "losses": 50, "ties": 2},
+        "teamB (tB)": {"stats": teamBStats, "wins": 50, "losses": 30, "ties": 2},
     }
 
 
 class TestProcessing(unittest.TestCase):
-    
+
     def tearDown(self):
         if os.path.exists(processing.RESULTS_DIRECTORY):
             shutil.rmtree(processing.RESULTS_DIRECTORY)
@@ -146,7 +136,7 @@ class TestProcessing(unittest.TestCase):
     def test_save_projection_to_file(self):
         # arrange
         processing.RESULTS_DIRECTORY = "test/results"
-        
+
         # act
         save_projection_to_file(sample_teams())
 
@@ -154,15 +144,24 @@ class TestProcessing(unittest.TestCase):
         with open(
             "test/results/2026 - 917926052 projection.csv", "r", newline="\r\n"
         ) as results_file:
-            self.assertEqual(results_file.readline(), "Team,FG%,FT%,3PM,REB,AST,STL,BLK,TO,PTS,wins,losses,ties\r\n")
-            self.assertEqual(results_file.readline(), "teamA (tA),0.5,0.8,100,100,100,15,15,25,200,30,50,2\r\n")
-            self.assertEqual(results_file.readline(), "teamB (tB),0.6,0.7,80,120,75,20,25,20,180,50,30,2\r\n")
+            self.assertEqual(
+                results_file.readline(),
+                "Team,FG%,FT%,3PM,REB,AST,STL,BLK,TO,PTS,wins,losses,ties\r\n",
+            )
+            self.assertEqual(
+                results_file.readline(),
+                "teamA (tA),0.5,0.8,100,100,100,15,15,25,200,30,50,2\r\n",
+            )
+            self.assertEqual(
+                results_file.readline(),
+                "teamB (tB),0.6,0.7,80,120,75,20,25,20,180,50,30,2\r\n",
+            )
 
     def test_save_projection_to_file_WLT(self):
         # arrange
         processing.WRITE_RECORD = True
         processing.RESULTS_DIRECTORY = "test/results"
-        
+
         # act
         save_projection_to_file(sample_teams())
 
@@ -170,6 +169,15 @@ class TestProcessing(unittest.TestCase):
         with open(
             "test/results/2026 - 917926052 projection.csv", "r", newline="\r\n"
         ) as results_file:
-            self.assertEqual(results_file.readline(), "Team,FG%,FT%,3PM,REB,AST,STL,BLK,TO,PTS,Record\r\n")
-            self.assertEqual(results_file.readline(), "teamA (tA),0.5,0.8,100,100,100,15,15,25,200,30-50-2\r\n")
-            self.assertEqual(results_file.readline(), "teamB (tB),0.6,0.7,80,120,75,20,25,20,180,50-30-2\r\n")
+            self.assertEqual(
+                results_file.readline(),
+                "Team,FG%,FT%,3PM,REB,AST,STL,BLK,TO,PTS,Record\r\n",
+            )
+            self.assertEqual(
+                results_file.readline(),
+                "teamA (tA),0.5,0.8,100,100,100,15,15,25,200,30-50-2\r\n",
+            )
+            self.assertEqual(
+                results_file.readline(),
+                "teamB (tB),0.6,0.7,80,120,75,20,25,20,180,50-30-2\r\n",
+            )
