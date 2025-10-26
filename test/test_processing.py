@@ -4,6 +4,7 @@ import src.processing as processing
 from io import StringIO
 from unittest.mock import patch
 from src.constants import KEY_ROSTER, KEY_SCHEDULE
+from src.env import ESPN_LEAGUE_ID
 from src.processing import (
     combine_rosters_and_schedules,
     construct_sorted_teams_stats_map,
@@ -142,7 +143,7 @@ class TestProcessing(unittest.TestCase):
 
         # assert
         with open(
-            "test/results/2026 - 917926052 projection.csv", "r", newline="\r\n"
+            "test/results/2026 - {} projection.csv".format(ESPN_LEAGUE_ID), "r", newline="\r\n"
         ) as results_file:
             self.assertEqual(
                 results_file.readline(),
@@ -167,7 +168,7 @@ class TestProcessing(unittest.TestCase):
 
         # assert
         with open(
-            "test/results/2026 - 917926052 projection.csv", "r", newline="\r\n"
+            "test/results/2026 - {} projection.csv".format(ESPN_LEAGUE_ID), "r", newline="\r\n"
         ) as results_file:
             self.assertEqual(
                 results_file.readline(),
