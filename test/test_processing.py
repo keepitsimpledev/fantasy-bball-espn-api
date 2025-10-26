@@ -3,7 +3,7 @@ import shutil
 import src.processing as processing
 from io import StringIO
 from unittest.mock import patch
-from src.constants import KEY_ROSTER, KEY_SCHEDULE
+from src.constants import KEY_ROSTER, KEY_SCHEDULE, NINE_CATEGORIES
 from src.env import ESPN_LEAGUE_ID
 from src.processing import (
     combine_rosters_and_schedules,
@@ -49,6 +49,7 @@ class TestProcessing(unittest.TestCase):
     def tearDown(self):
         if os.path.exists(processing.RESULTS_DIRECTORY):
             shutil.rmtree(processing.RESULTS_DIRECTORY)
+        processing.NINE_CATEGORIES = NINE_CATEGORIES
         return super().tearDown()
 
     def test_combine_rosters_and_schedules(self):
