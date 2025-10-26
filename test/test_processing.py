@@ -9,7 +9,7 @@ from src.processing import (
     combine_rosters_and_schedules,
     construct_sorted_teams_stats_map,
     print_my_team_stats,
-    save_results_to_file,
+    save_projection_to_file,
 )
 
 import unittest
@@ -143,32 +143,32 @@ class TestProcessing(unittest.TestCase):
                 "teamB stat rankings:\n" + "REB : 3\nAST : 1\nPTS : 3\n",
             )
 
-    def test_save_results_to_file(self):
+    def test_save_projection_to_file(self):
         # arrange
         processing.RESULTS_DIRECTORY = "test/results"
         
         # act
-        save_results_to_file(sample_teams())
+        save_projection_to_file(sample_teams())
 
         # assert
         with open(
-            "test/results/results.csv", "r", newline="\r\n"
+            "test/results/2026 - 917926052 projection.csv", "r", newline="\r\n"
         ) as results_file:
             self.assertEqual(results_file.readline(), "Team,FG%,FT%,3PM,REB,AST,STL,BLK,TO,PTS,wins,losses,ties\r\n")
             self.assertEqual(results_file.readline(), "teamA (tA),0.5,0.8,100,100,100,15,15,25,200,30,50,2\r\n")
             self.assertEqual(results_file.readline(), "teamB (tB),0.6,0.7,80,120,75,20,25,20,180,50,30,2\r\n")
 
-    def test_save_results_to_file_WLT(self):
+    def test_save_projection_to_file_WLT(self):
         # arrange
         processing.WRITE_RECORD = True
         processing.RESULTS_DIRECTORY = "test/results"
         
         # act
-        save_results_to_file(sample_teams())
+        save_projection_to_file(sample_teams())
 
         # assert
         with open(
-            "test/results/results.csv", "r", newline="\r\n"
+            "test/results/2026 - 917926052 projection.csv", "r", newline="\r\n"
         ) as results_file:
             self.assertEqual(results_file.readline(), "Team,FG%,FT%,3PM,REB,AST,STL,BLK,TO,PTS,Record\r\n")
             self.assertEqual(results_file.readline(), "teamA (tA),0.5,0.8,100,100,100,15,15,25,200,30-50-2\r\n")

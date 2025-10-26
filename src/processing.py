@@ -17,6 +17,7 @@ from src.constants import (
     LOAD_FROM_CACHE,
     NINE_CATEGORIES,
     WRITE_RECORD,
+    YEAR,
 )
 from src.env import ESPN_LEAGUE_ID, MY_TEAM
 from src.espn_interactions.basketball import (
@@ -92,10 +93,10 @@ def print_my_team_stats(teams):
                 print("not found: {} {}".format(MY_TEAM, stat_category))
 
 
-def save_results_to_file(teams):
+def save_projection_to_file(teams):
     os.makedirs(RESULTS_DIRECTORY, exist_ok=True)
     with open(
-        "{}/results.csv".format(RESULTS_DIRECTORY), "w", newline="\n"
+        "{}/{} - {} projection.csv".format(RESULTS_DIRECTORY, YEAR, ESPN_LEAGUE_ID), "w", newline="\n"
     ) as results_file:
         writer = csv.writer(results_file)
         headerRow = ["Team"] + NINE_CATEGORIES
