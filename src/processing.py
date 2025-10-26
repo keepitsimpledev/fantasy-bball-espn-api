@@ -7,7 +7,6 @@ from src.caching import (
     load_schedules,
 )
 from src.constants import (
-    KEY_IR,
     KEY_LOSSES,
     KEY_ROSTER,
     KEY_SCHEDULE,
