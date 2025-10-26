@@ -1,17 +1,65 @@
+import os
+import shutil
+import src.constants as constants
+import src.processing as processing
+from io import StringIO
+from unittest.mock import patch
 from src.constants import KEY_ROSTER, KEY_SCHEDULE
 from src.processing import (
     combine_rosters_and_schedules,
     construct_sorted_teams_stats_map,
     print_my_team_stats,
+    save_results_to_file,
 )
-import src.processing as processing
-from io import StringIO
-from unittest.mock import patch
 
 import unittest
 
+def sample_teams():
+    teamAStats = {
+        "FG%": .5,
+        "FT%": .8,
+        "3PM": 100,
+        "REB": 100,
+        "AST": 100,
+        "STL": 15,
+        "BLK": 15,
+        "TO": 25,
+        "PTS": 200,
+    }
+    teamBStats = {
+        "FG%": .6,
+        "FT%": .7,
+        "3PM": 80,
+        "REB": 120,
+        "AST": 75,
+        "STL": 20,
+        "BLK": 25,
+        "TO": 20,
+        "PTS": 180,
+    }
+    return {
+        "teamA (tA)": {
+            "stats": teamAStats,
+            "wins": 30,
+            "losses": 50,
+            "ties": 2
+        },
+        "teamB (tB)": {
+            "stats": teamBStats,
+        "wins": 50,
+        "losses": 30,
+        "ties": 2
+        },
+    }
+
 
 class TestProcessing(unittest.TestCase):
+    
+    def tearDown(self):
+        if os.path.exists(processing.RESULTS_DIRECTORY):
+            shutil.rmtree(processing.RESULTS_DIRECTORY)
+        return super().tearDown()
+
     def test_combine_rosters_and_schedules(self):
         # arrange
         team0 = "team0 (T0)"
@@ -94,3 +142,34 @@ class TestProcessing(unittest.TestCase):
                 captured_out.getvalue(),
                 "teamB stat rankings:\n" + "REB : 3\nAST : 1\nPTS : 3\n",
             )
+
+    def test_save_results_to_file(self):
+        # arrange
+        processing.RESULTS_DIRECTORY = "test/results"
+        
+        # act
+        save_results_to_file(sample_teams())
+
+        # assert
+        with open(
+            "test/results/results.csv", "r", newline="\r\n"
+        ) as results_file:
+            self.assertEqual(results_file.readline(), "Team,FG%,FT%,3PM,REB,AST,STL,BLK,TO,PTS,wins,losses,ties\r\n")
+            self.assertEqual(results_file.readline(), "teamA (tA),0.5,0.8,100,100,100,15,15,25,200,30,50,2\r\n")
+            self.assertEqual(results_file.readline(), "teamB (tB),0.6,0.7,80,120,75,20,25,20,180,50,30,2\r\n")
+
+    def test_save_results_to_file_WLT(self):
+        # arrange
+        processing.WRITE_RECORD = True
+        processing.RESULTS_DIRECTORY = "test/results"
+        
+        # act
+        save_results_to_file(sample_teams())
+
+        # assert
+        with open(
+            "test/results/results.csv", "r", newline="\r\n"
+        ) as results_file:
+            self.assertEqual(results_file.readline(), "Team,FG%,FT%,3PM,REB,AST,STL,BLK,TO,PTS,Record\r\n")
+            self.assertEqual(results_file.readline(), "teamA (tA),0.5,0.8,100,100,100,15,15,25,200,30-50-2\r\n")
+            self.assertEqual(results_file.readline(), "teamB (tB),0.6,0.7,80,120,75,20,25,20,180,50-30-2\r\n")

@@ -1,7 +1,8 @@
 import csv
 import os
 import shutil
-from src.constants import ALL_STATS, CACHE_HEADER_PLAYER, ESPN_LEAGUE_ID, KEY_IR
+from src.constants import ALL_STATS, CACHE_HEADER_PLAYER, KEY_IR
+from src.env import ESPN_LEAGUE_ID
 from src.espn_interactions.basketball import remove_unallowed_characters
 
 
