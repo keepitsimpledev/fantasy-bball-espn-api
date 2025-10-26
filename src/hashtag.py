@@ -23,9 +23,7 @@ def get_stats():
     all_players_stats_map = {}
     # stats.csv created from copying the table from hashtagbasketball and pasting into a UTF8 spreadsheet
     # and players names have been updated to match ESPN, where necessary
-    with open(
-        HASHTAG_STATS_FILE, "r", newline="\n", encoding="utf8"
-    ) as stats_file:
+    with open(HASHTAG_STATS_FILE, "r", newline="\n", encoding="utf8") as stats_file:
         reader = csv.DictReader(stats_file)
         for row in reader:
             if row["R#"] == "R#":
