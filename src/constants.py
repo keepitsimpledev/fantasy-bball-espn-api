@@ -1,10 +1,8 @@
-YEAR = 2025
-ESPN_LEAGUE_ID = 290350916
-MY_TEAM = "Big Baller Brand (BBb)"
-
 LOAD_FROM_CACHE = False
 CACHE_HEADER_PLAYER = "Player"
+WRITE_RECORD = False
 
+YEAR = 2026
 ESPN_PROJECTIONS_KEY = str(YEAR) + "_projected"
 ESPN_TOTAL_KEY = str(YEAR) + "_total"
 ESPN_LAST_7_KEY = str(YEAR) + "_last_7"

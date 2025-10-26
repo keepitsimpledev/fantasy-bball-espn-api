@@ -1,3 +1,5 @@
+import csv
+import os
 from src.caching import (
     cache_league_objects,
     load_players_stats_map,
@@ -5,21 +7,27 @@ from src.caching import (
     load_schedules,
 )
 from src.constants import (
-    ESPN_LEAGUE_ID,
-    YEAR,
-    KEY_STATS,
+    KEY_LOSSES,
     KEY_ROSTER,
     KEY_SCHEDULE,
+    KEY_STATS,
+    KEY_TIES,
+    KEY_WINS,
     LOAD_FROM_CACHE,
-    MY_TEAM,
     NINE_CATEGORIES,
+    WRITE_RECORD,
+    YEAR,
 )
+from src.env import ESPN_LEAGUE_ID, MY_TEAM
 from src.espn_interactions.basketball import (
     build_teamname_to_roster_map,
     construct_players_stats_map,
     extract_schedules_from_league,
     get_league,
 )
+
+
+RESULTS_DIRECTORY = "results"
 
 
 def combine_rosters_and_schedules(rosters, schedules):
@@ -82,3 +90,38 @@ def print_my_team_stats(teams):
                 break
             elif rank + 1 == len(teams):
                 print("not found: {} {}".format(MY_TEAM, stat_category))
+
+
+def save_projection_to_file(teams):
+    os.makedirs(RESULTS_DIRECTORY, exist_ok=True)
+    with open(
+        "{}/{} - {} projection.csv".format(RESULTS_DIRECTORY, YEAR, ESPN_LEAGUE_ID),
+        "w",
+        newline="\n",
+    ) as results_file:
+        writer = csv.writer(results_file)
+        headerRow = ["Team"] + NINE_CATEGORIES
+        if WRITE_RECORD:
+            headerRow += ["Record"]
+        else:
+            headerRow += [KEY_WINS, KEY_LOSSES, KEY_TIES]
+        writer.writerow(headerRow)
+        for team in teams:
+            row = [team]
+            for stat in NINE_CATEGORIES:
+                row += [teams[team][KEY_STATS][stat]]
+            if WRITE_RECORD:
+                row += [
+                    "{}-{}-{}".format(
+                        teams[team][KEY_WINS],
+                        teams[team][KEY_LOSSES],
+                        teams[team][KEY_TIES],
+                    )
+                ]
+            else:
+                row += [
+                    teams[team][KEY_WINS],
+                    teams[team][KEY_LOSSES],
+                    teams[team][KEY_TIES],
+                ]
+            writer.writerow(row)
