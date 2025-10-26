@@ -6,6 +6,7 @@
 * set `constants.YEAR` to the value representing the current season
   * `2025` is the 2024-2025 season
 * set `constants.MY_TEAM` to your team name appended with the its abbreviation in parentheses, ex. "Big Baller Brand (BBb)"
+ * set `MY_ESPN_S2` and `SWID`. help: https://github.com/cwendt94/espn-api/discussions/150
 
 ## setup
 * [basic setup steps](https://github.com/keepitsimpledev/dev-env/blob/main/python/README.md)

@@ -1,4 +1,4 @@
-from src.constants import ALL_STATS, ESPN_STATS_KEY, ESPN_STATS_TOTAL_KEY, KEY_IR
+from src.constants import ALL_STATS, ESPN_STATS_KEY, ESPN_STATS_TOTAL_KEY, KEY_IR, MY_ESPN_S2, MY_SWID
 from espn_api.basketball import League, Matchup, Team
 from src.validation.espn_class_validator import validate_league
 import logging
@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_league(league_id, year):
-    league = League(league_id, year)
+    league = League(league_id, year, espn_s2=MY_ESPN_S2, swid=MY_SWID)
     validate_league(league)
     return league
 
