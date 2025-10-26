@@ -9,6 +9,7 @@ espn-api = "*"
 flake8 = "*"
 ruff = "*"
 coverage = "*"
+safety = "*"
 
 [dev-packages]
 
