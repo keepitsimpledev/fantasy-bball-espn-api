@@ -84,7 +84,38 @@ def construct_sorted_teams_stats_map(teams):
     return sorted_teams_stats
 
 
-def print_my_team_stats(teams):
+def teamWinsComparator(team):
+    return -team[1][KEY_WINS]
+
+
+def formatStat(stat, decimalPlaces):
+    return str(round(stat, decimalPlaces)).ljust(6)
+
+
+def print_all_team_stats(teams):
+    sorted_teams = sorted(teams.items(), key=teamWinsComparator)
+
+    longest_name_length = 0;
+    for team in sorted_teams:
+        if len(team[0]) > longest_name_length:
+            longest_name_length = len(team[0])
+
+    print("\nTeam".ljust(longest_name_length), " FG%    FT%    3PM    REB    AST    STL    BLK    TO     PTS    Wins")
+    for team in sorted_teams:
+        print(team[0].ljust(longest_name_length),
+              formatStat(team[1][KEY_STATS]['FG%'], 4),
+              formatStat(team[1][KEY_STATS]['FT%'], 4),
+              formatStat(team[1][KEY_STATS]['3PM'], 1),
+              formatStat(team[1][KEY_STATS]['REB'], 1),
+              formatStat(team[1][KEY_STATS]['AST'], 1),
+              formatStat(team[1][KEY_STATS]['STL'], 1),
+              formatStat(team[1][KEY_STATS]['BLK'], 1),
+              formatStat(team[1][KEY_STATS]['TO'], 1),
+              formatStat(team[1][KEY_STATS]['PTS'], 1),
+              team[1][KEY_WINS])
+
+
+def print_my_team_stat_rankings(teams):
     sorted_teams_stats = construct_sorted_teams_stats_map(teams)
     print(MY_TEAM + " stat rankings:")
     for stat_category in NINE_CATEGORIES:
