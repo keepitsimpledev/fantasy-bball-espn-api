@@ -8,7 +8,7 @@ from src.env import ESPN_LEAGUE_ID
 from src.processing import (
     combine_rosters_and_schedules,
     construct_sorted_teams_stats_map,
-    print_my_team_stats,
+    print_my_team_stat_rankings,
     save_projection_to_file,
 )
 
@@ -127,7 +127,7 @@ class TestProcessing(unittest.TestCase):
 
         with patch("sys.stdout", new=StringIO()) as captured_out:
             # act
-            print_my_team_stats(teams)
+            print_my_team_stat_rankings(teams)
 
             # assert
             self.assertEqual(
