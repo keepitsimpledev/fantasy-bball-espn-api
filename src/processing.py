@@ -15,6 +15,7 @@ from src.constants import (
     KEY_WINS,
     LOAD_FROM_CACHE,
     NINE_CATEGORIES,
+    USE_HASHTAG,
     WRITE_RECORD,
     YEAR,
 )
@@ -25,6 +26,7 @@ from src.espn_interactions.basketball import (
     extract_schedules_from_league,
     get_league,
 )
+from src.hashtag import get_player_stat_map_from_hashtag
 
 
 RESULTS_DIRECTORY = "results"
@@ -43,12 +45,16 @@ def construct_teams_and_stats_map():
         rosters = load_rosters()
         schedules = load_schedules()
         players_stats_map = load_players_stats_map()
+        if USE_HASHTAG:
+            players_stats_map = get_player_stat_map_from_hashtag(players_stats_map)
     else:
         league = get_league(ESPN_LEAGUE_ID, YEAR)
 
         rosters = build_teamname_to_roster_map(league)
         schedules = extract_schedules_from_league(league)
         players_stats_map = construct_players_stats_map(league)
+        if USE_HASHTAG:
+            players_stats_map = get_player_stat_map_from_hashtag(players_stats_map)
 
         cache_league_objects(rosters, schedules, players_stats_map)
 

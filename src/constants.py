@@ -1,6 +1,7 @@
 LOAD_FROM_CACHE = False
 CACHE_HEADER_PLAYER = "Player"
 WRITE_RECORD = False
+USE_HASHTAG = False
 
 YEAR = 2026
 ESPN_PROJECTIONS_KEY = str(YEAR) + "_projected"

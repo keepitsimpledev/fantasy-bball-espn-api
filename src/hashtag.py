@@ -15,7 +15,7 @@ def get_player_stat_map_from_hashtag(players_stats_map):
         if hashtag_player in players_stats_map:
             hashtag_players_stats_map[hashtag_player][KEY_IR] = players_stats_map[hashtag_player][KEY_IR]
         else:
-            print("player not found in ESPN: " + hashtag_player)
+            print("player not found in ESPN (or has been added and will register tomorrow): " + hashtag_player)
     return hashtag_players_stats_map
 
 
@@ -74,12 +74,39 @@ def to_espn_name(hashtag_name):
         return "Theo Maledon"
     elif hashtag_name == "™mer Yurtseven" or hashtag_name == "Ömer Yurtseven":
         return "Omer Yurtseven"
-    elif hashtag_name == "Patrick Baldwin Jr.":
-        return "Patrick Baldwin"
     elif hashtag_name == "Andre Jackson":
         return "Andre Jackson Jr."
     elif hashtag_name == "EJ Liddell":
         return "E.J. Liddell"
     elif hashtag_name == "Alexandre Sarr":
         return "Alex Sarr"
+    elif hashtag_name == "Jimmy Butler":
+        return "Jimmy Butler III"
+    elif hashtag_name == "Moussa Diabaté":
+        return "Moussa Diabate"
+    elif hashtag_name == "Carlton Carrington":
+        return "Bub Carrington"
+    elif hashtag_name == "Vít Krejcí":
+        return "Vit Krejci"
+    elif hashtag_name == "Ron Holland II":
+        return "Ronald Holland II"
+    elif hashtag_name == "Hansen Yang":
+        return "Yang Hansen"
+    elif hashtag_name == "Tristan Da Silva":
+        return "Tristan da Silva"
+    elif hashtag_name == "Brandon Boston Jr":
+        return "Brandon Boston"
+    elif hashtag_name == "Trey Jemison":
+        return "Trey Jemison III"
+    elif hashtag_name == "Nolan Traoré":
+        return "Nolan Traore"
+    elif hashtag_name == "Nigel Hayes":
+        return "Nigel Hayes-Davis"
+    elif hashtag_name == "GG Jackson II":
+        return "GG Jackson"
+    elif hashtag_name == "Patrick Baldwin":
+        return "Patrick Baldwin Jr."
+    elif hashtag_name == "Hugo González":
+        return "Hugo Gonzalez"
+    
     return hashtag_name
