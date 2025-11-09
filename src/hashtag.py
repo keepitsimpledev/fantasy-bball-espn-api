@@ -108,5 +108,5 @@ def to_espn_name(hashtag_name):
         return "Patrick Baldwin Jr."
     elif hashtag_name == "Hugo González":
         return "Hugo Gonzalez"
-    
+
     return hashtag_name
