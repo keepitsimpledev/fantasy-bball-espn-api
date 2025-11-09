@@ -117,7 +117,7 @@ def print_all_team_stats(teams):
 
 def print_my_team_stat_rankings(teams):
     sorted_teams_stats = construct_sorted_teams_stats_map(teams)
-    print(MY_TEAM + " stat rankings:")
+    print("\n{} stat rankings:".format(MY_TEAM))
     for stat_category in NINE_CATEGORIES:
         for rank in range(len(teams)):
             if sorted_teams_stats[stat_category][rank][1] == MY_TEAM:

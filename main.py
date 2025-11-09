@@ -21,6 +21,6 @@ if __name__ == "__main__":
     calculate_team_stats(teams, players_stats_map)
 
     simulate_season(teams)
-    # print_my_team_stat_rankings(teams)
+    print_my_team_stat_rankings(teams)
     print_all_team_stats(teams)
     save_projection_to_file(teams)
