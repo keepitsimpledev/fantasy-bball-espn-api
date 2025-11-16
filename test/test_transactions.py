@@ -127,7 +127,7 @@ class TestTransactions(unittest.TestCase):
     def test_find_team_of_player(self):
         # act
         team = find_team_of_player("player12", self.teams)
-        
+
         # assert
         self.assertEqual(team, "team1 (T1)")
 
@@ -162,7 +162,7 @@ class TestTransactions(unittest.TestCase):
             cm.output[0],
             "WARNING:src.transactions:player not found or team not found for player: player33",
         )
-        
+
         self.assertIsNone(get_team_of_players(["player00", "player22"], self.teams))
         self.assertIsNone(get_team_of_players(["player11", "player21"], self.teams))
 
