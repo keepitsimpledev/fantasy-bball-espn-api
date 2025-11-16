@@ -100,19 +100,24 @@ def print_all_team_stats(teams):
         if len(team[0]) > longest_name_length:
             longest_name_length = len(team[0])
 
-    print("\nTeam".ljust(longest_name_length), " FG%    FT%    3PM    REB    AST    STL    BLK    TO     PTS    Wins")
+    print(
+        "\nTeam".ljust(longest_name_length),
+        " FG%    FT%    3PM    REB    AST    STL    BLK    TO     PTS    Wins",
+    )
     for team in sorted_teams:
-        print(team[0].ljust(longest_name_length),
-              formatStat(team[1][KEY_STATS]['FG%'], 4),
-              formatStat(team[1][KEY_STATS]['FT%'], 4),
-              formatStat(team[1][KEY_STATS]['3PM'], 1),
-              formatStat(team[1][KEY_STATS]['REB'], 1),
-              formatStat(team[1][KEY_STATS]['AST'], 1),
-              formatStat(team[1][KEY_STATS]['STL'], 1),
-              formatStat(team[1][KEY_STATS]['BLK'], 1),
-              formatStat(team[1][KEY_STATS]['TO'], 1),
-              formatStat(team[1][KEY_STATS]['PTS'], 1),
-              team[1][KEY_WINS])
+        print(
+            team[0].ljust(longest_name_length),
+            formatStat(team[1][KEY_STATS]["FG%"], 4),
+            formatStat(team[1][KEY_STATS]["FT%"], 4),
+            formatStat(team[1][KEY_STATS]["3PM"], 1),
+            formatStat(team[1][KEY_STATS]["REB"], 1),
+            formatStat(team[1][KEY_STATS]["AST"], 1),
+            formatStat(team[1][KEY_STATS]["STL"], 1),
+            formatStat(team[1][KEY_STATS]["BLK"], 1),
+            formatStat(team[1][KEY_STATS]["TO"], 1),
+            formatStat(team[1][KEY_STATS]["PTS"], 1),
+            team[1][KEY_WINS],
+        )
 
 
 def print_my_team_stat_rankings(teams):
