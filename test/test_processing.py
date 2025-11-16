@@ -132,7 +132,7 @@ class TestProcessing(unittest.TestCase):
             # assert
             self.assertEqual(
                 captured_out.getvalue(),
-                "teamB stat rankings:\n" + "REB : 3\nAST : 1\nPTS : 3\n",
+                "\nteamB stat rankings:\n" + "REB : 3\nAST : 1\nPTS : 3\n",
             )
 
     def test_save_projection_to_file(self):
