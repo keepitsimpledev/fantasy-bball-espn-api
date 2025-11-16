@@ -6,7 +6,9 @@
 * set `env.ESPN_LEAGUE_ID` to your ESPN League ID
   * this must be a public league
 * set `env.MY_TEAM` to your team name appended with the its abbreviation in parentheses, ex. "Big Baller Brand (BBb)"
- * set `env.MY_ESPN_S2` and `env.SWID`. help: https://github.com/cwendt94/espn-api/discussions/150
+* set `env.MY_ESPN_S2` and `env.SWID`. help: https://github.com/cwendt94/espn-api/discussions/150
+* for hashtag integration, set `env.USE_HASHTAG = True`
+  * to update hashtag stats, copy table from website, and overwrite hashtagbasketball/stats.csv - see hashtag.py for formatting notes
 
 ## setup
 * [basic setup steps](https://github.com/keepitsimpledev/dev-env/blob/main/python/README.md)
