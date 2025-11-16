@@ -53,20 +53,23 @@ def trade(team_1_players, team_2_players, teams):
     team1 = get_team_of_players(team_1_players, teams)
     if team1 is None:
         logger.warning(
-            "trade failed. these players are not on the same team: " + str(team_1_players)
+            "trade failed. these players are not on the same team: "
+            + str(team_1_players)
         )
         return
 
     team2 = get_team_of_players(team_2_players, teams)
     if team2 is None:
         logger.warning(
-            "trade failed. these players are not on the same team: " + str(team_2_players)
+            "trade failed. these players are not on the same team: "
+            + str(team_2_players)
         )
         return
 
     if team1 == team2:
         logger.warning(
-            "trade not processed. players are on the same team: " + str(team_1_players + team_2_players)
+            "trade not processed. players are on the same team: "
+            + str(team_1_players + team_2_players)
         )
         return
 
