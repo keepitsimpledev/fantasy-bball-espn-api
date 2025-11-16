@@ -95,7 +95,7 @@ def formatStat(stat, decimalPlaces):
 def print_all_team_stats(teams):
     sorted_teams = sorted(teams.items(), key=teamWinsComparator)
 
-    longest_name_length = 0;
+    longest_name_length = 0
     for team in sorted_teams:
         if len(team[0]) > longest_name_length:
             longest_name_length = len(team[0])
