@@ -1,4 +1,3 @@
-LOAD_FROM_CACHE = False
 CACHE_HEADER_PLAYER = "Player"
 WRITE_RECORD = False
 

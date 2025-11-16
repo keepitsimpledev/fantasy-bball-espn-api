@@ -26,5 +26,5 @@ jobs:
           pipenv run coverage report -m
       - name: lint
         run: |
-          pipenv run flake8 --ignore=E501 -v .
+          pipenv run flake8 --ignore=E501,W503 -v .
           pipenv run ruff check

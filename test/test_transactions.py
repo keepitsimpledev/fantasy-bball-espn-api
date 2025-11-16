@@ -133,25 +133,36 @@ class TestTransactions(unittest.TestCase):
 
     def test_find_team_of_player_fail(self):
         # act
-        team = find_team_of_player("player33", self.teams)
+        with self.assertLogs("src.transactions", level="WARNING") as cm:
+            team = find_team_of_player("player33", self.teams)
 
         # assert
         self.assertIsNone(team)
+        self.assertEqual(
+            cm.output[0],
+            "WARNING:src.transactions:player not found or team not found for player: player33",
+        )
 
     def test_players_are_on_same_team(self):
-        self.assertEquals(
+        self.assertEqual(
             self.team0,
             get_team_of_players(["player00", "player01", "player02"], self.teams),
         )
-        self.assertEquals(
+        self.assertEqual(
             self.team1, get_team_of_players(["player11", "player12"], self.teams)
         )
-        self.assertEquals(
+        self.assertEqual(
             self.team2,
             get_team_of_players(["player20", "player21", "player22"], self.teams),
         )
 
-        self.assertIsNone(get_team_of_players(["player00", "player33"], self.teams))
+        with self.assertLogs("src.transactions", level="WARNING") as cm:
+            self.assertIsNone(get_team_of_players(["player00", "player33"], self.teams))
+        self.assertEqual(
+            cm.output[0],
+            "WARNING:src.transactions:player not found or team not found for player: player33",
+        )
+
         self.assertIsNone(get_team_of_players(["player00", "player22"], self.teams))
         self.assertIsNone(get_team_of_players(["player11", "player21"], self.teams))
 
