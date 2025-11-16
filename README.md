@@ -29,7 +29,7 @@
   ```
 * [flake8](https://pypi.org/project/flake8/) for linting
   ```
-  $ flake8 --ignore=E501 -v .
+  $ flake8 --ignore=E501,W503 -v .
   ```
   * [E501](https://www.flake8rules.com/rules/E501.html)
 * [ruff](https://pypi.org/project/ruff/) for linting
