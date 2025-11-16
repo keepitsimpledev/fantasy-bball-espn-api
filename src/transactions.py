@@ -31,6 +31,7 @@ def find_team_of_player(player, teams):
         for team_member in teams[team][KEY_ROSTER]:
             if player == team_member:
                 return team
+    logger.warning("player not found or team not found for player: " + player)
     return None
 
 
