@@ -222,8 +222,7 @@ class TestCalcuations(unittest.TestCase):
         self.assertEqual(
             captured_out.getvalue(),
             "3 drop playerA add playerE\n"
-                + "3 drop playerB add playerE\n"
-                + "1 drop playerA add playerF\n"
-                + "1 drop playerB add playerF\n",
+            + "3 drop playerB add playerE\n"
+            + "1 drop playerA add playerF\n"
+            + "1 drop playerB add playerF\n",
         )
-        
