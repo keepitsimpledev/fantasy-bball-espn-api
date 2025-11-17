@@ -142,8 +142,8 @@ class TestCalcuations(unittest.TestCase):
         teams["teamA"]["schedule"] = ["teamB"]
         teams["teamA"]["roster"] = ["playerA", "playerB"]
         teams["teamA"]["stats"] = {
-            "FG%": .25,
-            "FT%": .25,
+            "FG%": 0.25,
+            "FT%": 0.25,
             "PTS": 6,
             "TO": 6,
         }
@@ -152,8 +152,8 @@ class TestCalcuations(unittest.TestCase):
         teams["teamB"]["schedule"] = ["teamA"]
         teams["teamB"]["roster"] = ["playerC", "playerD"]
         teams["teamB"]["stats"] = {
-            "FG%": .5,
-            "FT%": .5,
+            "FG%": 0.5,
+            "FT%": 0.5,
             "PTS": 24,
             "TO": 8,
         }

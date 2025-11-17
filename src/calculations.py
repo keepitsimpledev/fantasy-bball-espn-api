@@ -29,7 +29,9 @@ def calculate_team_stats(teams, players_stats_map):
                 logger.warning("stats not found for {}".format(player))
                 continue
             if KEY_IR not in players_stats_map[player]:
-                raise Exception("TODO check why this is necessary - what does a lack of an IR flag indicate?")
+                raise Exception(
+                    "TODO check why this is necessary - what does a lack of an IR flag indicate?"
+                )
             if players_stats_map[player][KEY_IR] == "True":
                 continue  # IR players won't contribute to calculations
             for stat in ALL_STATS:
@@ -91,20 +93,30 @@ def compare_waiver_moves(teams, all_players_stats):
     for team_to_calculate in teams:
         if team_to_calculate == MY_TEAM:
             for player_to_drop in teams[team_to_calculate][KEY_ROSTER]:
-                teams[team_to_calculate][KEY_ROSTER] = copy.deepcopy(original_teams[team_to_calculate][KEY_ROSTER])
+                teams[team_to_calculate][KEY_ROSTER] = copy.deepcopy(
+                    original_teams[team_to_calculate][KEY_ROSTER]
+                )
                 drop(player_to_drop, teams)
                 roster_after_drop = copy.deepcopy(teams[team_to_calculate][KEY_ROSTER])
                 for fa_to_add in all_players_stats:
                     if fa_to_add in rostered_players:
                         continue
-                    teams[team_to_calculate][KEY_ROSTER] = copy.deepcopy(roster_after_drop)
+                    teams[team_to_calculate][KEY_ROSTER] = copy.deepcopy(
+                        roster_after_drop
+                    )
                     add(fa_to_add, team_to_calculate, all_players_stats, teams)
                     calculate_team_stats(teams, all_players_stats)
                     simulate_season(teams)
                     for current_team in teams:
                         if current_team == MY_TEAM:
                             current_win_count = teams[current_team][KEY_WINS]
-                            scored_transactions.append(ScoredTransaction(player_to_drop, fa_to_add, current_win_count - original_win_count))
+                            scored_transactions.append(
+                                ScoredTransaction(
+                                    player_to_drop,
+                                    fa_to_add,
+                                    current_win_count - original_win_count,
+                                )
+                            )
 
     sorted_transactions = sorted(scored_transactions, key=scored_transaction_comparator)
     num_to_reveal = 25 if len(sorted_transactions) > 25 else len(sorted_transactions)
