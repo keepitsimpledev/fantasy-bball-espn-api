@@ -1,4 +1,9 @@
-from src.calculations import calculate_team_stats, simulate_season
+from src.calculations import (
+    calculate_team_stats,
+    compare_waiver_moves,
+    determine_worst_player,
+    simulate_season
+)
 from src.env import MY_TEAM
 from src.processing import (
     construct_teams_and_stats_map,
@@ -23,4 +28,8 @@ if __name__ == "__main__":
     simulate_season(teams)
     print_my_team_stat_rankings(teams)
     print_all_team_stats(teams)
+
+    compare_waiver_moves(teams, players_stats_map)
+    determine_worst_player(teams, players_stats_map)
+
     save_projection_to_file(teams)
