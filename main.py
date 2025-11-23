@@ -2,7 +2,7 @@ from src.calculations import (
     calculate_team_stats,
     compare_waiver_moves,
     determine_worst_player,
-    simulate_season
+    simulate_season,
 )
 from src.env import MY_TEAM
 from src.processing import (
