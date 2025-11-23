@@ -63,10 +63,6 @@ def simulate_season(teams):
         teams[team_name][KEY_TIES] = ties
 
 
-def determine_worst_player():
-    print("unimplemeneted")
-
-
 def scored_transaction_comparator(st):
     return -st.score
 
