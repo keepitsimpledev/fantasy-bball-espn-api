@@ -3,9 +3,10 @@ import logging
 from src.constants import (
     ALL_STATS,
     NINE_CATEGORIES,
-    KEY_SCHEDULE,
-    KEY_ROSTER,
+    KEY_POSITION,
     KEY_IR,
+    KEY_ROSTER,
+    KEY_SCHEDULE,
     KEY_STATS,
     KEY_WINS,
     KEY_LOSSES,
@@ -81,7 +82,8 @@ def compare_waiver_moves(teams, all_players_stats):
     original_roster = copy.deepcopy(teams[MY_TEAM][KEY_ROSTER])
     original_win_count = teams[MY_TEAM][KEY_WINS]
 
-    do_not_add = ["Walker Kessler", "Jayson Tatum", "Kawhi Leonard"]
+    do_not_add_players = ["Walker Kessler", "Jayson Tatum", "Kawhi Leonard"]
+    do_not_add_positions = ["C"]
     rostered_players = []
     for team in teams:
         for player in teams[team][KEY_ROSTER]:
@@ -95,7 +97,11 @@ def compare_waiver_moves(teams, all_players_stats):
         drop(player_to_drop, teams)
         roster_after_drop = copy.deepcopy(teams[MY_TEAM][KEY_ROSTER])
         for fa_to_add in all_players_stats:
-            if fa_to_add in rostered_players or fa_to_add in do_not_add:
+            if fa_to_add in rostered_players:
+                continue
+            if fa_to_add in do_not_add_players:
+                continue
+            if all_players_stats[fa_to_add][KEY_POSITION] in do_not_add_positions:
                 continue
             teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(roster_after_drop)
             add(fa_to_add, MY_TEAM, all_players_stats, teams)

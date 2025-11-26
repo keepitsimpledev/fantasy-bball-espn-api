@@ -32,6 +32,7 @@ def get_stats():
             [fgm, fga] = percent_to_made_and_total(row["FG%"])
             [ftm, fta] = percent_to_made_and_total(row["FT%"])
             all_players_stats_map[player_name] = {
+                "position": row["POS"],
                 "FGM": float(fgm),
                 "FGA": float(fga),
                 "FTM": float(ftm),

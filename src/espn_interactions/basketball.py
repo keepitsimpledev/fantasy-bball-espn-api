@@ -1,4 +1,4 @@
-from src.constants import ALL_STATS, ESPN_STATS_KEY, ESPN_STATS_TOTAL_KEY, KEY_IR
+from src.constants import ALL_STATS, ESPN_STATS_KEY, ESPN_STATS_TOTAL_KEY, KEY_IR, KEY_POSITION
 from src.env import MY_ESPN_S2, MY_SWID
 from espn_api.basketball import League, Matchup, Team
 from src.validation.espn_class_validator import validate_league
@@ -65,6 +65,7 @@ def construct_players_stats_map(league: League):
                 # previously we used previous year's average, but that seems to now be unavailable in the ESPN API
                 projections_not_found.append(stat)
                 all_players_stat_map[player.name][stat] = 0
+        all_players_stat_map[player.name][KEY_POSITION] = player.position
         all_players_stat_map[player.name][KEY_IR] = player.lineupSlot == "IR"
         if len(projections_not_found) > 0:
             logger.info(
