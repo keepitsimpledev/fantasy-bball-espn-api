@@ -89,6 +89,8 @@ def compare_waiver_moves(teams, all_players_stats):
 
     scored_transactions = []
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
+        if all_players_stats[player_to_drop][KEY_IR] == 'True':
+            continue
         teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(original_roster)
         drop(player_to_drop, teams)
         roster_after_drop = copy.deepcopy(teams[MY_TEAM][KEY_ROSTER])
@@ -126,6 +128,8 @@ def determine_worst_player(teams, all_players_stats):
 
     scored_transactions = []
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
+        if all_players_stats[player_to_drop][KEY_IR] == 'True':
+            continue
         teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(original_roster)
         drop(player_to_drop, teams)
         calculate_team_stats(teams, all_players_stats)
