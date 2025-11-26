@@ -1,6 +1,10 @@
 import src.calculations as calculations
 from io import StringIO
-from src.calculations import calculate_team_stats, compare_waiver_moves, simulate_season
+from src.calculations import (
+    calculate_team_stats,
+    compare_waiver_moves,
+    determine_worst_player,
+    simulate_season)
 from unittest.mock import patch
 
 import unittest
@@ -221,8 +225,107 @@ class TestCalcuations(unittest.TestCase):
         # assert
         self.assertEqual(
             captured_out.getvalue(),
-            "3 drop playerA add playerE\n"
-            + "3 drop playerB add playerE\n"
-            + "1 drop playerA add playerF\n"
-            + "1 drop playerB add playerF\n",
+            "\npotential moves:\n"
+            + "1 win(s): drop playerA add playerE\n"
+            + "1 win(s): drop playerB add playerE\n"
+            + "-1 win(s): drop playerA add playerF\n"
+            + "-1 win(s): drop playerB add playerF\n",
+        )
+
+    def test_determine_worst_player(self):
+        # arrange
+
+        # reduce stats to simplify test:
+        calculations.ALL_STATS = ["FGM", "FGA", "FTM", "FTA", "TO", "PTS"]
+        calculations.NINE_CATEGORIES = ["FG%", "FT%", "TO", "PTS"]
+
+        calculations.MY_TEAM = "teamA"
+        teams = {}
+        teams["teamA"] = {}
+        teams["teamA"]["schedule"] = ["teamB"]
+        teams["teamA"]["roster"] = ["playerA", "playerB", "playerE"]
+        teams["teamA"]["stats"] = {
+            "FG%": 0.25,
+            "FT%": 0.25,
+            "PTS": 6,
+            "TO": 6,
+        }
+
+        teams["teamB"] = {}
+        teams["teamB"]["schedule"] = ["teamA"]
+        teams["teamB"]["roster"] = ["playerC", "playerD", "playerF"]
+        teams["teamB"]["stats"] = {
+            "FG%": 0.5,
+            "FT%": 0.5,
+            "PTS": 24,
+            "TO": 8,
+        }
+
+        players_stats_map = {}
+        players_stats_map["playerA"] = {
+            "FGM": 1,
+            "FGA": 4,
+            "FTA": 1,
+            "FTM": 4,
+            "TO": 3,
+            "PTS": 3,
+            "On IR": "False",
+        }
+        players_stats_map["playerB"] = {
+            "FGM": 1,
+            "FGA": 4,
+            "FTA": 1,
+            "FTM": 4,
+            "TO": 4,
+            "PTS": 3,
+            "On IR": "False",
+        }
+        players_stats_map["playerC"] = {
+            "FGM": 4,
+            "FGA": 8,
+            "FTA": 4,
+            "FTM": 8,
+            "TO": 4,
+            "PTS": 12,
+            "On IR": "False",
+        }
+        players_stats_map["playerD"] = {
+            "FGM": 4,
+            "FGA": 8,
+            "FTA": 4,
+            "FTM": 8,
+            "TO": 4,
+            "PTS": 12,
+            "On IR": "False",
+        }
+        players_stats_map["playerE"] = {
+            "FGM": 10,
+            "FGA": 10,
+            "FTA": 10,
+            "FTM": 10,
+            "TO": 0,
+            "PTS": 30,
+            "On IR": "False",
+        }
+        players_stats_map["playerF"] = {
+            "FGM": 0,
+            "FGA": 5,
+            "FTA": 0,
+            "FTM": 10,
+            "TO": 10,
+            "PTS": 0,
+            "On IR": "False",
+        }
+
+        # act
+        with patch("sys.stdout", new=StringIO()) as captured_out:
+            determine_worst_player(teams, players_stats_map)
+
+        # assert
+        self.assertEqual(
+            captured_out.getvalue(),
+            "\nworst players:\n"
+            + "0 win(s) after dropping playerA\n"
+            + "0 win(s) after dropping playerB\n"
+            + "-1 win(s) after dropping playerE\n",
         )
