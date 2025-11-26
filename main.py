@@ -31,11 +31,11 @@ if __name__ == "__main__":
 
     print_my_team_stat_rankings(teams)
 
-    # process_transactions(teams, players_stats_map)
+    process_transactions(teams, players_stats_map)
 
-    # calculate_team_stats(teams, players_stats_map)
-    # simulate_season(teams)
-    # print_all_team_stats(teams)
+    calculate_team_stats(teams, players_stats_map)
+    simulate_season(teams)
+    print_all_team_stats(teams)
 
     compare_waiver_moves(teams, players_stats_map)
     determine_worst_player(teams, players_stats_map)
