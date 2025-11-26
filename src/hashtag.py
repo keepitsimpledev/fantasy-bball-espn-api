@@ -28,7 +28,7 @@ def get_stats():
         for row in reader:
             if row["R#"] == "R#":
                 continue
-            player_name = to_espn_name(row["PLAYER"])
+            player_name = to_espn_name(row["PLAYER"].strip())
             [fgm, fga] = percent_to_made_and_total(row["FG%"])
             [ftm, fta] = percent_to_made_and_total(row["FT%"])
             all_players_stats_map[player_name] = {
@@ -82,7 +82,7 @@ def to_espn_name(hashtag_name):
         return "Alex Sarr"
     elif hashtag_name == "Jimmy Butler":
         return "Jimmy Butler III"
-    elif hashtag_name == "Moussa Diabaté":
+    elif hashtag_name == "Moussa Diabaté" or hashtag_name == "Moussa Diabat鬐":
         return "Moussa Diabate"
     elif hashtag_name == "Carlton Carrington":
         return "Bub Carrington"
@@ -98,7 +98,7 @@ def to_espn_name(hashtag_name):
         return "Brandon Boston"
     elif hashtag_name == "Trey Jemison":
         return "Trey Jemison III"
-    elif hashtag_name == "Nolan Traoré":
+    elif hashtag_name == "Nolan Traoré" or hashtag_name == "Nolan Traor鬐":
         return "Nolan Traore"
     elif hashtag_name == "Nigel Hayes":
         return "Nigel Hayes-Davis"
@@ -106,7 +106,9 @@ def to_espn_name(hashtag_name):
         return "GG Jackson"
     elif hashtag_name == "Patrick Baldwin":
         return "Patrick Baldwin Jr."
-    elif hashtag_name == "Hugo González":
+    elif hashtag_name == "Hugo González" or hashtag_name == "Hugo Gonzᬥz":
         return "Hugo Gonzalez"
+    elif hashtag_name == "V񘁋rejc󔁇":
+        return "Vit Krejci"
 
     return hashtag_name
