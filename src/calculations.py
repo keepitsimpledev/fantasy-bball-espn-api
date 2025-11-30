@@ -90,7 +90,7 @@ def compare_waiver_moves(teams, all_players_stats):
 
     scored_transactions = []
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
-        if all_players_stats[player_to_drop][KEY_IR] == 'True':
+        if all_players_stats[player_to_drop][KEY_IR] == "True":
             continue
         teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(original_roster)
         drop(player_to_drop, teams)
@@ -107,8 +107,10 @@ def compare_waiver_moves(teams, all_players_stats):
             skip_due_to_too_many_of_position = False  # TODO: test
             count_team_positions(MY_TEAM, teams, all_players_stats)
             for position in MAX_POSITIONS:
-                if (position in teams[MY_TEAM][KEY_POSITION]
-                        and teams[MY_TEAM][KEY_POSITION][position] > MAX_POSITIONS[position]):
+                if (
+                    position in teams[MY_TEAM][KEY_POSITION]
+                    and teams[MY_TEAM][KEY_POSITION][position] > MAX_POSITIONS[position]
+                ):
                     skip_due_to_too_many_of_position = True
                     break
             if skip_due_to_too_many_of_position:
@@ -144,7 +146,7 @@ def determine_worst_player(teams, all_players_stats):
 
     scored_transactions = []
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
-        if all_players_stats[player_to_drop][KEY_IR] == 'True':
+        if all_players_stats[player_to_drop][KEY_IR] == "True":
             continue
         teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(original_roster)
         drop(player_to_drop, teams)

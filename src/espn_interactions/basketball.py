@@ -1,4 +1,10 @@
-from src.constants import ALL_STATS, ESPN_STATS_KEY, ESPN_STATS_TOTAL_KEY, KEY_IR, KEY_POSITION
+from src.constants import (
+    ALL_STATS,
+    ESPN_STATS_KEY,
+    ESPN_STATS_TOTAL_KEY,
+    KEY_IR,
+    KEY_POSITION,
+)
 from src.env import MY_ESPN_S2, MY_SWID
 from espn_api.basketball import League, Matchup, Team
 from src.validation.espn_class_validator import validate_league

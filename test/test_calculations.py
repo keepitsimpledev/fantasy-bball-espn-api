@@ -6,7 +6,8 @@ from src.calculations import (
     count_team_positions,
     determine_worst_player,
     get_primary_position,
-    simulate_season)
+    simulate_season,
+)
 from unittest.mock import patch
 
 import unittest
@@ -341,10 +342,8 @@ class TestCalcuations(unittest.TestCase):
     def test_count_team_positions(self):
         # arrange
         teams = {
-            "team1": {
-                "roster": ["p1", "p2", "p3", "p4", "p5", "p6", "p7"]
-            },
-            "team2": {}
+            "team1": {"roster": ["p1", "p2", "p3", "p4", "p5", "p6", "p7"]},
+            "team2": {},
         }
 
         all_players_stats = {
@@ -354,7 +353,7 @@ class TestCalcuations(unittest.TestCase):
             "p4": {"position": "PF"},
             "p5": {"position": "C"},
             "p6": {"position": "C"},
-            "p7": {"position": "C"}
+            "p7": {"position": "C"},
         }
 
         # act
