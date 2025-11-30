@@ -23,6 +23,7 @@ class TestTransactions(unittest.TestCase):
 
         # assert
         jokic = {
+            "position": "C",
             "FGM": 11.2,
             "FGA": 19.6,
             "FTM": 5.1,
@@ -36,6 +37,7 @@ class TestTransactions(unittest.TestCase):
             "TO": 3.0,
         }
         shai = {
+            "position": "PG,SG",
             "FGM": 11.0,
             "FGA": 20.5,
             "FTM": 7.0,
@@ -49,6 +51,7 @@ class TestTransactions(unittest.TestCase):
             "TO": 2.8,
         }
         harden = {
+            "position": "PG,SG",
             "FGM": 6.5,
             "FGA": 16.0,
             "FTM": 6.9,
@@ -62,6 +65,7 @@ class TestTransactions(unittest.TestCase):
             "TO": 3.9,
         }
         maxey = {
+            "position": "PG,SG",
             "FGM": 9.5,
             "FGA": 21.0,
             "FTM": 5.1,
