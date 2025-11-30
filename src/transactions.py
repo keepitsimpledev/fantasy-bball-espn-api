@@ -7,11 +7,12 @@ logger = logging.getLogger(__name__)
 
 # example usage: drop('Daniel Theis', teams)
 def drop(player, teams):
-    for team_name in teams:
-        roster = teams[team_name][KEY_ROSTER]
+    for team in teams:
+        roster = teams[team][KEY_ROSTER]
         if player in roster:
             del roster[roster.index(player)]
-            return team_name
+            logger.info("dropped {} from {}".format(player, team))
+            return team
     logger.warning("unable to drop {} - not found".format(player))
     return None
 
@@ -24,6 +25,7 @@ def add(player, team, all_players, teams):
         logger.warning("unable to add to {} - team not found".format(team))
     else:
         teams[team][KEY_ROSTER] += [player]
+        logger.info("added {} to {}".format(player, team))
 
 
 def find_team_of_player(player, teams):
