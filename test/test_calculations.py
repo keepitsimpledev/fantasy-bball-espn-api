@@ -321,8 +321,7 @@ class TestCalcuations(unittest.TestCase):
         # assert
         self.assertEqual(
             captured_out.getvalue(),
-            "\npotential moves:\n"
-            + "1 win(s): drop playerA add playerD\n",
+            "\npotential moves:\n1 win(s): drop playerA add playerD\n",
         )
 
     def test_determine_worst_player(self):
