@@ -170,8 +170,8 @@ class TestCalcuations(unittest.TestCase):
             "position": "PG",
             "FGM": 1,
             "FGA": 4,
-            "FTA": 1,
-            "FTM": 4,
+            "FTM": 1,
+            "FTA": 4,
             "TO": 3,
             "PTS": 3,
             "On IR": "False",
@@ -180,8 +180,8 @@ class TestCalcuations(unittest.TestCase):
             "position": "PG",
             "FGM": 1,
             "FGA": 4,
-            "FTA": 1,
-            "FTM": 4,
+            "FTM": 1,
+            "FTA": 4,
             "TO": 4,
             "PTS": 3,
             "On IR": "False",
@@ -190,8 +190,8 @@ class TestCalcuations(unittest.TestCase):
             "position": "C",
             "FGM": 4,
             "FGA": 8,
-            "FTA": 4,
-            "FTM": 8,
+            "FTM": 4,
+            "FTA": 8,
             "TO": 4,
             "PTS": 12,
             "On IR": "False",
@@ -200,8 +200,8 @@ class TestCalcuations(unittest.TestCase):
             "position": "C",
             "FGM": 4,
             "FGA": 8,
-            "FTA": 4,
-            "FTM": 8,
+            "FTM": 4,
+            "FTA": 8,
             "TO": 4,
             "PTS": 12,
             "On IR": "False",
@@ -210,8 +210,8 @@ class TestCalcuations(unittest.TestCase):
             "position": "SF",
             "FGM": 10,
             "FGA": 10,
-            "FTA": 10,
             "FTM": 10,
+            "FTA": 10,
             "TO": 0,
             "PTS": 30,
             "On IR": "False",
@@ -220,8 +220,8 @@ class TestCalcuations(unittest.TestCase):
             "position": "PF",
             "FGM": 0,
             "FGA": 5,
-            "FTA": 0,
-            "FTM": 10,
+            "FTM": 0,
+            "FTA": 10,
             "TO": 10,
             "PTS": 0,
             "On IR": "False",
@@ -235,10 +235,94 @@ class TestCalcuations(unittest.TestCase):
         self.assertEqual(
             captured_out.getvalue(),
             "\npotential moves:\n"
-            + "1 win(s): drop playerA add playerE\n"
-            + "1 win(s): drop playerB add playerE\n"
+            + "3 win(s): drop playerA add playerE\n"
+            + "3 win(s): drop playerB add playerE\n"
             + "-1 win(s): drop playerA add playerF\n"
             + "-1 win(s): drop playerB add playerF\n",
+        )
+
+    def test_compare_waiver_moves_max_position(self):
+        # arrange
+
+        calculations.MAX_POSITIONS = {"C": 0}
+
+        # reduce stats to simplify test:
+        calculations.ALL_STATS = ["FGM", "FGA", "FTM", "FTA", "TO", "PTS"]
+        calculations.NINE_CATEGORIES = ["FG%", "FT%", "TO", "PTS"]
+
+        calculations.MY_TEAM = "teamA"
+        teams = {}
+        teams["teamA"] = {}
+        teams["teamA"]["schedule"] = ["teamB"]
+        teams["teamA"]["roster"] = ["playerA"]
+        teams["teamA"]["stats"] = {
+            "FG%": 0.0,
+            "FT%": 0.0,
+            "PTS": 0,
+            "TO": 5,
+        }
+
+        teams["teamB"] = {}
+        teams["teamB"]["schedule"] = ["teamA"]
+        teams["teamB"]["roster"] = ["playerB"]
+        teams["teamB"]["stats"] = {
+            "FG%": 0.5,
+            "FT%": 0.5,
+            "PTS": 3,
+            "TO": 2,
+        }
+
+        players_stats_map = {}
+        players_stats_map["playerA"] = {
+            "position": "PG",
+            "FGM": 0,
+            "FGA": 1,
+            "FTM": 0,
+            "FTA": 1,
+            "TO": 5,
+            "PTS": 0,
+            "On IR": "False",
+        }
+        players_stats_map["playerB"] = {
+            "position": "PG",
+            "FGM": 1,
+            "FGA": 2,
+            "FTM": 2,
+            "FTA": 1,
+            "TO": 2,
+            "PTS": 3,
+            "On IR": "False",
+        }
+        players_stats_map["playerC"] = {
+            "position": "C",
+            "FGM": 2,
+            "FGA": 2,
+            "FTM": 2,
+            "FTA": 2,
+            "TO": 1,
+            "PTS": 6,
+            "On IR": "False",
+        }
+        players_stats_map["playerD"] = {
+            "position": "PG",
+            "FGM": 1,
+            "FGA": 1,
+            "FTM": 0,
+            "FTA": 1,
+            "TO": 5,
+            "PTS": 0,
+            "On IR": "False",
+        }
+
+        # act
+        with patch("sys.stdout", new=StringIO()) as captured_out:
+            compare_waiver_moves(teams, players_stats_map)
+
+        # assert
+        self.assertEqual(
+            captured_out.getvalue(),
+            "\npotential moves:\n"
+            + "1 win(s): drop playerA add playerD\n",
         )
 
     def test_determine_worst_player(self):
