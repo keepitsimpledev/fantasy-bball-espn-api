@@ -15,7 +15,7 @@ from src.transactions import add, drop, trade
 
 
 def process_transactions(teams, players_stats_map):
-    print("\nprocessing transactions")  # TODO: add transaction processing logs
+    print("\nprocessing transactions")
 
     drop("Keyonte George", teams)
     add("Mike Conley", MY_TEAM, players_stats_map, teams)

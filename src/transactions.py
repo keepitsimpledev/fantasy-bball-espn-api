@@ -1,9 +1,20 @@
 from src.constants import KEY_ROSTER
 import logging
+import sys
 
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    # format="%(asctime)s [%(levelname)s] %(message)s",
+    format="[%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log"),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 
+LOG_TRANSACTIONS = True
 
 # example usage: drop('Daniel Theis', teams)
 def drop(player, teams):
@@ -11,7 +22,8 @@ def drop(player, teams):
         roster = teams[team][KEY_ROSTER]
         if player in roster:
             del roster[roster.index(player)]
-            logger.info("dropped {} from {}".format(player, team))
+            if LOG_TRANSACTIONS:
+                logger.info("dropped {} from {}".format(player, team))
             return team
     logger.warning("unable to drop {} - not found".format(player))
     return None
@@ -25,7 +37,8 @@ def add(player, team, all_players, teams):
         logger.warning("unable to add to {} - team not found".format(team))
     else:
         teams[team][KEY_ROSTER] += [player]
-        logger.info("added {} to {}".format(player, team))
+        if LOG_TRANSACTIONS:
+            logger.info("added {} to {}".format(player, team))
 
 
 def find_team_of_player(player, teams):

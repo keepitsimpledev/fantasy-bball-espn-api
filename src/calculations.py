@@ -1,5 +1,6 @@
 import copy
 import logging
+import src.transactions as transactions
 from src.constants import (
     ALL_STATS,
     NINE_CATEGORIES,
@@ -76,6 +77,9 @@ class ScoredTransaction:
 
 
 def compare_waiver_moves(teams, all_players_stats):
+    originalLogTransactions = transactions.LOG_TRANSACTIONS
+    transactions.LOG_TRANSACTIONS = False
+
     print("\npotential moves:")
     calculate_team_stats(teams, all_players_stats)
     simulate_season(teams)
@@ -135,9 +139,13 @@ def compare_waiver_moves(teams, all_players_stats):
         print("{} win(s): drop {} add {}".format(t.score, t.drop, t.add))
 
     teams[MY_TEAM][KEY_ROSTER] = original_roster
+    transactions.LOG_TRANSACTIONS = originalLogTransactions
 
 
 def determine_worst_player(teams, all_players_stats):
+    originalLogTransactions = transactions.LOG_TRANSACTIONS
+    transactions.LOG_TRANSACTIONS = False
+
     print("\nworst players:")
     calculate_team_stats(teams, all_players_stats)
     simulate_season(teams)
@@ -166,6 +174,7 @@ def determine_worst_player(teams, all_players_stats):
         print("{} win(s) after dropping {}".format(t.score, t.drop))
 
     teams[MY_TEAM][KEY_ROSTER] = original_roster
+    transactions.LOG_TRANSACTIONS = originalLogTransactions
 
 
 def count_team_positions(team_name, teams, all_players_stats):
