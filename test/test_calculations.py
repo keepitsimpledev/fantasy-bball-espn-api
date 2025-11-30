@@ -3,7 +3,9 @@ from io import StringIO
 from src.calculations import (
     calculate_team_stats,
     compare_waiver_moves,
+    count_team_positions,
     determine_worst_player,
+    get_primary_position,
     simulate_season)
 from unittest.mock import patch
 
@@ -164,6 +166,7 @@ class TestCalcuations(unittest.TestCase):
 
         players_stats_map = {}
         players_stats_map["playerA"] = {
+            "position": "PG",
             "FGM": 1,
             "FGA": 4,
             "FTA": 1,
@@ -173,6 +176,7 @@ class TestCalcuations(unittest.TestCase):
             "On IR": "False",
         }
         players_stats_map["playerB"] = {
+            "position": "PG",
             "FGM": 1,
             "FGA": 4,
             "FTA": 1,
@@ -182,6 +186,7 @@ class TestCalcuations(unittest.TestCase):
             "On IR": "False",
         }
         players_stats_map["playerC"] = {
+            "position": "C",
             "FGM": 4,
             "FGA": 8,
             "FTA": 4,
@@ -191,6 +196,7 @@ class TestCalcuations(unittest.TestCase):
             "On IR": "False",
         }
         players_stats_map["playerD"] = {
+            "position": "C",
             "FGM": 4,
             "FGA": 8,
             "FTA": 4,
@@ -200,6 +206,7 @@ class TestCalcuations(unittest.TestCase):
             "On IR": "False",
         }
         players_stats_map["playerE"] = {
+            "position": "SF",
             "FGM": 10,
             "FGA": 10,
             "FTA": 10,
@@ -209,6 +216,7 @@ class TestCalcuations(unittest.TestCase):
             "On IR": "False",
         }
         players_stats_map["playerF"] = {
+            "position": "PF",
             "FGM": 0,
             "FGA": 5,
             "FTA": 0,
@@ -329,3 +337,44 @@ class TestCalcuations(unittest.TestCase):
             + "0 win(s) after dropping playerB\n"
             + "-1 win(s) after dropping playerE\n",
         )
+
+    def test_count_team_positions(self):
+        # arrange
+        teams = {
+            "team1": {
+                "roster": ["p1", "p2", "p3", "p4", "p5", "p6", "p7"]
+            },
+            "team2": {}
+        }
+
+        all_players_stats = {
+            "p1": {"position": "PG"},
+            "p2": {"position": "PG"},
+            "p3": {"position": "SG"},
+            "p4": {"position": "PF"},
+            "p5": {"position": "C"},
+            "p6": {"position": "C"},
+            "p7": {"position": "C"}
+        }
+
+        # act
+        count_team_positions("team1", teams, all_players_stats)
+
+        # assert
+        self.assertEqual(2, teams["team1"]["position"]["PG"])
+        self.assertEqual(1, teams["team1"]["position"]["SG"])
+        self.assertEqual(1, teams["team1"]["position"]["PF"])
+        self.assertEqual(3, teams["team1"]["position"]["C"])
+
+    def test_get_primary_position(self):
+        # act & assert
+        self.assertEqual("PG", get_primary_position("PG"))
+        self.assertEqual("PG", get_primary_position("PG/SG"))
+        self.assertEqual("SG", get_primary_position("SG"))
+        self.assertEqual("SG", get_primary_position("SG/SF"))
+        self.assertEqual("SF", get_primary_position("SF"))
+        self.assertEqual("SF", get_primary_position("SF/PF"))
+        self.assertEqual("SF", get_primary_position("SF/PF/C"))
+        self.assertEqual("PF", get_primary_position("PF"))
+        self.assertEqual("PF", get_primary_position("PF/C"))
+        self.assertEqual("C", get_primary_position("C"))

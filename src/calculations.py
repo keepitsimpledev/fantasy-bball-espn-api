@@ -12,7 +12,7 @@ from src.constants import (
     KEY_LOSSES,
     KEY_TIES,
 )
-from src.env import MY_TEAM
+from src.env import MAX_POSITIONS, MY_TEAM
 from src.transactions import add, drop
 
 
@@ -83,7 +83,6 @@ def compare_waiver_moves(teams, all_players_stats):
     original_win_count = teams[MY_TEAM][KEY_WINS]
 
     do_not_add_players = ["Walker Kessler", "Jayson Tatum", "Kawhi Leonard"]
-    do_not_add_positions = ["C"]
     rostered_players = []
     for team in teams:
         for player in teams[team][KEY_ROSTER]:
@@ -99,12 +98,23 @@ def compare_waiver_moves(teams, all_players_stats):
         for fa_to_add in all_players_stats:
             if fa_to_add in rostered_players:
                 continue
-            if fa_to_add in do_not_add_players:
+            if fa_to_add in do_not_add_players:  # TODO: can we, instead, identify injured players?
                 continue
-            if all_players_stats[fa_to_add][KEY_POSITION] in do_not_add_positions:
-                continue
+
             teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(roster_after_drop)
             add(fa_to_add, MY_TEAM, all_players_stats, teams)
+
+            skip_due_to_too_many_of_position = False  # TODO: test
+            count_team_positions(MY_TEAM, teams, all_players_stats)
+            for position in MAX_POSITIONS:
+                if (position in teams[MY_TEAM][KEY_POSITION]
+                        and teams[MY_TEAM][KEY_POSITION][position] > MAX_POSITIONS[position]):
+                    skip_due_to_too_many_of_position = True
+                    break
+            if skip_due_to_too_many_of_position:
+                skip_due_to_too_many_of_position = False
+                continue
+
             calculate_team_stats(teams, all_players_stats)
             simulate_season(teams)
             current_win_count = teams[MY_TEAM][KEY_WINS]
@@ -154,3 +164,23 @@ def determine_worst_player(teams, all_players_stats):
         print("{} win(s) after dropping {}".format(t.score, t.drop))
 
     teams[MY_TEAM][KEY_ROSTER] = original_roster
+
+
+def count_team_positions(team_name, teams, all_players_stats):
+    position_map = {}
+    for player in teams[team_name][KEY_ROSTER]:
+        players_position = get_primary_position(all_players_stats[player][KEY_POSITION])
+        if players_position in position_map:
+            position_map[players_position] += 1
+        else:
+            position_map[players_position] = 1
+    teams[team_name][KEY_POSITION] = position_map
+
+
+def get_primary_position(position):
+    position_out = ""
+    if position[0:1] == "C":
+        position_out = "C"
+    else:
+        position_out = position[0:2]
+    return position_out
