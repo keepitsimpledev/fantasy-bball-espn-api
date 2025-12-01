@@ -1,8 +1,6 @@
 import os
 import shutil
 import src.processing as processing
-from io import StringIO
-from unittest.mock import patch
 from src.constants import KEY_ROSTER, KEY_SCHEDULE, NINE_CATEGORIES
 from src.env import ESPN_LEAGUE_ID
 from src.processing import (
@@ -125,7 +123,7 @@ class TestProcessing(unittest.TestCase):
             "teamB": teamB,
             "teamC": teamC,
         }
-        
+
         # act
         with self.assertLogs(processing.logger, level='INFO') as captured_logs:
             print_my_team_stat_rankings(teams)
@@ -203,7 +201,7 @@ class TestProcessing(unittest.TestCase):
             "teamB": teamB,
             "teamC": teamC,
         }
-        
+
         # act
         with self.assertLogs(processing.logger, level='INFO') as captured_logs:
             print_all_team_stats(teams)

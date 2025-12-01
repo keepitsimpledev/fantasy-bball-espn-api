@@ -1,5 +1,4 @@
 import src.calculations as calculations
-from io import StringIO
 from src.calculations import (
     calculate_team_stats,
     compare_waiver_moves,
@@ -8,7 +7,6 @@ from src.calculations import (
     get_primary_position,
     simulate_season,
 )
-from unittest.mock import patch
 
 import unittest
 
