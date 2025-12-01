@@ -5,6 +5,7 @@ from src.calculations import (
     simulate_season,
 )
 from src.env import MY_TEAM
+from src.logging import get_logger
 from src.processing import (
     construct_teams_and_stats_map,
     print_my_team_stat_rankings,
@@ -14,9 +15,12 @@ from src.processing import (
 from src.transactions import add, drop, trade
 
 
-def process_transactions(teams, players_stats_map):
-    print("\nprocessing transactions")
+logger = get_logger(__name__)
 
+
+def process_transactions(teams, players_stats_map):
+    logger.info("")
+    logger.info("processing transactions:")
     drop("Keyonte George", teams)
     add("Mike Conley", MY_TEAM, players_stats_map, teams)
     trade(["James Harden", "Kelly Oubre Jr."], ["Stephen Curry", "Deni Avdija"], teams)

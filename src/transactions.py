@@ -1,20 +1,11 @@
 from src.constants import KEY_ROSTER
-import logging
-import sys
+from src.logging import get_logger
 
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    # format="%(asctime)s [%(levelname)s] %(message)s",
-    format="[%(levelname)s] %(message)s",
-    handlers=[
-        logging.FileHandler("debug.log"),
-        logging.StreamHandler(sys.stdout)
-    ]
-)
+logger = get_logger(__name__)
 
 LOG_TRANSACTIONS = True
+
 
 # example usage: drop('Daniel Theis', teams)
 def drop(player, teams):
@@ -92,6 +83,8 @@ def trade(team_1_players, team_2_players, teams):
         drop(player, teams)
 
     for player in team_1_players:
+        logger.info("added {} to {}".format(player, team2))
         teams[team2][KEY_ROSTER] += [player]
     for player in team_2_players:
+        logger.info("added {} to {}".format(player, team1))
         teams[team1][KEY_ROSTER] += [player]

@@ -1,5 +1,5 @@
 import copy
-import logging
+from src.logging import get_logger
 import src.transactions as transactions
 from src.constants import (
     ALL_STATS,
@@ -17,7 +17,7 @@ from src.env import MAX_POSITIONS, MY_TEAM
 from src.transactions import add, drop
 
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 def calculate_team_stats(teams, players_stats_map):
@@ -80,7 +80,8 @@ def compare_waiver_moves(teams, all_players_stats):
     originalLogTransactions = transactions.LOG_TRANSACTIONS
     transactions.LOG_TRANSACTIONS = False
 
-    print("\npotential moves:")
+    logger.info("")
+    logger.info("potential moves:")
     calculate_team_stats(teams, all_players_stats)
     simulate_season(teams)
     original_roster = copy.deepcopy(teams[MY_TEAM][KEY_ROSTER])
@@ -136,7 +137,7 @@ def compare_waiver_moves(teams, all_players_stats):
     num_to_reveal = 25 if len(sorted_transactions) > 25 else len(sorted_transactions)
     for i in range(num_to_reveal):
         t = sorted_transactions[i]
-        print("{} win(s): drop {} add {}".format(t.score, t.drop, t.add))
+        logger.info("{} win(s): drop {} add {}".format(t.score, t.drop, t.add))
 
     teams[MY_TEAM][KEY_ROSTER] = original_roster
     transactions.LOG_TRANSACTIONS = originalLogTransactions
@@ -146,7 +147,8 @@ def determine_worst_player(teams, all_players_stats):
     originalLogTransactions = transactions.LOG_TRANSACTIONS
     transactions.LOG_TRANSACTIONS = False
 
-    print("\nworst players:")
+    logger.info("")
+    logger.info("worst players:")
     calculate_team_stats(teams, all_players_stats)
     simulate_season(teams)
     original_roster = copy.deepcopy(teams[MY_TEAM][KEY_ROSTER])
@@ -171,7 +173,7 @@ def determine_worst_player(teams, all_players_stats):
     sorted_transactions = sorted(scored_transactions, key=scored_transaction_comparator)
     for i in range(len(sorted_transactions)):
         t = sorted_transactions[i]
-        print("{} win(s) after dropping {}".format(t.score, t.drop))
+        logger.info("{} win(s) after dropping {}".format(t.score, t.drop))
 
     teams[MY_TEAM][KEY_ROSTER] = original_roster
     transactions.LOG_TRANSACTIONS = originalLogTransactions
