@@ -228,17 +228,20 @@ class TestCalcuations(unittest.TestCase):
         }
 
         # act
-        with patch("sys.stdout", new=StringIO()) as captured_out:
+        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
             compare_waiver_moves(teams, players_stats_map)
 
         # assert
         self.assertEqual(
-            captured_out.getvalue(),
-            "\npotential moves:\n"
-            + "3 win(s): drop playerA add playerE\n"
-            + "3 win(s): drop playerB add playerE\n"
-            + "-1 win(s): drop playerA add playerF\n"
-            + "-1 win(s): drop playerB add playerF\n",
+            captured_logs.output,
+            [
+                'INFO:src.calculations:',
+                'INFO:src.calculations:potential moves:',
+                'INFO:src.calculations:3 win(s): drop playerA add playerE',
+                'INFO:src.calculations:3 win(s): drop playerB add playerE',
+                'INFO:src.calculations:-1 win(s): drop playerA add playerF',
+                'INFO:src.calculations:-1 win(s): drop playerB add playerF',
+            ]
         )
 
     def test_compare_waiver_moves_max_position(self):
@@ -315,13 +318,17 @@ class TestCalcuations(unittest.TestCase):
         }
 
         # act
-        with patch("sys.stdout", new=StringIO()) as captured_out:
+        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
             compare_waiver_moves(teams, players_stats_map)
 
         # assert
         self.assertEqual(
-            captured_out.getvalue(),
-            "\npotential moves:\n1 win(s): drop playerA add playerD\n",
+            captured_logs.output,
+            [
+                'INFO:src.calculations:',
+                'INFO:src.calculations:potential moves:',
+                'INFO:src.calculations:1 win(s): drop playerA add playerD',
+            ]
         )
 
     def test_determine_worst_player(self):
@@ -410,16 +417,19 @@ class TestCalcuations(unittest.TestCase):
         }
 
         # act
-        with patch("sys.stdout", new=StringIO()) as captured_out:
+        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
             determine_worst_player(teams, players_stats_map)
 
         # assert
         self.assertEqual(
-            captured_out.getvalue(),
-            "\nworst players:\n"
-            + "0 win(s) after dropping playerA\n"
-            + "0 win(s) after dropping playerB\n"
-            + "-1 win(s) after dropping playerE\n",
+            captured_logs.output,
+            [
+                'INFO:src.calculations:',
+                'INFO:src.calculations:worst players:',
+                'INFO:src.calculations:0 win(s) after dropping playerA',
+                'INFO:src.calculations:0 win(s) after dropping playerB',
+                'INFO:src.calculations:-1 win(s) after dropping playerE',
+            ]
         )
 
     def test_count_team_positions(self):
