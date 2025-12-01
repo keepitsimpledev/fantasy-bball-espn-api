@@ -120,7 +120,8 @@ def print_all_team_stats(teams):
             + format_stat(team[1][KEY_STATS]["BLK"], 1)
             + format_stat(team[1][KEY_STATS]["TO"], 1)
             + format_stat(team[1][KEY_STATS]["PTS"], 1)
-            + " " + str(team[1][KEY_WINS]),
+            + " "
+            + str(team[1][KEY_WINS]),
         )
 
 

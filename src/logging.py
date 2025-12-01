@@ -11,6 +11,6 @@ def get_logger(name):
         handlers=[
             # logging.FileHandler("debug.log"),
             logging.StreamHandler(sys.stdout)
-        ]
+        ],
     )
     return logger
