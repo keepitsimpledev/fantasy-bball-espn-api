@@ -51,7 +51,7 @@ def calculate_team_stats(teams, players_stats_map):
         team_stats["FG%"] = round(fg_pct, 4)
         team_stats["FT%"] = round(ft_pct, 4)
         team_stats["TO"] = team_stats["TO"] * -1
-    global LOG_MISSING_PLAYER 
+    global LOG_MISSING_PLAYER
     if LOG_MISSING_PLAYER:
         for player in missing_players:
             logger.warning("stats not found for {}".format(player))
