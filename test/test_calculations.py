@@ -11,7 +11,7 @@ from src.calculations import (
 import unittest
 
 
-class TestCalcuations(unittest.TestCase):
+class TestCalculations(unittest.TestCase):
 
     def test_calculate_team_stats(self):
         # arrange
