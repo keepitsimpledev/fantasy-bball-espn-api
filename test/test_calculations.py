@@ -248,6 +248,8 @@ class TestCalcuations(unittest.TestCase):
             [
                 'INFO:src.calculations:',
                 'INFO:src.calculations:potential moves:',
+                'INFO:src.calculations:skipping playerG from do-not-add list',
+                'INFO:src.calculations:skipping playerB from do-not-drop list',
                 'INFO:src.calculations:3 win(s): drop playerA add playerE',
                 'INFO:src.calculations:-1 win(s): drop playerA add playerF',
             ]

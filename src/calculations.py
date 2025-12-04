@@ -115,7 +115,8 @@ def compare_waiver_moves(teams, all_players_stats):
     scored_transactions = []
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
         if player_to_drop in do_not_drop_players:
-            continue;  # TODO: log
+            logger.info("skipping {} from do-not-drop list".format(player_to_drop))
+            continue
         if (
             all_players_stats[player_to_drop][KEY_IR] == "True"  # is a string in cached spreadsheet
             or all_players_stats[player_to_drop][KEY_IR] == True  # noqa: E712 | is boolean from ESPN
@@ -128,7 +129,8 @@ def compare_waiver_moves(teams, all_players_stats):
             if fa_to_add in rostered_players:
                 continue
             if fa_to_add in do_not_add_players:
-                continue  # TODO: log
+                logger.info("skipping {} from do-not-add list".format(fa_to_add))
+                continue
 
             teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(roster_after_drop)
             add(fa_to_add, MY_TEAM, all_players_stats, teams)
