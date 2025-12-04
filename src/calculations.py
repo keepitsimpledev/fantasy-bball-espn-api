@@ -40,7 +40,7 @@ def calculate_team_stats(teams, players_stats_map):
                 continue
             if (
                 players_stats_map[player][KEY_IR] == "True"  # is a string from cached spreadsheet
-                or players_stats_map[player][KEY_IR] == True  # is boolean from ESPN
+                or players_stats_map[player][KEY_IR] == True  # noqa: E712 | is boolean from ESPN
             ):
                 continue  # IR players won't contribute to calculations
             for stat in ALL_STATS:
@@ -110,7 +110,7 @@ def compare_waiver_moves(teams, all_players_stats):
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
         if (
             all_players_stats[player_to_drop][KEY_IR] == "True"  # is a string in cached spreadsheet
-            or all_players_stats[player_to_drop][KEY_IR] == True  # is boolean from ESPN
+            or all_players_stats[player_to_drop][KEY_IR] == True  # noqa: E712 | is boolean from ESPN
         ):
             continue
         teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(original_roster)
@@ -178,7 +178,7 @@ def determine_worst_player(teams, all_players_stats):
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
         if (
             all_players_stats[player_to_drop][KEY_IR] == "True"  # is a string in cached spreadsheet
-            or all_players_stats[player_to_drop][KEY_IR] == True  # is boolean from ESPN
+            or all_players_stats[player_to_drop][KEY_IR] == True  # noqa: E712 | is boolean from ESPN
         ):
             continue
         teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(original_roster)
