@@ -340,7 +340,7 @@ class TestCalcuations(unittest.TestCase):
         teams = {}
         teams["teamA"] = {}
         teams["teamA"]["schedule"] = ["teamB"]
-        teams["teamA"]["roster"] = ["playerA", "playerB", "playerE"]
+        teams["teamA"]["roster"] = ["playerA", "playerB", "playerE", "playerG", "playerH"]
         teams["teamA"]["stats"] = {
             "FG%": 0.25,
             "FT%": 0.25,
@@ -412,6 +412,24 @@ class TestCalcuations(unittest.TestCase):
             "TO": 10,
             "PTS": 0,
             "On IR": "False",
+        }
+        players_stats_map["playerG"] = {
+            "FGM": 0,
+            "FGA": 5,
+            "FTA": 0,
+            "FTM": 10,
+            "TO": 10,
+            "PTS": 0,
+            "On IR": "True",
+        }
+        players_stats_map["playerH"] = {
+            "FGM": 0,
+            "FGA": 5,
+            "FTA": 0,
+            "FTM": 10,
+            "TO": 10,
+            "PTS": 0,
+            "On IR": True,
         }
 
         # act
