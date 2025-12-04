@@ -35,7 +35,10 @@ def calculate_team_stats(teams, players_stats_map):
                 #     "TODO check why this is necessary - what does a lack of an IR flag indicate?"
                 # ) # one reason: hashtag player not found causes missing KEY_IR
                 continue
-            if players_stats_map[player][KEY_IR] == "True":
+            if (
+                players_stats_map[player][KEY_IR] == "True"  # is a string from cached spreadsheet
+                or players_stats_map[player][KEY_IR] == True  # is boolean from ESPN
+            ):
                 continue  # IR players won't contribute to calculations
             for stat in ALL_STATS:
                 team_stats[stat] += players_stats_map[player][stat]
@@ -95,7 +98,10 @@ def compare_waiver_moves(teams, all_players_stats):
 
     scored_transactions = []
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
-        if all_players_stats[player_to_drop][KEY_IR] == "True":
+        if (
+            all_players_stats[player_to_drop][KEY_IR] == "True"  # is a string in cached spreadsheet
+            or all_players_stats[player_to_drop][KEY_IR] == True  # is boolean from ESPN
+        ):
             continue
         teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(original_roster)
         drop(player_to_drop, teams)
@@ -156,7 +162,10 @@ def determine_worst_player(teams, all_players_stats):
 
     scored_transactions = []
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
-        if all_players_stats[player_to_drop][KEY_IR] == "True":
+        if (
+            all_players_stats[player_to_drop][KEY_IR] == "True"  # is a string in cached spreadsheet
+            or all_players_stats[player_to_drop][KEY_IR] == True  # is boolean from ESPN
+        ):
             continue
         teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(original_roster)
         drop(player_to_drop, teams)
