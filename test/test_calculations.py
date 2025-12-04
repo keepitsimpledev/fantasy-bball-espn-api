@@ -1,5 +1,6 @@
 import src.calculations as calculations
 from src.calculations import (
+    calculate_team_contributions,
     calculate_team_stats,
     compare_waiver_moves,
     count_team_positions,
@@ -505,3 +506,59 @@ class TestCalculations(unittest.TestCase):
         self.assertEqual("PF", get_primary_position("PF"))
         self.assertEqual("PF", get_primary_position("PF/C"))
         self.assertEqual("C", get_primary_position("C"))
+
+    def test_calculate_team_contributions(self):
+        # arrange
+        team = {}
+        roster = ["playerA", "playerB", "playerC"]
+        stats = {
+            "FGM": 9,
+            "FGA": 16,
+            "FG%": 0.5625,
+
+            "FTM": 12,
+            "FTA": 20,
+            "FT%": 0.6000
+        }
+        team = {
+            "roster": roster,
+            "stats": stats
+        }
+        
+        all_players_stats = {
+            "playerA": {
+                "FGM": 1,
+                "FGA": 4,
+
+                "FTM": 5,
+                "FTA": 6
+            },
+            "playerB": {
+                "FGM": 3,
+                "FGA": 6,
+
+                "FTM": 6,
+                "FTA": 8
+            },
+            "playerC": {
+                "FGM": 5,
+                "FGA": 6,
+
+                "FTM": 1,
+                "FTA": 6
+            }
+        }
+
+        # act
+        calculate_team_contributions(team, all_players_stats)
+
+        # assert
+        team["contributions"]["playerA"]["FG%"] = -0.1042
+        team["contributions"]["playerB"]["FG%"] = -0.0375
+        team["contributions"]["playerC"]["FG%"] = 0.1625
+        
+        team["contributions"]["playerA"]["FT%"] = 0.1000
+        team["contributions"]["playerB"]["FT%"] = 0.1000
+        team["contributions"]["playerC"]["FT%"] = -0.1857
+
+

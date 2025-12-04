@@ -4,6 +4,7 @@ import src.transactions as transactions
 from src.constants import (
     ALL_STATS,
     NINE_CATEGORIES,
+    KEY_CONTRIBUTIONS,
     KEY_POSITION,
     KEY_IR,
     KEY_ROSTER,
@@ -226,3 +227,24 @@ def get_primary_position(position):
     else:
         position_out = position[0:2]
     return position_out
+
+
+def calculate_team_contributions(team, all_players_stats):
+    contributions = {}
+    for player in team[KEY_ROSTER]:
+        team_stats = team[KEY_STATS]
+        player_stats = all_players_stats[player]
+        contributions[player] = {}
+
+        fgm_without = team_stats["FGM"] - player_stats["FGM"]
+        fga_without = team_stats["FGA"] - player_stats["FGA"]
+        fg_without = fgm_without / fga_without
+        contributions[player]["FG%"] = round(team_stats["FG%"] - fg_without, 4)
+
+        ftm_without = team_stats["FTM"] - player_stats["FTM"]
+        fta_without = team_stats["FTA"] - player_stats["FTA"]
+        ft_without = ftm_without / fta_without
+        contributions[player]["FT%"] = round(team_stats["FT%"] - ft_without, 4)
+    
+    team[KEY_CONTRIBUTIONS] = contributions
+
