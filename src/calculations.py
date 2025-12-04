@@ -19,8 +19,11 @@ from src.transactions import add, drop
 
 logger = get_logger(__name__)
 
+LOG_MISSING_PLAYER = True
+
 
 def calculate_team_stats(teams, players_stats_map):
+    missing_players = []
     for team in teams:
         teams[team][KEY_STATS] = {}
         team_stats = teams[team][KEY_STATS]
@@ -28,7 +31,7 @@ def calculate_team_stats(teams, players_stats_map):
             team_stats[stat] = 0
         for player in teams[team][KEY_ROSTER]:
             if player not in players_stats_map:
-                logger.warning("stats not found for {}".format(player))
+                missing_players.append(player)
                 continue
             if KEY_IR not in players_stats_map[player]:
                 # raise Exception(
@@ -48,6 +51,10 @@ def calculate_team_stats(teams, players_stats_map):
         team_stats["FG%"] = round(fg_pct, 4)
         team_stats["FT%"] = round(ft_pct, 4)
         team_stats["TO"] = team_stats["TO"] * -1
+    global LOG_MISSING_PLAYER 
+    if LOG_MISSING_PLAYER:
+        for player in missing_players:
+            logger.warning("stats not found for {}".format(player))
 
 
 def simulate_season(teams):
@@ -82,6 +89,9 @@ class ScoredTransaction:
 def compare_waiver_moves(teams, all_players_stats):
     originalLogTransactions = transactions.LOG_TRANSACTIONS
     transactions.LOG_TRANSACTIONS = False
+    global LOG_MISSING_PLAYER
+    originalLogMissingPlayer = LOG_MISSING_PLAYER
+    LOG_MISSING_PLAYER = False
 
     logger.info("")
     logger.info("potential moves:")
@@ -147,11 +157,15 @@ def compare_waiver_moves(teams, all_players_stats):
 
     teams[MY_TEAM][KEY_ROSTER] = original_roster
     transactions.LOG_TRANSACTIONS = originalLogTransactions
+    LOG_MISSING_PLAYER = originalLogMissingPlayer
 
 
 def determine_worst_player(teams, all_players_stats):
     originalLogTransactions = transactions.LOG_TRANSACTIONS
     transactions.LOG_TRANSACTIONS = False
+    global LOG_MISSING_PLAYER
+    originalLogMissingPlayer = LOG_MISSING_PLAYER
+    LOG_MISSING_PLAYER = False
 
     logger.info("")
     logger.info("worst players:")
@@ -186,6 +200,7 @@ def determine_worst_player(teams, all_players_stats):
 
     teams[MY_TEAM][KEY_ROSTER] = original_roster
     transactions.LOG_TRANSACTIONS = originalLogTransactions
+    LOG_MISSING_PLAYER = originalLogMissingPlayer
 
 
 def count_team_positions(team_name, teams, all_players_stats):
