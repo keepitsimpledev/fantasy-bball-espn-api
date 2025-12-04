@@ -1,5 +1,7 @@
 LOAD_FROM_CACHE = False
 USE_HASHTAG = False
+DO_NOT_ADD = ["Walker Kessler", "Jayson Tatum"]
+DO_NOT_DROP = ["Kyshawn George"]
 
 ESPN_LEAGUE_ID = 290350916
 MY_TEAM = "Big Baller Brand (BBb)"

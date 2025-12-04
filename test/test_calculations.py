@@ -141,6 +141,9 @@ class TestCalcuations(unittest.TestCase):
         calculations.ALL_STATS = ["FGM", "FGA", "FTM", "FTA", "TO", "PTS"]
         calculations.NINE_CATEGORIES = ["FG%", "FT%", "TO", "PTS"]
 
+        calculations.DO_NOT_ADD = ["playerG"]
+        calculations.DO_NOT_DROP = ["playerB"]
+
         calculations.MY_TEAM = "teamA"
         teams = {}
         teams["teamA"] = {}
@@ -224,6 +227,16 @@ class TestCalcuations(unittest.TestCase):
             "PTS": 0,
             "On IR": "False",
         }
+        players_stats_map["playerG"] = {
+            "position": "SF",
+            "FGM": 10,
+            "FGA": 10,
+            "FTM": 10,
+            "FTA": 10,
+            "TO": 0,
+            "PTS": 40,
+            "On IR": "False",
+        }
 
         # act
         with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
@@ -236,9 +249,7 @@ class TestCalcuations(unittest.TestCase):
                 'INFO:src.calculations:',
                 'INFO:src.calculations:potential moves:',
                 'INFO:src.calculations:3 win(s): drop playerA add playerE',
-                'INFO:src.calculations:3 win(s): drop playerB add playerE',
                 'INFO:src.calculations:-1 win(s): drop playerA add playerF',
-                'INFO:src.calculations:-1 win(s): drop playerB add playerF',
             ]
         )
 

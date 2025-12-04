@@ -13,7 +13,12 @@ from src.constants import (
     KEY_LOSSES,
     KEY_TIES,
 )
-from src.env import MAX_POSITIONS, MY_TEAM
+from src.env import (
+    DO_NOT_ADD,
+    DO_NOT_DROP,
+    MAX_POSITIONS,
+    MY_TEAM
+)
 from src.transactions import add, drop
 
 
@@ -100,8 +105,8 @@ def compare_waiver_moves(teams, all_players_stats):
     original_roster = copy.deepcopy(teams[MY_TEAM][KEY_ROSTER])
     original_win_count = teams[MY_TEAM][KEY_WINS]
 
-    do_not_add_players = ["Walker Kessler", "Jayson Tatum", "Kawhi Leonard"]
-    do_not_drop_players = ["Dominick Barlow"]
+    do_not_add_players = DO_NOT_ADD
+    do_not_drop_players = DO_NOT_DROP
     rostered_players = []
     for team in teams:
         for player in teams[team][KEY_ROSTER]:
@@ -110,7 +115,7 @@ def compare_waiver_moves(teams, all_players_stats):
     scored_transactions = []
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
         if player_to_drop in do_not_drop_players:
-            continue;
+            continue;  # TODO: log
         if (
             all_players_stats[player_to_drop][KEY_IR] == "True"  # is a string in cached spreadsheet
             or all_players_stats[player_to_drop][KEY_IR] == True  # noqa: E712 | is boolean from ESPN
@@ -123,7 +128,7 @@ def compare_waiver_moves(teams, all_players_stats):
             if fa_to_add in rostered_players:
                 continue
             if fa_to_add in do_not_add_players:
-                continue
+                continue  # TODO: log
 
             teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(roster_after_drop)
             add(fa_to_add, MY_TEAM, all_players_stats, teams)
