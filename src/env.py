@@ -1,7 +1,13 @@
 LOAD_FROM_CACHE = False
 USE_HASHTAG = False
+DO_NOT_ADD = ["Walker Kessler", "Jayson Tatum"]
+DO_NOT_DROP = ["Kyshawn George"]
 
 ESPN_LEAGUE_ID = 290350916
 MY_TEAM = "Big Baller Brand (BBb)"
 MY_ESPN_S2 = "RXJaoLpmI83Wn6hE1I8CUIIJfQu6Y2DJfVXjun1nY1poVnDUAm45SJxPEGykOTSkgyBLjXvEwkyhmSiYvfxd8BedDHKHtnChl7JYkr0xE9ArNZocuNWLhSOdbizNU0tZKEGKI4vfrpy2y8eiEv4cNOVymUvEO7sGtKnwtTPLnoGUbdIiye4VKTEzx9PAXnJIWGIOdGhnozaqs9jOwuEriK3DMwMuit391tJmnlqQp0yrqVoxwfNAEgG2xFNAF1EJn2Qwq9PlwThxiRCkET2zW34i7Mc6bZT2eq9oAbNkmiUzUB0JplhuHhcu3ed6G1zO%uJhIOHQd7IlDGRP6wFCEHpXBnqnPH"
 MY_SWID = "{0007e2e0-a86e-460b-8109-102b11ebb0c3}"
+
+MAX_POSITIONS = {
+    "C": 4,
+}

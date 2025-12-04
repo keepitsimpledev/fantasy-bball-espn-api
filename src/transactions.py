@@ -1,17 +1,21 @@
 from src.constants import KEY_ROSTER
-import logging
+from src.logging import get_logger
 
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
+
+LOG_TRANSACTIONS = True
 
 
 # example usage: drop('Daniel Theis', teams)
 def drop(player, teams):
-    for team_name in teams:
-        roster = teams[team_name][KEY_ROSTER]
+    for team in teams:
+        roster = teams[team][KEY_ROSTER]
         if player in roster:
             del roster[roster.index(player)]
-            return team_name
+            if LOG_TRANSACTIONS:
+                logger.info("dropped {} from {}".format(player, team))
+            return team
     logger.warning("unable to drop {} - not found".format(player))
     return None
 
@@ -24,6 +28,8 @@ def add(player, team, all_players, teams):
         logger.warning("unable to add to {} - team not found".format(team))
     else:
         teams[team][KEY_ROSTER] += [player]
+        if LOG_TRANSACTIONS:
+            logger.info("added {} to {}".format(player, team))
 
 
 def find_team_of_player(player, teams):
@@ -77,6 +83,8 @@ def trade(team_1_players, team_2_players, teams):
         drop(player, teams)
 
     for player in team_1_players:
+        logger.info("added {} to {}".format(player, team2))
         teams[team2][KEY_ROSTER] += [player]
     for player in team_2_players:
+        logger.info("added {} to {}".format(player, team1))
         teams[team1][KEY_ROSTER] += [player]

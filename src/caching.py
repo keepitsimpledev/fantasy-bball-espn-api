@@ -1,7 +1,7 @@
 import csv
 import os
 import shutil
-from src.constants import ALL_STATS, CACHE_HEADER_PLAYER, KEY_IR
+from src.constants import ALL_STATS, CACHE_HEADER_PLAYER, KEY_IR, KEY_POSITION
 from src.env import ESPN_LEAGUE_ID
 from src.espn_interactions.basketball import remove_unallowed_characters
 
@@ -50,7 +50,7 @@ def cache_players_stats_map(players_stats_map):
     ) as players_file:
         writer = csv.DictWriter(
             players_file,
-            fieldnames=[CACHE_HEADER_PLAYER] + ALL_STATS + [KEY_IR],
+            fieldnames=[CACHE_HEADER_PLAYER] + [KEY_POSITION] + ALL_STATS + [KEY_IR],
         )
         writer.writeheader()
         for player_name in players_stats_map:

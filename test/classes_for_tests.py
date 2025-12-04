@@ -23,6 +23,7 @@ class TestPlayer:
         self.name = player_name
         self.stats = {}
         self.lineupSlot = None
+        self.position = None
 
     def __eq__(self, other):
         return self.name == other.name

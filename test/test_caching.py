@@ -160,10 +160,12 @@ class TestCaching(unittest.TestCase):
         caching.ALL_STATS = ["STL", "BLK"]  # to simplify test a bit
         players_stats_map = {}
         players_stats_map["TJ McConnell"] = {}
+        players_stats_map["TJ McConnell"]["position"] = "PG"
         players_stats_map["TJ McConnell"]["STL"] = 95
         players_stats_map["TJ McConnell"]["BLK"] = 14
         players_stats_map["TJ McConnell"]["On IR"] = False
         players_stats_map["Walker Kessler"] = {}
+        players_stats_map["Walker Kessler"]["position"] = "C"
         players_stats_map["Walker Kessler"]["STL"] = 28
         players_stats_map["Walker Kessler"]["BLK"] = 192
         players_stats_map["Walker Kessler"]["On IR"] = True
@@ -174,9 +176,9 @@ class TestCaching(unittest.TestCase):
 
         # assert
         with open("test/cached/12345/players.csv", "r", newline="\r\n") as team_file:
-            self.assertEqual(team_file.readline(), "Player,STL,BLK,On IR\r\n")
-            self.assertEqual(team_file.readline(), "TJ McConnell,95,14,False\r\n")
-            self.assertEqual(team_file.readline(), "Walker Kessler,28,192,True\r\n")
+            self.assertEqual(team_file.readline(), "Player,position,STL,BLK,On IR\r\n")
+            self.assertEqual(team_file.readline(), "TJ McConnell,PG,95,14,False\r\n")
+            self.assertEqual(team_file.readline(), "Walker Kessler,C,28,192,True\r\n")
 
     def test_load_players_stats_map(self):
         # arrange

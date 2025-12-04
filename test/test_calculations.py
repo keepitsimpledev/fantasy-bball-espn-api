@@ -1,11 +1,12 @@
 import src.calculations as calculations
-from io import StringIO
 from src.calculations import (
     calculate_team_stats,
     compare_waiver_moves,
+    count_team_positions,
     determine_worst_player,
-    simulate_season)
-from unittest.mock import patch
+    get_primary_position,
+    simulate_season,
+)
 
 import unittest
 
@@ -140,6 +141,9 @@ class TestCalcuations(unittest.TestCase):
         calculations.ALL_STATS = ["FGM", "FGA", "FTM", "FTA", "TO", "PTS"]
         calculations.NINE_CATEGORIES = ["FG%", "FT%", "TO", "PTS"]
 
+        calculations.DO_NOT_ADD = ["playerG"]
+        calculations.DO_NOT_DROP = ["playerB"]
+
         calculations.MY_TEAM = "teamA"
         teams = {}
         teams["teamA"] = {}
@@ -164,72 +168,178 @@ class TestCalcuations(unittest.TestCase):
 
         players_stats_map = {}
         players_stats_map["playerA"] = {
+            "position": "PG",
             "FGM": 1,
             "FGA": 4,
-            "FTA": 1,
-            "FTM": 4,
+            "FTM": 1,
+            "FTA": 4,
             "TO": 3,
             "PTS": 3,
             "On IR": "False",
         }
         players_stats_map["playerB"] = {
+            "position": "PG",
             "FGM": 1,
             "FGA": 4,
-            "FTA": 1,
-            "FTM": 4,
+            "FTM": 1,
+            "FTA": 4,
             "TO": 4,
             "PTS": 3,
             "On IR": "False",
         }
         players_stats_map["playerC"] = {
+            "position": "C",
             "FGM": 4,
             "FGA": 8,
-            "FTA": 4,
-            "FTM": 8,
+            "FTM": 4,
+            "FTA": 8,
             "TO": 4,
             "PTS": 12,
             "On IR": "False",
         }
         players_stats_map["playerD"] = {
+            "position": "C",
             "FGM": 4,
             "FGA": 8,
-            "FTA": 4,
-            "FTM": 8,
+            "FTM": 4,
+            "FTA": 8,
             "TO": 4,
             "PTS": 12,
             "On IR": "False",
         }
         players_stats_map["playerE"] = {
+            "position": "SF",
             "FGM": 10,
             "FGA": 10,
-            "FTA": 10,
             "FTM": 10,
+            "FTA": 10,
             "TO": 0,
             "PTS": 30,
             "On IR": "False",
         }
         players_stats_map["playerF"] = {
+            "position": "PF",
             "FGM": 0,
             "FGA": 5,
-            "FTA": 0,
-            "FTM": 10,
+            "FTM": 0,
+            "FTA": 10,
             "TO": 10,
+            "PTS": 0,
+            "On IR": "False",
+        }
+        players_stats_map["playerG"] = {
+            "position": "SF",
+            "FGM": 10,
+            "FGA": 10,
+            "FTM": 10,
+            "FTA": 10,
+            "TO": 0,
+            "PTS": 40,
+            "On IR": "False",
+        }
+
+        # act
+        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
+            compare_waiver_moves(teams, players_stats_map)
+
+        # assert
+        self.assertEqual(
+            captured_logs.output,
+            [
+                'INFO:src.calculations:',
+                'INFO:src.calculations:potential moves:',
+                'INFO:src.calculations:skipping playerG from do-not-add list',
+                'INFO:src.calculations:skipping playerB from do-not-drop list',
+                'INFO:src.calculations:3 win(s): drop playerA add playerE',
+                'INFO:src.calculations:-1 win(s): drop playerA add playerF',
+            ]
+        )
+
+    def test_compare_waiver_moves_max_position(self):
+        # arrange
+
+        calculations.MAX_POSITIONS = {"C": 0}
+
+        # reduce stats to simplify test:
+        calculations.ALL_STATS = ["FGM", "FGA", "FTM", "FTA", "TO", "PTS"]
+        calculations.NINE_CATEGORIES = ["FG%", "FT%", "TO", "PTS"]
+
+        calculations.MY_TEAM = "teamA"
+        teams = {}
+        teams["teamA"] = {}
+        teams["teamA"]["schedule"] = ["teamB"]
+        teams["teamA"]["roster"] = ["playerA"]
+        teams["teamA"]["stats"] = {
+            "FG%": 0.0,
+            "FT%": 0.0,
+            "PTS": 0,
+            "TO": 5,
+        }
+
+        teams["teamB"] = {}
+        teams["teamB"]["schedule"] = ["teamA"]
+        teams["teamB"]["roster"] = ["playerB"]
+        teams["teamB"]["stats"] = {
+            "FG%": 0.5,
+            "FT%": 0.5,
+            "PTS": 3,
+            "TO": 2,
+        }
+
+        players_stats_map = {}
+        players_stats_map["playerA"] = {
+            "position": "PG",
+            "FGM": 0,
+            "FGA": 1,
+            "FTM": 0,
+            "FTA": 1,
+            "TO": 5,
+            "PTS": 0,
+            "On IR": "False",
+        }
+        players_stats_map["playerB"] = {
+            "position": "PG",
+            "FGM": 1,
+            "FGA": 2,
+            "FTM": 2,
+            "FTA": 1,
+            "TO": 2,
+            "PTS": 3,
+            "On IR": "False",
+        }
+        players_stats_map["playerC"] = {
+            "position": "C",
+            "FGM": 2,
+            "FGA": 2,
+            "FTM": 2,
+            "FTA": 2,
+            "TO": 1,
+            "PTS": 6,
+            "On IR": "False",
+        }
+        players_stats_map["playerD"] = {
+            "position": "PG",
+            "FGM": 1,
+            "FGA": 1,
+            "FTM": 0,
+            "FTA": 1,
+            "TO": 5,
             "PTS": 0,
             "On IR": "False",
         }
 
         # act
-        with patch("sys.stdout", new=StringIO()) as captured_out:
+        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
             compare_waiver_moves(teams, players_stats_map)
 
         # assert
         self.assertEqual(
-            captured_out.getvalue(),
-            "\npotential moves:\n"
-            + "1 win(s): drop playerA add playerE\n"
-            + "1 win(s): drop playerB add playerE\n"
-            + "-1 win(s): drop playerA add playerF\n"
-            + "-1 win(s): drop playerB add playerF\n",
+            captured_logs.output,
+            [
+                'INFO:src.calculations:',
+                'INFO:src.calculations:potential moves:',
+                'INFO:src.calculations:1 win(s): drop playerA add playerD',
+            ]
         )
 
     def test_determine_worst_player(self):
@@ -243,7 +353,7 @@ class TestCalcuations(unittest.TestCase):
         teams = {}
         teams["teamA"] = {}
         teams["teamA"]["schedule"] = ["teamB"]
-        teams["teamA"]["roster"] = ["playerA", "playerB", "playerE"]
+        teams["teamA"]["roster"] = ["playerA", "playerB", "playerE", "playerG", "playerH"]
         teams["teamA"]["stats"] = {
             "FG%": 0.25,
             "FT%": 0.25,
@@ -316,16 +426,76 @@ class TestCalcuations(unittest.TestCase):
             "PTS": 0,
             "On IR": "False",
         }
+        players_stats_map["playerG"] = {
+            "FGM": 0,
+            "FGA": 5,
+            "FTA": 0,
+            "FTM": 10,
+            "TO": 10,
+            "PTS": 0,
+            "On IR": "True",
+        }
+        players_stats_map["playerH"] = {
+            "FGM": 0,
+            "FGA": 5,
+            "FTA": 0,
+            "FTM": 10,
+            "TO": 10,
+            "PTS": 0,
+            "On IR": True,
+        }
 
         # act
-        with patch("sys.stdout", new=StringIO()) as captured_out:
+        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
             determine_worst_player(teams, players_stats_map)
 
         # assert
         self.assertEqual(
-            captured_out.getvalue(),
-            "\nworst players:\n"
-            + "0 win(s) after dropping playerA\n"
-            + "0 win(s) after dropping playerB\n"
-            + "-1 win(s) after dropping playerE\n",
+            captured_logs.output,
+            [
+                'INFO:src.calculations:',
+                'INFO:src.calculations:worst players:',
+                'INFO:src.calculations:0 win(s) after dropping playerA',
+                'INFO:src.calculations:0 win(s) after dropping playerB',
+                'INFO:src.calculations:-1 win(s) after dropping playerE',
+            ]
         )
+
+    def test_count_team_positions(self):
+        # arrange
+        teams = {
+            "team1": {"roster": ["p1", "p2", "p3", "p4", "p5", "p6", "p7"]},
+            "team2": {},
+        }
+
+        all_players_stats = {
+            "p1": {"position": "PG"},
+            "p2": {"position": "PG"},
+            "p3": {"position": "SG"},
+            "p4": {"position": "PF"},
+            "p5": {"position": "C"},
+            "p6": {"position": "C"},
+            "p7": {"position": "C"},
+        }
+
+        # act
+        count_team_positions("team1", teams, all_players_stats)
+
+        # assert
+        self.assertEqual(2, teams["team1"]["position"]["PG"])
+        self.assertEqual(1, teams["team1"]["position"]["SG"])
+        self.assertEqual(1, teams["team1"]["position"]["PF"])
+        self.assertEqual(3, teams["team1"]["position"]["C"])
+
+    def test_get_primary_position(self):
+        # act & assert
+        self.assertEqual("PG", get_primary_position("PG"))
+        self.assertEqual("PG", get_primary_position("PG/SG"))
+        self.assertEqual("SG", get_primary_position("SG"))
+        self.assertEqual("SG", get_primary_position("SG/SF"))
+        self.assertEqual("SF", get_primary_position("SF"))
+        self.assertEqual("SF", get_primary_position("SF/PF"))
+        self.assertEqual("SF", get_primary_position("SF/PF/C"))
+        self.assertEqual("PF", get_primary_position("PF"))
+        self.assertEqual("PF", get_primary_position("PF/C"))
+        self.assertEqual("C", get_primary_position("C"))

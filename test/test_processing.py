@@ -1,8 +1,6 @@
 import os
 import shutil
 import src.processing as processing
-from io import StringIO
-from unittest.mock import patch
 from src.constants import KEY_ROSTER, KEY_SCHEDULE, NINE_CATEGORIES
 from src.env import ESPN_LEAGUE_ID
 from src.processing import (
@@ -126,15 +124,21 @@ class TestProcessing(unittest.TestCase):
             "teamC": teamC,
         }
 
-        with patch("sys.stdout", new=StringIO()) as captured_out:
-            # act
+        # act
+        with self.assertLogs(processing.logger, level='INFO') as captured_logs:
             print_my_team_stat_rankings(teams)
 
-            # assert
-            self.assertEqual(
-                captured_out.getvalue(),
-                "\nteamB stat rankings:\n" + "REB : 3\nAST : 1\nPTS : 3\n",
-            )
+        # assert
+        self.assertEqual(
+            captured_logs.output,
+            [
+                'INFO:src.processing:',
+                'INFO:src.processing:teamB stat rankings:',
+                'INFO:src.processing:REB : 3',
+                'INFO:src.processing:AST : 1',
+                'INFO:src.processing:PTS : 3',
+            ]
+        )
 
     def test_print_all_team_stats(self):
         # arrange
@@ -198,22 +202,22 @@ class TestProcessing(unittest.TestCase):
             "teamC": teamC,
         }
 
-        with patch("sys.stdout", new=StringIO()) as captured_out:
-            # act
+        # act
+        with self.assertLogs(processing.logger, level='INFO') as captured_logs:
             print_all_team_stats(teams)
 
-            # assert
-            self.maxDiff = None
-            expected = (
-                "\nTeam  FG%    FT%    3PM    REB    AST    STL    BLK    TO     PTS    Wins\n"
-                + "teamA 0.5679 0.7268 0.0    7.0    5.0    5.7    6.7    2.0    3.0    10\n"
-                + "teamC 0.5001 0.7575 10.0   6.0    5.0    4.4    2.5    4.6    9.0    9\n"
-                + "teamB 0.456  0.891  12.6   5.0    8.0    8.9    0.0    7.7    2.0    8\n"
-            )
-            self.assertEqual(
-                captured_out.getvalue(),
-                expected,
-            )
+        # assert
+        self.maxDiff = None
+        self.assertEqual(
+            captured_logs.output,
+            [
+                'INFO:src.processing:',
+                'INFO:src.processing:Team  FG%    FT%    3PM    REB    AST    STL    BLK    TO     PTS    Wins',
+                'INFO:src.processing:teamA 0.5679 0.7268 0.0    7.0    5.0    5.7    6.7    2.0    3.0    10',
+                'INFO:src.processing:teamC 0.5001 0.7575 10.0   6.0    5.0    4.4    2.5    4.6    9.0    9',
+                'INFO:src.processing:teamB 0.456  0.891  12.6   5.0    8.0    8.9    0.0    7.7    2.0    8',
+            ]
+        )
 
     def test_save_projection_to_file(self):
         # arrange

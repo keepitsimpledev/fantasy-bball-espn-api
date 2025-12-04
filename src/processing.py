@@ -25,7 +25,10 @@ from src.espn_interactions.basketball import (
     get_league,
 )
 from src.hashtag import get_player_stat_map_from_hashtag
+from src.logging import get_logger
 
+
+logger = get_logger(__name__)
 
 RESULTS_DIRECTORY = "results"
 
@@ -84,52 +87,55 @@ def construct_sorted_teams_stats_map(teams):
     return sorted_teams_stats
 
 
-def teamWinsComparator(team):
+def team_wins_comparator(team):
     return -team[1][KEY_WINS]
 
 
-def formatStat(stat, decimalPlaces):
-    return str(round(stat, decimalPlaces)).ljust(6)
+def format_stat(stat, decimalPlaces):
+    return " " + str(round(stat, decimalPlaces)).ljust(6)
 
 
 def print_all_team_stats(teams):
-    sorted_teams = sorted(teams.items(), key=teamWinsComparator)
+    sorted_teams = sorted(teams.items(), key=team_wins_comparator)
 
     longest_name_length = 0
     for team in sorted_teams:
         if len(team[0]) > longest_name_length:
             longest_name_length = len(team[0])
 
-    print(
-        "\nTeam".ljust(longest_name_length),
-        " FG%    FT%    3PM    REB    AST    STL    BLK    TO     PTS    Wins",
+    logger.info("")
+    logger.info(
+        "Team".ljust(longest_name_length)
+        + " FG%    FT%    3PM    REB    AST    STL    BLK    TO     PTS    Wins",
     )
     for team in sorted_teams:
-        print(
-            team[0].ljust(longest_name_length),
-            formatStat(team[1][KEY_STATS]["FG%"], 4),
-            formatStat(team[1][KEY_STATS]["FT%"], 4),
-            formatStat(team[1][KEY_STATS]["3PM"], 1),
-            formatStat(team[1][KEY_STATS]["REB"], 1),
-            formatStat(team[1][KEY_STATS]["AST"], 1),
-            formatStat(team[1][KEY_STATS]["STL"], 1),
-            formatStat(team[1][KEY_STATS]["BLK"], 1),
-            formatStat(team[1][KEY_STATS]["TO"], 1),
-            formatStat(team[1][KEY_STATS]["PTS"], 1),
-            team[1][KEY_WINS],
+        logger.info(
+            team[0].ljust(longest_name_length)
+            + format_stat(team[1][KEY_STATS]["FG%"], 4)
+            + format_stat(team[1][KEY_STATS]["FT%"], 4)
+            + format_stat(team[1][KEY_STATS]["3PM"], 1)
+            + format_stat(team[1][KEY_STATS]["REB"], 1)
+            + format_stat(team[1][KEY_STATS]["AST"], 1)
+            + format_stat(team[1][KEY_STATS]["STL"], 1)
+            + format_stat(team[1][KEY_STATS]["BLK"], 1)
+            + format_stat(team[1][KEY_STATS]["TO"], 1)
+            + format_stat(team[1][KEY_STATS]["PTS"], 1)
+            + " "
+            + str(team[1][KEY_WINS]),
         )
 
 
 def print_my_team_stat_rankings(teams):
     sorted_teams_stats = construct_sorted_teams_stats_map(teams)
-    print("\n{} stat rankings:".format(MY_TEAM))
+    logger.info("")
+    logger.info("{} stat rankings:".format(MY_TEAM))
     for stat_category in NINE_CATEGORIES:
         for rank in range(len(teams)):
             if sorted_teams_stats[stat_category][rank][1] == MY_TEAM:
-                print("{} : {}".format(stat_category, rank + 1))
+                logger.info("{} : {}".format(stat_category, rank + 1))
                 break
             elif rank + 1 == len(teams):
-                print("not found: {} {}".format(MY_TEAM, stat_category))
+                logger.info("not found: {} {}".format(MY_TEAM, stat_category))
 
 
 def save_projection_to_file(teams):
