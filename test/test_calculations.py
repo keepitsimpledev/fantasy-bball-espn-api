@@ -509,16 +509,15 @@ class TestCalculations(unittest.TestCase):
 
     def test_calculate_team_contributions(self):
         # arrange
-        team = {}
         roster = ["playerA", "playerB", "playerC"]
         stats = {
-            "FGM": 9,
-            "FGA": 16,
-            "FG%": 0.5625,
+            "FGM": 10.9,
+            "FGA": 21.7,
+            "FG%": 0.5023,
 
-            "FTM": 12,
-            "FTA": 20,
-            "FT%": 0.6000
+            "FTM": 12.0,
+            "FTA": 19.4,
+            "FT%": 0.6186
         }
         team = {
             "roster": roster,
@@ -527,25 +526,25 @@ class TestCalculations(unittest.TestCase):
         
         all_players_stats = {
             "playerA": {
-                "FGM": 1,
-                "FGA": 4,
+                "FGM": 3.1,
+                "FGA": 9.9,
 
-                "FTM": 5,
-                "FTA": 6
+                "FTM": 5.1,
+                "FTA": 6.2
             },
             "playerB": {
-                "FGM": 3,
-                "FGA": 6,
+                "FGM": 2.9,
+                "FGA": 5.7,
 
-                "FTM": 6,
-                "FTA": 8
+                "FTM": 5.5,
+                "FTA": 7.2
             },
             "playerC": {
-                "FGM": 5,
-                "FGA": 6,
+                "FGM": 4.9,
+                "FGA": 6.1,
 
-                "FTM": 1,
-                "FTA": 6
+                "FTM": 1.4,
+                "FTA": 6.0
             }
         }
 
@@ -553,12 +552,11 @@ class TestCalculations(unittest.TestCase):
         calculate_team_contributions(team, all_players_stats)
 
         # assert
-        team["contributions"]["playerA"]["FG%"] = -0.1042
-        team["contributions"]["playerB"]["FG%"] = -0.0375
-        team["contributions"]["playerC"]["FG%"] = 0.1625
+        self.assertEqual(team["contributions"]["playerA"]["FG%"], -0.1587)
+        self.assertEqual(team["contributions"]["playerB"]["FG%"], 0.0023)
+        self.assertEqual(team["contributions"]["playerC"]["FG%"], 0.1177)
         
-        team["contributions"]["playerA"]["FT%"] = 0.1000
-        team["contributions"]["playerB"]["FT%"] = 0.1000
-        team["contributions"]["playerC"]["FT%"] = -0.1857
-
+        self.assertEqual(team["contributions"]["playerA"]["FT%"], 0.0959)
+        self.assertEqual(team["contributions"]["playerB"]["FT%"], 0.0858)
+        self.assertEqual(team["contributions"]["playerC"]["FT%"], -0.1724)
 
