@@ -101,6 +101,7 @@ def compare_waiver_moves(teams, all_players_stats):
     original_win_count = teams[MY_TEAM][KEY_WINS]
 
     do_not_add_players = ["Walker Kessler", "Jayson Tatum", "Kawhi Leonard"]
+    do_not_drop_players = ["Dominick Barlow"]
     rostered_players = []
     for team in teams:
         for player in teams[team][KEY_ROSTER]:
@@ -108,6 +109,8 @@ def compare_waiver_moves(teams, all_players_stats):
 
     scored_transactions = []
     for player_to_drop in teams[MY_TEAM][KEY_ROSTER]:
+        if player_to_drop in do_not_drop_players:
+            continue;
         if (
             all_players_stats[player_to_drop][KEY_IR] == "True"  # is a string in cached spreadsheet
             or all_players_stats[player_to_drop][KEY_IR] == True  # noqa: E712 | is boolean from ESPN
@@ -119,7 +122,7 @@ def compare_waiver_moves(teams, all_players_stats):
         for fa_to_add in all_players_stats:
             if fa_to_add in rostered_players:
                 continue
-            if fa_to_add in do_not_add_players:  # TODO: can we, instead, identify injured players?
+            if fa_to_add in do_not_add_players:
                 continue
 
             teams[MY_TEAM][KEY_ROSTER] = copy.deepcopy(roster_after_drop)
