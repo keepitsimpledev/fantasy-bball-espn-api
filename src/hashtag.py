@@ -14,7 +14,10 @@ def get_player_stat_map_from_hashtag(players_stats_map):
         if hashtag_player in players_stats_map:
             hashtag_players_stats_map[hashtag_player][KEY_IR] = players_stats_map[hashtag_player][KEY_IR]
         else:
-            logger.info("hashtag player not found in ESPN (or has been added and will register tomorrow): " + hashtag_player)
+            logger.info(
+                "hashtag player not found in ESPN (or has been added and will register tomorrow): "
+                + hashtag_player
+            )
     return hashtag_players_stats_map
 
 

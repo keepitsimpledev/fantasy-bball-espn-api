@@ -13,12 +13,7 @@ from src.constants import (
     KEY_LOSSES,
     KEY_TIES,
 )
-from src.env import (
-    DO_NOT_ADD,
-    DO_NOT_DROP,
-    MAX_POSITIONS,
-    MY_TEAM
-)
+from src.env import DO_NOT_ADD, DO_NOT_DROP, MAX_POSITIONS, MY_TEAM
 from src.transactions import add, drop
 
 

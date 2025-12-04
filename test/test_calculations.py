@@ -239,20 +239,20 @@ class TestCalcuations(unittest.TestCase):
         }
 
         # act
-        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
+        with self.assertLogs(calculations.logger, level="INFO") as captured_logs:
             compare_waiver_moves(teams, players_stats_map)
 
         # assert
         self.assertEqual(
             captured_logs.output,
             [
-                'INFO:src.calculations:',
-                'INFO:src.calculations:potential moves:',
-                'INFO:src.calculations:skipping playerG from do-not-add list',
-                'INFO:src.calculations:skipping playerB from do-not-drop list',
-                'INFO:src.calculations:3 win(s): drop playerA add playerE',
-                'INFO:src.calculations:-1 win(s): drop playerA add playerF',
-            ]
+                "INFO:src.calculations:",
+                "INFO:src.calculations:potential moves:",
+                "INFO:src.calculations:skipping playerG from do-not-add list",
+                "INFO:src.calculations:skipping playerB from do-not-drop list",
+                "INFO:src.calculations:3 win(s): drop playerA add playerE",
+                "INFO:src.calculations:-1 win(s): drop playerA add playerF",
+            ],
         )
 
     def test_compare_waiver_moves_max_position(self):
@@ -329,17 +329,17 @@ class TestCalcuations(unittest.TestCase):
         }
 
         # act
-        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
+        with self.assertLogs(calculations.logger, level="INFO") as captured_logs:
             compare_waiver_moves(teams, players_stats_map)
 
         # assert
         self.assertEqual(
             captured_logs.output,
             [
-                'INFO:src.calculations:',
-                'INFO:src.calculations:potential moves:',
-                'INFO:src.calculations:1 win(s): drop playerA add playerD',
-            ]
+                "INFO:src.calculations:",
+                "INFO:src.calculations:potential moves:",
+                "INFO:src.calculations:1 win(s): drop playerA add playerD",
+            ],
         )
 
     def test_determine_worst_player(self):
@@ -353,7 +353,13 @@ class TestCalcuations(unittest.TestCase):
         teams = {}
         teams["teamA"] = {}
         teams["teamA"]["schedule"] = ["teamB"]
-        teams["teamA"]["roster"] = ["playerA", "playerB", "playerE", "playerG", "playerH"]
+        teams["teamA"]["roster"] = [
+            "playerA",
+            "playerB",
+            "playerE",
+            "playerG",
+            "playerH",
+        ]
         teams["teamA"]["stats"] = {
             "FG%": 0.25,
             "FT%": 0.25,
@@ -446,19 +452,19 @@ class TestCalcuations(unittest.TestCase):
         }
 
         # act
-        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
+        with self.assertLogs(calculations.logger, level="INFO") as captured_logs:
             determine_worst_player(teams, players_stats_map)
 
         # assert
         self.assertEqual(
             captured_logs.output,
             [
-                'INFO:src.calculations:',
-                'INFO:src.calculations:worst players:',
-                'INFO:src.calculations:0 win(s) after dropping playerA',
-                'INFO:src.calculations:0 win(s) after dropping playerB',
-                'INFO:src.calculations:-1 win(s) after dropping playerE',
-            ]
+                "INFO:src.calculations:",
+                "INFO:src.calculations:worst players:",
+                "INFO:src.calculations:0 win(s) after dropping playerA",
+                "INFO:src.calculations:0 win(s) after dropping playerB",
+                "INFO:src.calculations:-1 win(s) after dropping playerE",
+            ],
         )
 
     def test_count_team_positions(self):
