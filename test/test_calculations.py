@@ -517,7 +517,9 @@ class TestCalculations(unittest.TestCase):
 
             "FTM": 12.0,
             "FTA": 19.4,
-            "FT%": 0.6186
+            "FT%": 0.6186,
+
+            "3PM": 3.8
         }
         team = {
             "roster": roster,
@@ -530,14 +532,18 @@ class TestCalculations(unittest.TestCase):
                 "FGA": 9.9,
 
                 "FTM": 5.1,
-                "FTA": 6.2
+                "FTA": 6.2,
+
+                "3PM": 2.7
             },
             "playerB": {
                 "FGM": 2.9,
                 "FGA": 5.7,
 
                 "FTM": 5.5,
-                "FTA": 7.2
+                "FTA": 7.2,
+
+                "3PM": 1.1
             },
             "playerC": {
                 "FGM": 4.9,
@@ -559,4 +565,8 @@ class TestCalculations(unittest.TestCase):
         self.assertEqual(team["contributions"]["playerA"]["FT%"], 0.0959)
         self.assertEqual(team["contributions"]["playerB"]["FT%"], 0.0858)
         self.assertEqual(team["contributions"]["playerC"]["FT%"], -0.1724)
+
+        self.assertEqual(team["contributions"]["playerA"]["3PM"], 2.7)
+        self.assertEqual(team["contributions"]["playerB"]["3PM"], 1.1)
+        self.assertEqual(team["contributions"]["playerC"]["3PM"], 0)
 

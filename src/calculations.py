@@ -236,15 +236,29 @@ def calculate_team_contributions(team, all_players_stats):
         player_stats = all_players_stats[player]
         contributions[player] = {}
 
-        fgm_without = team_stats["FGM"] - player_stats["FGM"]
-        fga_without = team_stats["FGA"] - player_stats["FGA"]
-        fg_without = fgm_without / fga_without
-        contributions[player]["FG%"] = round(team_stats["FG%"] - fg_without, 4)
+        if "FGM" in player_stats and "FGA" in player_stats:
+            fgm_without = team_stats["FGM"] - player_stats["FGM"]
+            fga_without = team_stats["FGA"] - player_stats["FGA"]
+            fg_without = fgm_without / fga_without
+            contributions[player]["FG%"] = round(team_stats["FG%"] - fg_without, 4)
+        else:
+            contributions[player]["FG%"] = 0
 
-        ftm_without = team_stats["FTM"] - player_stats["FTM"]
-        fta_without = team_stats["FTA"] - player_stats["FTA"]
-        ft_without = ftm_without / fta_without
-        contributions[player]["FT%"] = round(team_stats["FT%"] - ft_without, 4)
-    
+        if "FTM" in player_stats and "FTA" in player_stats:
+            ftm_without = team_stats["FTM"] - player_stats["FTM"]
+            fta_without = team_stats["FTA"] - player_stats["FTA"]
+            ft_without = ftm_without / fta_without
+            contributions[player]["FT%"] = round(team_stats["FT%"] - ft_without, 4)
+        else:
+            contributions[player]["FT%"] = 0
+
+        if "3PM" in player_stats:
+            threes_without = team_stats["3PM"] - player_stats["3PM"]
+            contributions[player]["3PM"] = round(team_stats["3PM"] - threes_without, 1)
+        else:
+            contributions[player]["3PM"] = 0
+
+
+    # TODO: consider expanding to contribution percentage (will require integration with season simulation) because this doesn't end up being very meaningful
     team[KEY_CONTRIBUTIONS] = contributions
 
