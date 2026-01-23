@@ -4,6 +4,7 @@ import src.transactions as transactions
 from src.constants import (
     ALL_STATS,
     NINE_CATEGORIES,
+    KEY_CONTRIBUTIONS,
     KEY_POSITION,
     KEY_IR,
     KEY_ROSTER,
@@ -13,12 +14,7 @@ from src.constants import (
     KEY_LOSSES,
     KEY_TIES,
 )
-from src.env import (
-    DO_NOT_ADD,
-    DO_NOT_DROP,
-    MAX_POSITIONS,
-    MY_TEAM
-)
+from src.env import DO_NOT_ADD, DO_NOT_DROP, MAX_POSITIONS, MY_TEAM
 from src.transactions import add, drop
 
 
@@ -231,3 +227,38 @@ def get_primary_position(position):
     else:
         position_out = position[0:2]
     return position_out
+
+
+def calculate_team_contributions(team, all_players_stats):
+    contributions = {}
+    for player in team[KEY_ROSTER]:
+        team_stats = team[KEY_STATS]
+        player_stats = all_players_stats[player]
+        contributions[player] = {}
+
+        if "FGM" in player_stats and "FGA" in player_stats:
+            fgm_without = team_stats["FGM"] - player_stats["FGM"]
+            fga_without = team_stats["FGA"] - player_stats["FGA"]
+            fg_without = fgm_without / fga_without
+            contributions[player]["FG%"] = round(team_stats["FG%"] - fg_without, 4)
+        else:
+            contributions[player]["FG%"] = 0
+
+        if "FTM" in player_stats and "FTA" in player_stats:
+            ftm_without = team_stats["FTM"] - player_stats["FTM"]
+            fta_without = team_stats["FTA"] - player_stats["FTA"]
+            ft_without = ftm_without / fta_without
+            contributions[player]["FT%"] = round(team_stats["FT%"] - ft_without, 4)
+        else:
+            contributions[player]["FT%"] = 0
+
+        if "3PM" in player_stats:
+            threes_without = team_stats["3PM"] - player_stats["3PM"]
+            contributions[player]["3PM"] = round(team_stats["3PM"] - threes_without, 1)
+        else:
+            contributions[player]["3PM"] = 0
+
+
+    # TODO: consider expanding to contribution percentage (will require integration with season simulation) because this doesn't end up being very meaningful
+    team[KEY_CONTRIBUTIONS] = contributions
+

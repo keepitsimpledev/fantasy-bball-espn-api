@@ -1,5 +1,6 @@
 import src.calculations as calculations
 from src.calculations import (
+    calculate_team_contributions,
     calculate_team_stats,
     compare_waiver_moves,
     count_team_positions,
@@ -11,7 +12,7 @@ from src.calculations import (
 import unittest
 
 
-class TestCalcuations(unittest.TestCase):
+class TestCalculations(unittest.TestCase):
 
     def test_calculate_team_stats(self):
         # arrange
@@ -239,20 +240,20 @@ class TestCalcuations(unittest.TestCase):
         }
 
         # act
-        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
+        with self.assertLogs(calculations.logger, level="INFO") as captured_logs:
             compare_waiver_moves(teams, players_stats_map)
 
         # assert
         self.assertEqual(
             captured_logs.output,
             [
-                'INFO:src.calculations:',
-                'INFO:src.calculations:potential moves:',
-                'INFO:src.calculations:skipping playerG from do-not-add list',
-                'INFO:src.calculations:skipping playerB from do-not-drop list',
-                'INFO:src.calculations:3 win(s): drop playerA add playerE',
-                'INFO:src.calculations:-1 win(s): drop playerA add playerF',
-            ]
+                "INFO:src.calculations:",
+                "INFO:src.calculations:potential moves:",
+                "INFO:src.calculations:skipping playerG from do-not-add list",
+                "INFO:src.calculations:skipping playerB from do-not-drop list",
+                "INFO:src.calculations:3 win(s): drop playerA add playerE",
+                "INFO:src.calculations:-1 win(s): drop playerA add playerF",
+            ],
         )
 
     def test_compare_waiver_moves_max_position(self):
@@ -329,17 +330,17 @@ class TestCalcuations(unittest.TestCase):
         }
 
         # act
-        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
+        with self.assertLogs(calculations.logger, level="INFO") as captured_logs:
             compare_waiver_moves(teams, players_stats_map)
 
         # assert
         self.assertEqual(
             captured_logs.output,
             [
-                'INFO:src.calculations:',
-                'INFO:src.calculations:potential moves:',
-                'INFO:src.calculations:1 win(s): drop playerA add playerD',
-            ]
+                "INFO:src.calculations:",
+                "INFO:src.calculations:potential moves:",
+                "INFO:src.calculations:1 win(s): drop playerA add playerD",
+            ],
         )
 
     def test_determine_worst_player(self):
@@ -353,7 +354,13 @@ class TestCalcuations(unittest.TestCase):
         teams = {}
         teams["teamA"] = {}
         teams["teamA"]["schedule"] = ["teamB"]
-        teams["teamA"]["roster"] = ["playerA", "playerB", "playerE", "playerG", "playerH"]
+        teams["teamA"]["roster"] = [
+            "playerA",
+            "playerB",
+            "playerE",
+            "playerG",
+            "playerH",
+        ]
         teams["teamA"]["stats"] = {
             "FG%": 0.25,
             "FT%": 0.25,
@@ -446,19 +453,19 @@ class TestCalcuations(unittest.TestCase):
         }
 
         # act
-        with self.assertLogs(calculations.logger, level='INFO') as captured_logs:
+        with self.assertLogs(calculations.logger, level="INFO") as captured_logs:
             determine_worst_player(teams, players_stats_map)
 
         # assert
         self.assertEqual(
             captured_logs.output,
             [
-                'INFO:src.calculations:',
-                'INFO:src.calculations:worst players:',
-                'INFO:src.calculations:0 win(s) after dropping playerA',
-                'INFO:src.calculations:0 win(s) after dropping playerB',
-                'INFO:src.calculations:-1 win(s) after dropping playerE',
-            ]
+                "INFO:src.calculations:",
+                "INFO:src.calculations:worst players:",
+                "INFO:src.calculations:0 win(s) after dropping playerA",
+                "INFO:src.calculations:0 win(s) after dropping playerB",
+                "INFO:src.calculations:-1 win(s) after dropping playerE",
+            ],
         )
 
     def test_count_team_positions(self):
@@ -499,3 +506,67 @@ class TestCalcuations(unittest.TestCase):
         self.assertEqual("PF", get_primary_position("PF"))
         self.assertEqual("PF", get_primary_position("PF/C"))
         self.assertEqual("C", get_primary_position("C"))
+
+    def test_calculate_team_contributions(self):
+        # arrange
+        roster = ["playerA", "playerB", "playerC"]
+        stats = {
+            "FGM": 10.9,
+            "FGA": 21.7,
+            "FG%": 0.5023,
+
+            "FTM": 12.0,
+            "FTA": 19.4,
+            "FT%": 0.6186,
+
+            "3PM": 3.8
+        }
+        team = {
+            "roster": roster,
+            "stats": stats
+        }
+        
+        all_players_stats = {
+            "playerA": {
+                "FGM": 3.1,
+                "FGA": 9.9,
+
+                "FTM": 5.1,
+                "FTA": 6.2,
+
+                "3PM": 2.7
+            },
+            "playerB": {
+                "FGM": 2.9,
+                "FGA": 5.7,
+
+                "FTM": 5.5,
+                "FTA": 7.2,
+
+                "3PM": 1.1
+            },
+            "playerC": {
+                "FGM": 4.9,
+                "FGA": 6.1,
+
+                "FTM": 1.4,
+                "FTA": 6.0
+            }
+        }
+
+        # act
+        calculate_team_contributions(team, all_players_stats)
+
+        # assert
+        self.assertEqual(team["contributions"]["playerA"]["FG%"], -0.1587)
+        self.assertEqual(team["contributions"]["playerB"]["FG%"], 0.0023)
+        self.assertEqual(team["contributions"]["playerC"]["FG%"], 0.1177)
+        
+        self.assertEqual(team["contributions"]["playerA"]["FT%"], 0.0959)
+        self.assertEqual(team["contributions"]["playerB"]["FT%"], 0.0858)
+        self.assertEqual(team["contributions"]["playerC"]["FT%"], -0.1724)
+
+        self.assertEqual(team["contributions"]["playerA"]["3PM"], 2.7)
+        self.assertEqual(team["contributions"]["playerB"]["3PM"], 1.1)
+        self.assertEqual(team["contributions"]["playerC"]["3PM"], 0)
+

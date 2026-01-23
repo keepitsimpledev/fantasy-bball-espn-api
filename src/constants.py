@@ -12,6 +12,7 @@ ALL_STATS = ["FGM", "FGA", "FTM", "FTA", "3PM", "REB", "AST", "STL", "BLK", "TO"
 NINE_CATEGORIES = ["FG%", "FT%", "3PM", "REB", "AST", "STL", "BLK", "TO", "PTS"]
 
 KEY_IR = "On IR"
+KEY_CONTRIBUTIONS = "contributions"
 KEY_POSITION = "position"
 KEY_ROSTER = "roster"
 KEY_SCHEDULE = "schedule"
